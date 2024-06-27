@@ -10,7 +10,7 @@
 		const data = fetch(apiUrl, {
 			headers: {
 				hostname: window.location.hostname,
-				'X-Script-Secret': process.env.NEXT_PUBLIC_INTERNAL_SCRIPT_SECRET,
+				'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
 			},
 		})
 			.then((response) => {
@@ -30,7 +30,7 @@
 		fetch(apiUrl, {
 			headers: {
 				hostname: window.location.hostname,
-				'X-Script-Secret': process.env.NEXT_PUBLIC_INTERNAL_SCRIPT_SECRET,
+				'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
 			},
 		})
 			.then((response) => {
