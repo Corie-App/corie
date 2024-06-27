@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { GeistSans } from 'geist/font/sans';
 import Header from '@/ui/header';
 import ToastWrapper from '@/ui/toast-wrapper';
-
-const inter = Inter({ subsets: ['latin'] });
+import Script from 'next/script';
 
 export const metadata: Metadata = {
 	title: 'Corie',
@@ -25,6 +23,7 @@ export default function RootLayout({
 				<body className={GeistSans.className}>
 					<Header />
 					{children}
+					{/* <Script async src='/corie.js?script_id=scr_testid' /> */}
 				</body>
 			</html>
 		</ClerkProvider>

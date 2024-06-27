@@ -1,0 +1,41 @@
+(function () {
+	function getScriptId(): string | null {
+		const scriptTag = document.currentScript as HTMLScriptElement;
+		const urlParams = new URLSearchParams(scriptTag.src.split('?')[1]);
+		return urlParams.get('script_id');
+	}
+
+	function fetchAnnouncements(scriptId: string) {
+		const apiUrl = `/api/announcements/${scriptId}`;
+
+		fetch(apiUrl, { headers: { Referer: window.location.href } })
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error('Unauthorized domain or other error');
+				}
+				return response.json();
+			})
+			.then((data) => {
+				displayAnnouncements(data);
+			})
+			.catch((error) => {
+				console.error('Error fetching announcements:', error);
+			});
+	}
+
+	function displayAnnouncements(data: { title: string; content: string }[]) {
+		data.forEach((announcement) => {
+			const container = document.createElement('div');
+			container.className = 'corie-announcement';
+			container.innerHTML = `<h2>${announcement.title}</h2><p>${announcement.content}</p>`;
+			document.body.appendChild(container);
+		});
+	}
+
+	const scriptId = getScriptId();
+	if (scriptId) {
+		fetchAnnouncements(scriptId);
+	} else {
+		console.error('No script ID provided in the script tag');
+	}
+})();
