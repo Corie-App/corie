@@ -4,6 +4,7 @@ import type { InferSelectModel } from 'drizzle-orm';
 export const products = pgTable('products', {
 	id: varchar('id', { length: 50 }).primaryKey(),
 	name: varchar('name', { length: 255 }).notNull(),
+	domain: varchar('domain', { length: 255 }).notNull(),
 	creatorId: varchar('creator_id', { length: 50 }).notNull(),
 	scriptId: varchar('script_id', { length: 50 }).unique().notNull(),
 	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),

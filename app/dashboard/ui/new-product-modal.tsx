@@ -38,11 +38,20 @@ export default function NewProductModal() {
 						<DialogDescription>Products are used to manage your announcements</DialogDescription>
 					</DialogHeader>
 					<div className='space-y-4 py-4'>
-						<div className='space-y-2'>
+						<div className='space-y-1'>
 							<Label htmlFor='name' className='text-right'>
 								Product Name
 							</Label>
-							<Input name='name' placeholder='My first product' />
+							<Input required name='name' placeholder='My first product' />
+						</div>
+						<div className='space-y-1'>
+							<Label htmlFor='name' className='text-right'>
+								Your domain
+							</Label>
+							<Input required name='domain' type='url' placeholder='https://my-product.com' />
+							<span className='text-xs text-gray-500'>
+								Announcements will be displayed on this domain
+							</span>
 						</div>
 					</div>
 					<DialogFooter>
