@@ -10,7 +10,7 @@ import { eq } from 'drizzle-orm';
 export const updateProductAction = isProductAdminProcedure
 	.createServerAction()
 	.input(UpdateProductSchema, { type: 'formData' })
-	.handler(async ({ input, ctx }) => {
+	.handler(async ({ input }) => {
 		await db
 			.update(products)
 			.set({ name: input.name, domain: input.domain })
@@ -19,4 +19,6 @@ export const updateProductAction = isProductAdminProcedure
 
 		revalidatePath(`/dashboard`);
 		revalidatePath(`/dashboard/${input.productId}/settings`);
+
+		return { success: true };
 	});
