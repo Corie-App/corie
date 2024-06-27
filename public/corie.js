@@ -6,7 +6,7 @@
 	}
 
 	function matchDomain(scriptId, hostname) {
-		const apiUrl = `/api/products/domain?scriptId=${scriptId}`;
+		const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
 		const data = fetch(apiUrl, { headers: { hostname: window.location.hostname } })
 			.then((response) => {
 				if (!response.ok) {
@@ -20,7 +20,7 @@
 	}
 
 	function fetchAnnouncements(scriptId) {
-		const apiUrl = `/api/announcements/${scriptId}`;
+		const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements/${scriptId}`;
 		console.log({ hostname: window.location.hostname });
 		fetch(apiUrl, { headers: { hostname: window.location.hostname } })
 			.then((response) => {
