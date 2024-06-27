@@ -10,7 +10,7 @@ export const matchDomain = createServerAction()
 	.handler(async ({ input, request }) => {
 		const headersList = headers();
 		const hostname = headersList.get('hostname');
-
+		console.log({ hostname, request });
 		const data = await db.query.products.findFirst({
 			where: eq(products.scriptId, input.scriptId),
 		});

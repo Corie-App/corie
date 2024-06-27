@@ -6,9 +6,8 @@
 	}
 
 	function matchDomain(scriptId, hostname) {
-		const apiUrl = `/api/products/domain?s=${scriptId}&h=${hostname}`;
-		console.log({ hostname: window.location.hostname });
-		fetch(apiUrl, { headers: { hostname: window.location.hostname } })
+		const apiUrl = `/api/products/domain?scriptId=${scriptId}`;
+		const data = fetch(apiUrl, { headers: { hostname: window.location.hostname } })
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error('Unauthorized domain or other error');
@@ -48,6 +47,9 @@
 	}
 
 	const scriptId = getScriptId();
-	if (scriptId) fetchAnnouncements(scriptId);
-	else console.error('Incorrect value provided to Corie');
+	if (scriptId) {
+		const domainMatched = matchDomain(scriptId);
+		if (!domainMatched.found) console.error('Domain not matched');
+		else fetchAnnouncements(scriptId);
+	} else console.error('Incorrect value provided to Corie');
 })();
