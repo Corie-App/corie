@@ -42,13 +42,13 @@ export default function NewProductModal() {
 							<Label htmlFor='name' className='text-right'>
 								Product Name
 							</Label>
-							<Input required name='name' placeholder='My first product' />
+							<Input required id='name' name='name' placeholder='My first product' />
 						</div>
 						<div className='space-y-1'>
-							<Label htmlFor='name' className='text-right'>
+							<Label htmlFor='domain' className='text-right'>
 								Your domain
 							</Label>
-							<Input required name='domain' type='url' placeholder='https://my-product.com' />
+							<Input required id='domain' name='domain' type='url' placeholder='https://my-product.com' />
 							<span className='text-xs text-gray-500'>
 								Announcements will be displayed on this domain
 							</span>

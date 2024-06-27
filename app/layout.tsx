@@ -4,6 +4,7 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { GeistSans } from 'geist/font/sans';
 import Header from '@/ui/header';
+import ToastWrapper from '@/ui/toast-wrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<ClerkProvider>
+			<ToastWrapper />
 			<html lang='en'>
 				<body className={GeistSans.className}>
 					<Header />
