@@ -1,11 +1,11 @@
 (function () {
-	function getScriptId(): string | null {
-		const scriptTag = document.currentScript as HTMLScriptElement;
+	function getScriptId() {
+		const scriptTag = document.currentScript;
 		const urlParams = new URLSearchParams(scriptTag.src.split('?')[1]);
 		return urlParams.get('script_id');
 	}
 
-	function fetchAnnouncements(scriptId: string) {
+	function fetchAnnouncements(scriptId) {
 		const apiUrl = `/api/announcements/${scriptId}`;
 
 		fetch(apiUrl, { headers: { Referer: window.location.href } })
@@ -23,7 +23,7 @@
 			});
 	}
 
-	function displayAnnouncements(data: { title: string; content: string }[]) {
+	function displayAnnouncements(data) {
 		data.forEach((announcement) => {
 			const container = document.createElement('div');
 			container.className = 'corie-announcement';
