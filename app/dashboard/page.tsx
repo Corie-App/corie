@@ -1,6 +1,5 @@
 import { db } from '@/lib/postgres';
 import { products } from '@/lib/postgres/schema';
-import { Button } from '@/ui/button';
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import NewProductModal from './ui/new-product-modal';

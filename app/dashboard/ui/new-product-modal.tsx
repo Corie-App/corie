@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/ui/button';
 import {
 	Dialog,
@@ -11,8 +13,16 @@ import {
 import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
 import { Plus } from 'lucide-react';
+import { useServerAction } from 'zsa-react';
+import { createProductAction } from '../actions';
 
 export default function NewProductModal() {
+	const { executeFormAction, isPending } = useServerAction(createProductAction, {
+		onError(args) {
+			console.error(args);
+		},
+	});
+
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -22,7 +32,7 @@ export default function NewProductModal() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[425px]'>
-				<form>
+				<form action={executeFormAction}>
 					<DialogHeader>
 						<DialogTitle>Create a product</DialogTitle>
 						<DialogDescription>Products are used to manage your announcements</DialogDescription>
@@ -32,11 +42,11 @@ export default function NewProductModal() {
 							<Label htmlFor='name' className='text-right'>
 								Product Name
 							</Label>
-							<Input id='name' placeholder='My first product' />
+							<Input name='name' placeholder='My first product' />
 						</div>
 					</div>
 					<DialogFooter>
-						<Button>Create Product</Button>
+						<Button>{isPending ? 'Creating...' : 'Create Product'}</Button>
 					</DialogFooter>
 				</form>
 			</DialogContent>
