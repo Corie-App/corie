@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import { GeistSans } from 'geist/font/sans';
 import Header from '@/ui/header';
 import ToastWrapper from '@/ui/toast-wrapper';
@@ -18,10 +18,18 @@ export default function RootLayout({
 }>) {
 	return (
 		<ClerkProvider>
-			<ToastWrapper />
 			<html lang='en'>
 				<body className={GeistSans.className}>
-					<Header />
+					<ToastWrapper />
+					<header>
+						<SignedOut>
+							<SignInButton />
+						</SignedOut>
+						<SignedIn>
+							<UserButton />
+						</SignedIn>
+					</header>
+					{/* <Header /> */}
 					{children}
 					<Script async src={`/corie.js?s=${process.env.EXAMPLE_SCRIPT_ID}`} />
 				</body>

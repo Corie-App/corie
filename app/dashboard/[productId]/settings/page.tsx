@@ -1,19 +1,25 @@
 import { db } from '@/lib/postgres';
 import { products } from '@/lib/postgres/schema';
 import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
+import { UrlInput } from '@/ui/url-input';
 import { eq } from 'drizzle-orm';
 import { Code } from 'lucide-react';
+import { notFound } from 'next/navigation';
+import UpdateProduct from './ui/update-product';
 
 export default async function SettingsPage({ params }: { params: { productId: string } }) {
-	const data = await db
-		.select({ scriptId: products.scriptId })
-		.from(products)
-		.where(eq(products.id, params.productId));
+	const product = await db.query.products.findFirst({
+		where: eq(products.id, params.productId),
+	});
 
-	const code = `<script async type="text/javascript" src="/corie.js?s=${data[0].scriptId}"></script>`;
+	if (!product) return notFound();
+
+	const code = `<script async type="text/javascript" src="/corie.js?s=${product.scriptId}"></script>`;
 
 	return (
-		<div className='mt-12'>
+		<div className='mt-12 space-y-8'>
 			<div className='border border-gray-100 rounded-lg overflow-hidden'>
 				<div className='flex justify-between items-center p-4 bg-neutral-50 border-b border-gray-100'>
 					<span className='flex-grow flex flex-col'>
@@ -37,6 +43,7 @@ export default async function SettingsPage({ params }: { params: { productId: st
 					</Button>
 				</div>
 			</div>
+			<UpdateProduct id={product.id} name={product.name} domain={product.domain} />
 		</div>
 	);
 }

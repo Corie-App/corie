@@ -5,6 +5,21 @@
 		return urlParams.get('s');
 	}
 
+	function matchDomain(scriptId, hostname) {
+		const apiUrl = `/api/products/domain?s=${scriptId}&h=${hostname}`;
+		console.log({ hostname: window.location.hostname });
+		fetch(apiUrl, { headers: { hostname: window.location.hostname } })
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error('Unauthorized domain or other error');
+				}
+				return response.json();
+			})
+			.catch((error) => {
+				console.error('Error matching domain:', error);
+			});
+	}
+
 	function fetchAnnouncements(scriptId) {
 		const apiUrl = `/api/announcements/${scriptId}`;
 		console.log({ hostname: window.location.hostname });

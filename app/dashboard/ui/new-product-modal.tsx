@@ -15,6 +15,7 @@ import { Label } from '@/ui/label';
 import { Plus } from 'lucide-react';
 import { useServerAction } from 'zsa-react';
 import { createProductAction } from '../actions';
+import { UrlInput } from '@/ui/url-input';
 
 export default function NewProductModal() {
 	const { executeFormAction, isPending } = useServerAction(createProductAction, {
@@ -48,7 +49,7 @@ export default function NewProductModal() {
 							<Label htmlFor='domain' className='text-right'>
 								Your domain
 							</Label>
-							<Input required id='domain' name='domain' type='url' placeholder='https://my-product.com' />
+							<UrlInput required id='domain' name='domain' type='url' placeholder='my-product.com' />
 							<span className='text-xs text-gray-500'>
 								Announcements will be displayed on this domain
 							</span>
