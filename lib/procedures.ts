@@ -38,3 +38,15 @@ export const isProductAdminProcedure = createServerActionProcedure(authenticated
 			throw new Error('There was an error checking the user permissions for the product');
 		}
 	});
+
+export const scriptProcedure = createServerActionProcedure().handler(async ({ request }) => {
+	// This procedure is used to ensure api calls are coming only from the internal script
+	try {
+		const scriptSecret = request?.headers.get('X-Script-Secret');
+
+		if (!scriptSecret || scriptSecret !== process.env.INTERNAL_SCRIPT_SECRET)
+			throw new Error('Unauthorized request');
+	} catch {
+		throw new Error('Unauthorized request');
+	}
+});

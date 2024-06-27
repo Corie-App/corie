@@ -7,7 +7,12 @@
 
 	function matchDomain(scriptId, hostname) {
 		const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
-		const data = fetch(apiUrl, { headers: { hostname: window.location.hostname } })
+		const data = fetch(apiUrl, {
+			headers: {
+				hostname: window.location.hostname,
+				'X-Script-Secret': process.env.INTERNAL_SCRIPT_SECRET,
+			},
+		})
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error('Unauthorized domain or other error');
@@ -22,7 +27,12 @@
 	function fetchAnnouncements(scriptId) {
 		const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements/${scriptId}`;
 		console.log({ hostname: window.location.hostname });
-		fetch(apiUrl, { headers: { hostname: window.location.hostname } })
+		fetch(apiUrl, {
+			headers: {
+				hostname: window.location.hostname,
+				'X-Script-Secret': process.env.INTERNAL_SCRIPT_SECRET,
+			},
+		})
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error('Unauthorized domain or other error');

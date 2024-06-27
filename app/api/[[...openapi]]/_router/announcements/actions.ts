@@ -1,7 +1,8 @@
+import { scriptProcedure } from '@/lib/procedures';
 import { z } from 'zod';
-import { createServerAction } from 'zsa';
 
-export const getAnnouncements = createServerAction()
+export const getAnnouncements = scriptProcedure
+	.createServerAction()
 	.input(z.object({ scriptId: z.string() }))
 	.handler(async ({ input }) => {
 		console.log({ input });
