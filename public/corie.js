@@ -8,7 +8,7 @@
 	function fetchAnnouncements(scriptId) {
 		const apiUrl = `/api/announcements/${scriptId}`;
 		console.log({ hostname: window.location.hostname });
-		fetch(apiUrl, { headers: { Referer: window.location.href } })
+		fetch(apiUrl, { headers: { hostname: window.location.hostname } })
 			.then((response) => {
 				if (!response.ok) {
 					throw new Error('Unauthorized domain or other error');
