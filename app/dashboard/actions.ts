@@ -18,8 +18,6 @@ export const createProductAction = authenticatedProcedure
 				id: generateEntityId('product'),
 				name: input.name,
 				scriptId: nanoid(),
-				createdAt: new Date(),
-				updatedAt: new Date(),
 				creatorId: ctx.user.id,
 			})
 			.returning({ id: products.id });
