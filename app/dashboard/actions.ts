@@ -17,7 +17,7 @@ export const createProductAction = authenticatedProcedure
 			.values({
 				...input,
 				id: generateEntityId('product'),
-				scriptId: nanoid(),
+				scriptId: nanoid(24),
 				createdAt: new Date(),
 				creatorId: ctx.user.id,
 			})
