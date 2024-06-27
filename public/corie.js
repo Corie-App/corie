@@ -2,12 +2,12 @@
 	function getScriptId() {
 		const scriptTag = document.currentScript;
 		const urlParams = new URLSearchParams(scriptTag.src.split('?')[1]);
-		return urlParams.get('script_id');
+		return urlParams.get('s');
 	}
 
 	function fetchAnnouncements(scriptId) {
 		const apiUrl = `/api/announcements/${scriptId}`;
-
+		console.log({ hostname: window.location.hostname });
 		fetch(apiUrl, { headers: { Referer: window.location.href } })
 			.then((response) => {
 				if (!response.ok) {
@@ -33,9 +33,6 @@
 	}
 
 	const scriptId = getScriptId();
-	if (scriptId) {
-		fetchAnnouncements(scriptId);
-	} else {
-		console.error('No script ID provided in the script tag');
-	}
+	if (scriptId) fetchAnnouncements(scriptId);
+	else console.error('Incorrect value provided to Corie');
 })();

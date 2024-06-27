@@ -23,7 +23,7 @@ export default function RootLayout({
 				<body className={GeistSans.className}>
 					<Header />
 					{children}
-					{/* <Script async src='/corie.js?script_id=scr_testid' /> */}
+					<Script async src={`/corie.js?s=${process.env.EXAMPLE_SCRIPT_ID}`} />
 				</body>
 			</html>
 		</ClerkProvider>
