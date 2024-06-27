@@ -9,7 +9,7 @@
 		const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
 		const data = fetch(apiUrl, {
 			headers: {
-				hostname: window.location.hostname,
+				'X-Referer-Host': window.location.hostname,
 				'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
 			},
 		})

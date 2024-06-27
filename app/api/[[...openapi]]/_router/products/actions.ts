@@ -10,7 +10,7 @@ export const matchDomain = scriptProcedure
 	.input(z.object({ scriptId: z.string() }))
 	.handler(async ({ input, request }) => {
 		const headersList = headers();
-		const hostname = headersList.get('hostname');
+		const hostname = headersList.get('X-Referer-Host');
 		console.log({ hostname, request });
 		const data = await db.query.products.findFirst({
 			where: eq(products.scriptId, input.scriptId),
