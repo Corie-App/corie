@@ -29,5 +29,10 @@ export const getAnnouncements = createServerAction()
 			.execute();
 
 		console.log({ data });
-		return { announcements: data.map((row) => row.announcements) };
+		return {
+			announcements: data.map((a) => ({
+				title: a.announcements.title,
+				content: a.announcements.description,
+			})),
+		};
 	});

@@ -50,3 +50,4 @@ export const scriptProcedure = createServerActionProcedure().handler(async ({ re
 		throw new Error('Unauthorized request');
 	}
 });
+

@@ -4,14 +4,14 @@ import { scriptProcedure } from '@/lib/procedures';
 import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
-import { createServerAction } from 'zsa';
 
-export const matchDomain = createServerAction()
+export const matchDomain = scriptProcedure
+	.createServerAction()
 	.input(z.object({ scriptId: z.string() }))
-	.handler(async ({ input, request }) => {
+	.handler(async ({ input }) => {
 		const headersList = headers();
 		const hostname = headersList.get('X-Referer-Host');
-		console.log({ hostname, request });
+
 		const data = await db.query.products.findFirst({
 			where: eq(products.scriptId, input.scriptId),
 		});
