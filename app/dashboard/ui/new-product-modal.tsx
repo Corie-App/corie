@@ -49,7 +49,7 @@ export default function NewProductModal() {
 							<Label htmlFor='domain' className='text-right'>
 								Your domain
 							</Label>
-							<UrlInput required id='domain' name='domain' type='url' placeholder='my-product.com' />
+							<UrlInput required id='domain' name='domain' placeholder='my-product.com' />
 							<span className='text-xs text-gray-500'>
 								Announcements will be displayed on this domain
 							</span>
