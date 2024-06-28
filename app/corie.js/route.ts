@@ -7,10 +7,10 @@ export async function GET(req: NextRequest) {
 
 	if (!scriptId) return new Response('Incorrect value provided to Corie');
 	const headersList = headers();
-	const referer = headersList.get('x-custom-referrer');
+	const referer = headersList.get('referer');
 	// const [data, err] = await matchDomain({ number: 24 });
 	console.log({ referer, headersList });
-	return new Response('Hello World!', {
+	return new Response(`Hello World from ${referer} `, {
 		headers: {
 			'Content-Type': 'text/plain',
 		},
