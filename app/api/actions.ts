@@ -18,3 +18,9 @@ export const matchDomain = createServerAction()
 		return { found: true, error: null };
 	});
 
+export const getAnnouncements = createServerAction()
+	.input(z.object({ scriptId: z.string() }))
+	.handler(async ({ input }) => {
+		console.log({ input });
+		return { announcements: [] };
+	});
