@@ -1,6 +1,6 @@
-import { Announcement } from '@/lib/postgres/schema.js';
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
+import { Announcement } from './types.js';
 
 export async function fetchAnnouncements(): Promise<void> {
 	const scriptId = ScriptLoader.getScriptId();
@@ -15,7 +15,7 @@ export async function fetchAnnouncements(): Promise<void> {
 		if (!response.ok) {
 			throw new Error('Error fetching announcements');
 		}
-		const data = (await response.json()) as Pick<Announcement, 'title' | 'description'>[];
+		const data = (await response.json()) as Announcement[];
 		displayAnnouncements(data);
 	} catch (error) {
 		Logger.log('Error fetching announcements: ' + error);
