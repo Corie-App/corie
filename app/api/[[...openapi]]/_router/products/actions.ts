@@ -4,9 +4,9 @@ import { scriptProcedure } from '@/lib/procedures';
 import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
+import { createServerAction } from 'zsa';
 
-export const matchDomain = scriptProcedure
-	.createServerAction()
+export const matchDomain = createServerAction()
 	.input(z.object({ scriptId: z.string() }))
 	.handler(async ({ input, request }) => {
 		const headersList = headers();
