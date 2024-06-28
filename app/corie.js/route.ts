@@ -8,10 +8,10 @@ export async function GET(req: NextRequest) {
 
 	if (!scriptId) return new Response('Incorrect value provided to Corie');
 	const headersList = headers();
-	const hostname = headersList.get('referer');
-	if (!hostname) return new Response("Can't indentify the referer");
+	const referer = headersList.get('referer');
+	if (!referer) return new Response("Can't indentify the referer");
 
-	const [data, err] = await matchDomain({ scriptId, hostname });
+	const [data, err] = await matchDomain({ scriptId, hostname: referer.replace(/https:\/\/|\/+/g, '') });
 	if (!data?.found) return new Response('Domain not matched');
 	else {
 		const [announcements, err] = await getAnnouncements({ scriptId });

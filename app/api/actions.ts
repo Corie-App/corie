@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/lib/postgres';
-import { products } from '@/lib/postgres/schema';
+import { announcements, products } from '@/lib/postgres/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { createServerAction } from 'zsa';
@@ -21,6 +21,11 @@ export const matchDomain = createServerAction()
 export const getAnnouncements = createServerAction()
 	.input(z.object({ scriptId: z.string() }))
 	.handler(async ({ input }) => {
-		console.log({ input });
-		return { announcements: [] };
+		const data = await db.query.products.findFirst({
+			where: eq(products.scriptId, input.scriptId),
+			with: { announcements: true },
+		});
+
+		console.log({ data });
+		return { announcements: [], data };
 	});
