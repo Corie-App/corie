@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 	const headersList = headers();
 	const referer = headersList.get('x-custom-referrer');
 	// const [data, err] = await matchDomain({ number: 24 });
-	console.log({ referer });
+	console.log({ referer, headersList });
 	return new Response('Hello World!', {
 		headers: {
 			'Content-Type': 'text/plain',
