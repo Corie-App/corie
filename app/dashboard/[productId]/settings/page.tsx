@@ -13,7 +13,7 @@ export default async function SettingsPage({ params }: { params: { productId: st
 
 	if (!product) return notFound();
 
-	const code = `<script async type="module" src="/platform/initial.js?s=${product.scriptId}"></script>`;
+	const code = `<script async type="module" crossOrigin="anonymous" src="https://corie.io/platform/initial.js?s=${product.scriptId}"></script>`;
 
 	return (
 		<div className='mt-12 space-y-8'>

@@ -23,7 +23,13 @@ export default function RootLayout({
 					<ToastWrapper />
 					<Header />
 					{children}
-					<Script type='module' async src={`/platform/initial.js?s=${process.env.EXAMPLE_SCRIPT_ID}`} />
+					<Script
+						async
+						type='module'
+						strategy='lazyOnload'
+						crossOrigin='anonymous'
+						src={`/platform/initial.js?s=${process.env.EXAMPLE_SCRIPT_ID}`}
+					/>
 				</body>
 			</html>
 		</ClerkProvider>

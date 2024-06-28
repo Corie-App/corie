@@ -2,25 +2,28 @@ import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
 
 async function initializeCorie(): Promise<void> {
-	Logger.log('Initializing Corie script...');
-	addCustomStyles();
-	const scriptId = getScriptId();
-	if (scriptId) {
-		const domainMatched = await matchDomain(scriptId);
-		if (domainMatched) {
-			await ScriptLoader.loadScript('/platform/announcements.js');
+	try {
+		Logger.log('Initializing Corie script...');
+		addCustomStyles();
+		const scriptId = ScriptLoader.getScriptId();
+		if (scriptId) {
+			const domainMatched = await matchDomain(scriptId);
+			if (domainMatched) {
+				await ScriptLoader.loadScript('/platform/announcements.js');
+				if (typeof (window as any).fetchAnnouncements === 'function') {
+					await (window as any).fetchAnnouncements();
+				} else {
+					Logger.log('fetchAnnouncements function not found');
+				}
+			} else {
+				Logger.log('Domain not matched.');
+			}
 		} else {
-			Logger.log('Domain not matched.');
+			Logger.log('No script ID found.');
 		}
-	} else {
-		Logger.log('No script ID found.');
+	} catch (error) {
+		console.error('Error initializing Corie:', error);
 	}
-}
-
-function getScriptId(): string | null {
-	const scriptTag = document.currentScript as HTMLScriptElement;
-	const urlParams = new URLSearchParams(scriptTag.src.split('?')[1]);
-	return urlParams.get('s');
 }
 
 async function matchDomain(scriptId: string): Promise<boolean> {
@@ -29,7 +32,7 @@ async function matchDomain(scriptId: string): Promise<boolean> {
 		const response = await fetch(apiUrl, {
 			headers: {
 				'X-Referer-Host': window.location.hostname,
-				'X-Script-Secret': 'your-secret-key',
+				'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
 			},
 		});
 		if (!response.ok) {
@@ -45,15 +48,17 @@ async function matchDomain(scriptId: string): Promise<boolean> {
 
 function addCustomStyles(): void {
 	const style = document.createElement('style');
-	style.type = 'text/css';
 	style.innerHTML = `
-      .corie-announcements {
+      .corie-announcement {
         padding: 10px;
-        background-color: #f9f9f9;
         border: 1px solid #ddd;
         border-radius: 8px;
         max-width: 600px;
         margin: 20px auto;
+		position: absolute;
+		right: 24px;
+		bottom: 24px;
+		z-index: 1000;
       }
       .corie-announcement h2 {
         color: #333;
