@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
+    "build:platform": "tsc -p platform/tsconfig.platform.json",
+    "prebuild": "pnpm build:platform", 
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

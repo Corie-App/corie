@@ -19,11 +19,11 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang='en'>
-				<body className={GeistSans.className}>
+				<body className={`${GeistSans.className} h-[100dvh]`}>
 					<ToastWrapper />
 					<Header />
 					{children}
-					<Script async src={`/corie.js?s=${process.env.EXAMPLE_SCRIPT_ID}`} />
+					<Script async src={`/platform/initial.js?s=${process.env.EXAMPLE_SCRIPT_ID}`} />
 				</body>
 			</html>
 		</ClerkProvider>

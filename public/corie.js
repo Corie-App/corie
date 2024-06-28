@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import Announcement from '../components/Announcement'; // Adjust path as needed
+
 (async function () {
 	function getScriptId() {
 		const scriptTag = document.currentScript;
@@ -35,21 +39,24 @@
 			});
 			const data = await res.json();
 			console.log({ data });
-			displayAnnouncements(data);
+			displayAnnouncements(data.announcements);
 		} catch (error) {
 			console.error('Error fetching announcements:', error);
 		}
 	}
 
 	function displayAnnouncements(data) {
-		data.slice(0, 1).forEach((announcement) => {
+		data.forEach((announcement) => {
+			const htmlString = ReactDOMServer.renderToString(
+				<Announcement title={announcement.title} description={announcement.description} />
+			);
 			const container = document.createElement('div');
-			container.className = 'corie-announcement';
-			container.innerHTML = `<h2>${announcement.title}</h2><p>${announcement.description}</p>`;
+			container.innerHTML = htmlString;
 			document.body.appendChild(container);
 		});
 	}
 
+	
 	const scriptId = getScriptId();
 	if (scriptId) {
 		const domainMatched = await matchDomain(scriptId);

@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+	  "target": "ES5",
+	  "module": "ESNext",
+	  "declaration": true,
+	  "outDir": "../public/platform", 
+	  "strict": true,
+	  "esModuleInterop": true,
+	  "skipLibCheck": true,
+	  "forceConsistentCasingInFileNames": true,
+	  "moduleResolution": "node",
+	  "jsx": "react"
+	},
+	"include": ["./**/*.ts", "./**/*.tsx"], 
+	"exclude": ["node_modules"]
+  }
