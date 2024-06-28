@@ -1,9 +1,6 @@
 import { db } from '@/lib/postgres';
 import { products } from '@/lib/postgres/schema';
 import { Button } from '@/ui/button';
-import { Input } from '@/ui/input';
-import { Label } from '@/ui/label';
-import { UrlInput } from '@/ui/url-input';
 import { eq } from 'drizzle-orm';
 import { Code } from 'lucide-react';
 import { notFound } from 'next/navigation';

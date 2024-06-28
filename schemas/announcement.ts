@@ -5,3 +5,9 @@ export const CreateAnnouncementSchema = z.object({
 	description: z.string(),
 	productId: z.string(),
 });
+
+export const ToggleAnnouncementActiveSchema = z.object({
+	isActive: z.boolean(),
+	productId: z.string(),
+	announcementId: z.string(),
+});

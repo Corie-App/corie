@@ -21,7 +21,6 @@ import { toast } from 'sonner';
 export default function NewAnnouncementModal({ productId }: { productId: string }) {
 	const { executeFormAction, isPending, data } = useServerAction(createAnnouncementAction, {
 		onSuccess() {
-			console.log(data);
 			toast.success('Announcement created successfully');
 		},
 		onError(args) {

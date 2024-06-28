@@ -7,15 +7,19 @@ export async function GET(req: NextRequest) {
 	const scriptId = searchParams.get('s');
 
 	if (!scriptId) return new Response('Incorrect value provided to Corie');
-	const headersList = headers();
-	const referer = headersList.get('referer');
+	const referer = headers().get('referer');
 	if (!referer) return new Response("Can't indentify the referer");
+	const hostname = new URL(referer).hostname;
 
-	const [data, err] = await matchDomain({ scriptId, hostname: referer.replace(/https:\/\/|\/+/g, '') });
+	console.log({ hostname });
+	const [data, err] = await matchDomain({ scriptId, hostname });
 	if (!data?.found) return new Response('Domain not matched');
 	else {
 		const [announcements, err] = await getAnnouncements({ scriptId });
-		if (err) return new Response('Error fetching announcements');
+		if (err) {
+			console.log({ err });
+			return new Response('Error fetching announcements');
+		}
 		return new Response(JSON.stringify(announcements), {
 			headers: {
 				'Content-Type': 'application/json',

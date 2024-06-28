@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/postgres';
 import { announcements, products } from '@/lib/postgres/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { z } from 'zod';
 import { createServerAction } from 'zsa';
 
@@ -21,11 +21,13 @@ export const matchDomain = createServerAction()
 export const getAnnouncements = createServerAction()
 	.input(z.object({ scriptId: z.string() }))
 	.handler(async ({ input }) => {
-		const data = await db.query.products.findFirst({
-			where: eq(products.scriptId, input.scriptId),
-			with: { announcements: true },
-		});
+		const data = await db
+			.select()
+			.from(announcements)
+			.leftJoin(products, eq(announcements.productId, products.id))
+			.where(and(eq(products.scriptId, input.scriptId), eq(announcements.isActive, true)))
+			.execute();
 
 		console.log({ data });
-		return { announcements: [], data };
+		return { announcements: data.map((row) => row.announcements) };
 	});

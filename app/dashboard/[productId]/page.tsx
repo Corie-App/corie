@@ -3,7 +3,7 @@ import NewAnnouncementModal from './ui/new-announcement-modal';
 import { announcements } from '@/lib/postgres/schema';
 import { eq } from 'drizzle-orm';
 import { Card, CardTitle } from '@/ui/card';
-import { Switch } from '@/ui/switch';
+import ActiveToggle from './ui/active-toggle';
 
 export default async function ProductPage({ params }: { params: { productId: string } }) {
 	const data = await db.select().from(announcements).where(eq(announcements.productId, params.productId));
@@ -15,7 +15,11 @@ export default async function ProductPage({ params }: { params: { productId: str
 				{data.map((announcement) => (
 					<Card key={announcement.id} className='flex items-center justify-between p-4'>
 						<CardTitle>{announcement.title}</CardTitle>
-						<Switch defaultChecked={announcement.isActive} />
+						<ActiveToggle
+							productId={params.productId}
+							isActive={announcement.isActive}
+							announcementId={announcement.id}
+						/>
 					</Card>
 				))}
 			</div>
