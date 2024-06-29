@@ -9,7 +9,9 @@ async function initializeCorie(): Promise<void> {
 		if (scriptId) {
 			const domainMatched = await matchDomain(scriptId);
 			if (domainMatched) {
-				await ScriptLoader.loadScript('/platform/announcements.js');
+				await ScriptLoader.loadScript(
+					'https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/platform/announcements.js'
+				);
 				if (typeof (window as any).fetchAnnouncements === 'function') {
 					await (window as any).fetchAnnouncements();
 				} else {
