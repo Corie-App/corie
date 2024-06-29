@@ -35,6 +35,20 @@ function displayAnnouncements(data: { title: string; description: string }[]): v
 
 	document.body.appendChild(container);
 
+	// Add close button
+	const closeButton = document.createElement('button');
+	closeButton.innerHTML = '&times;'; // × symbol
+	closeButton.className =
+		'absolute -top-2 -right-2 cursor-pointer rounded-full ring-1 ring-inset bg-white ring-gray-200 w-6 h-6 inline-flex items-center justify-center text-2xl';
+	closeButton.addEventListener('click', () => {
+		container.classList.remove('corie-animate-fade-in-up');
+		container.classList.add('corie-animate-fade-out');
+		setTimeout(() => {
+			container.remove();
+		}, 300);
+	});
+	container.appendChild(closeButton);
+
 	setTimeout(() => {
 		container.offsetHeight;
 		container.style.opacity = '';

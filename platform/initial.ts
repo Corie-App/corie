@@ -87,8 +87,22 @@ function addAnimationStyles() {
                 transform: translateY(0);
             }
         }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+				transform: translateY(0px);
+				
+				}
+			to {
+				opacity: 0;
+				transform: translateY(24px);
+            }
+        }
         .corie-animate-fade-in-up {
             animation: fadeInUp 0.25s ease-out forwards;
+        }
+        .corie-animate-fade-out {
+            animation: fadeOut 0.25s ease-out forwards;
         }
     `;
 	document.head.appendChild(style);
