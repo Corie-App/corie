@@ -1,0 +1,1 @@
+export type Entity = 'product' | 'announcement';
