@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 	if (!referer) return new Response("Can't indentify the referer");
 	const hostname = new URL(referer).hostname;
 
-	console.log({ hostname });
+	console.log(`Loading script from ${hostname}`);
 	const [data, err] = await matchDomain({ scriptId, hostname });
 	if (!data?.found) return new Response('Domain not matched');
 	else {
