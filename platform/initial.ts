@@ -27,7 +27,7 @@ async function initializeCorie(): Promise<void> {
 }
 
 async function matchDomain(scriptId: string): Promise<boolean> {
-	const apiUrl = `/api/products/domain?scriptId=${scriptId}`;
+	const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
 	try {
 		const response = await fetch(apiUrl, {
 			headers: {

@@ -4,7 +4,7 @@ import { Announcement } from './types.js';
 
 export async function fetchAnnouncements(): Promise<void> {
 	const scriptId = ScriptLoader.getScriptId();
-	const apiUrl = `/api/announcements?scriptId=${scriptId}`;
+	const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements?scriptId=${scriptId}`;
 	try {
 		const response = await fetch(apiUrl, {
 			headers: {
