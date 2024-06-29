@@ -57,8 +57,13 @@ export default function ProductSwitcher({ products }: Props) {
 									onSelect={() => {
 										setSelectedProduct(p);
 										setOpen(false);
-										if (segments.length > 1) router.push(`/dashboard/${p.id}/${segments[1]}`);
-										else router.push(`/dashboard/${p.id}`);
+										console.log({ segments });
+										if (!segments.length || segments.includes('(announcements)'))
+											router.push(`/dashboard/${p.id}`);
+										else {
+											console.log('pushing');
+											router.push(`/dashboard/${p.id}/${segments.slice(1).join('/')}`);
+										}
 									}}
 									className='text-sm rounded-none'>
 									{p.name}
