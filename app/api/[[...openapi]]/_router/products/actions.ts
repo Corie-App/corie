@@ -11,7 +11,7 @@ export const matchDomain = scriptProcedure
 	.handler(async ({ input }) => {
 		const headersList = headers();
 		const hostname = headersList.get('X-Referer-Host');
-		console.log({ hostname });
+		console.log(`Loading script from ${hostname}`);
 
 		const data = await db.query.products.findFirst({
 			where: eq(products.scriptId, input.scriptId),
