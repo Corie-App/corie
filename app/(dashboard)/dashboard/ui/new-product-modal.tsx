@@ -16,22 +16,43 @@ import { Plus } from 'lucide-react';
 import { useServerAction } from 'zsa-react';
 import { createProductAction } from '../actions';
 import { UrlInput } from '@/ui/url-input';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-export default function NewProductModal() {
+interface Props extends PropsWithChildren {
+	show?: boolean;
+	showTrigger?: boolean;
+	onClose?: () => void;
+}
+
+export default function NewProductModal({ show = false, children, showTrigger = true, onClose }: Props) {
+	const [open, setOpen] = useState(show);
+
 	const { executeFormAction, isPending } = useServerAction(createProductAction, {
 		onError(args) {
 			console.error(args);
 		},
 	});
 
+	useEffect(() => {
+		setOpen(show);
+	}, [show]);
+
+	useEffect(() => {
+		if (!open) onClose?.();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [open]);
+
 	return (
-		<Dialog>
-			<DialogTrigger asChild>
-				<Button>
-					<Plus size={16} className='mr-2' />
-					Create Product
-				</Button>
-			</DialogTrigger>
+		<Dialog open={open} onOpenChange={setOpen}>
+			{children}
+			{showTrigger && (
+				<DialogTrigger asChild>
+					<Button>
+						<Plus size={16} className='mr-2' />
+						Create Product
+					</Button>
+				</DialogTrigger>
+			)}
 			<DialogContent className='sm:max-w-[425px]'>
 				<form action={executeFormAction}>
 					<DialogHeader>

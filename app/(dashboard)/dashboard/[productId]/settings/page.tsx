@@ -16,8 +16,8 @@ export default async function SettingsPage({ params }: { params: { productId: st
 	const code = `<script async type="module" crossOrigin="anonymous" src="https://corie.io/platform/initial.js?s=${product.scriptId}"></script>`;
 
 	return (
-		<div className='mt-12 space-y-8'>
-			<div className='border border-gray-100 rounded-lg overflow-hidden'>
+		<div className='p-4 space-y-8 mx-auto'>
+			<div className='max-w-2xl border border-gray-100 rounded-lg overflow-hidden'>
 				<div className='flex justify-between items-center p-4 bg-neutral-50 border-b border-gray-100'>
 					<span className='flex-grow flex flex-col'>
 						<span className='text-sm font-medium text-gray-900'>Your Script Code</span>
