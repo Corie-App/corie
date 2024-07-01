@@ -3,14 +3,18 @@ import { ScriptLoader } from './shared.js';
 
 async function initializeCorie(): Promise<void> {
 	try {
-		Logger.log('Initializing Corie script...');
 		addCustomStyles();
+		loadTailwindCSS();
+		addAnimationStyles();
+
+		Logger.log('Initializing Corie script...');
 		const scriptId = ScriptLoader.getScriptId();
 		if (scriptId) {
 			const domainMatched = await matchDomain(scriptId);
 			if (domainMatched) {
 				await ScriptLoader.loadScript(
-					'https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/platform/announcements.js'
+					'/platform/announcements.js'
+					// 'https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/platform/announcements.js'
 				);
 				if (typeof (window as any).fetchAnnouncements === 'function') {
 					await (window as any).fetchAnnouncements();
@@ -29,7 +33,8 @@ async function initializeCorie(): Promise<void> {
 }
 
 async function matchDomain(scriptId: string): Promise<boolean> {
-	const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
+	const apiUrl = `/api/products/domain?scriptId=${scriptId}`;
+	// const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
 	try {
 		const response = await fetch(apiUrl, {
 			headers: {
@@ -52,22 +57,53 @@ function addCustomStyles(): void {
 	const style = document.createElement('style');
 	style.innerHTML = `
       .corie-announcement {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        max-width: 600px;
-        margin: 20px auto;
+        max-width: 24rem;
 		position: absolute;
-		right: 24px;
-		bottom: 24px;
+		right: 16px;
+		bottom: 16px;
 		z-index: 1000;
       }
-      .corie-announcement h2 {
-        color: #333;
-      }
-      .corie-announcement p {
-        color: #666;
-      }
+    `;
+	document.head.appendChild(style);
+}
+
+function loadTailwindCSS() {
+	const link = document.createElement('link');
+	link.href = 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
+	link.rel = 'stylesheet';
+	document.head.appendChild(link);
+}
+
+function addAnimationStyles() {
+	const style = document.createElement('style');
+	style.textContent = `
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+				transform: translateY(0px);
+				
+				}
+			to {
+				opacity: 0;
+				transform: translateY(24px);
+            }
+        }
+        .corie-animate-fade-in-up {
+            animation: fadeInUp 0.25s ease-out forwards;
+        }
+        .corie-animate-fade-out {
+            animation: fadeOut 0.25s ease-out forwards;
+        }
     `;
 	document.head.appendChild(style);
 }

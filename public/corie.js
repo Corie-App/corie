@@ -47,16 +47,15 @@ import Announcement from '../components/Announcement'; // Adjust path as needed
 
 	function displayAnnouncements(data) {
 		data.forEach((announcement) => {
-			const htmlString = ReactDOMServer.renderToString(
-				<Announcement title={announcement.title} description={announcement.description} />
-			);
-			const container = document.createElement('div');
-			container.innerHTML = htmlString;
-			document.body.appendChild(container);
+			// const htmlString = ReactDOMServer.renderToString(
+			// 	<Announcement title={announcement.title} description={announcement.description} />
+			// );
+			// const container = document.createElement('div');
+			// container.innerHTML = htmlString;
+			// document.body.appendChild(container);
 		});
 	}
 
-	
 	const scriptId = getScriptId();
 	if (scriptId) {
 		const domainMatched = await matchDomain(scriptId);

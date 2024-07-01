@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { GeistSans } from 'geist/font/sans';
-import Header from '@/ui/header';
 import ToastWrapper from '@/ui/toast-wrapper';
 import Script from 'next/script';
 
@@ -21,15 +20,14 @@ export default function RootLayout({
 			<html lang='en'>
 				<body className={`${GeistSans.className} h-[100dvh]`}>
 					<ToastWrapper />
-					<Header />
 					{children}
-					<Script
+					{/* <Script
 						async
 						type='module'
 						strategy='lazyOnload'
 						crossOrigin='anonymous'
 						src={`/platform/initial.js?s=${process.env.EXAMPLE_SCRIPT_ID}`}
-					/>
+					/> */}
 				</body>
 			</html>
 		</ClerkProvider>
