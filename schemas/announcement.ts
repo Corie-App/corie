@@ -15,3 +15,8 @@ export const ToggleAnnouncementActiveSchema = z.object({
 export const UpdateAnnouncementSchema = CreateAnnouncementSchema.extend({
 	announcementId: z.string(),
 });
+
+export const UpdateAnnouncementThemeSchema = z.object({
+	buttonStyle: z.enum(['flat', 'curved', 'pill']),
+	announcementId: z.string(),
+});

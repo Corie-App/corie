@@ -1,22 +1,26 @@
 'use client';
 
+import type { ButtonStyle } from '@/lib/types';
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
 
 interface ContextType {
 	title: string;
 	description: string;
+	buttonStyle: ButtonStyle;
 	setTitle: (val: string) => void;
+	setButtonStyle: (val: ButtonStyle) => void;
 	setDescription: (val: string) => void;
 }
 
 export const AnnouncementContext = createContext<ContextType | undefined>(undefined);
 
 interface ProviderProps extends PropsWithChildren {
-	initialData: Omit<ContextType, 'setTitle' | 'setDescription'>;
+	initialData: Omit<ContextType, 'setTitle' | 'setDescription' | 'setButtonStyle'>;
 }
 
 export default function AnnouncementProvider({ children, initialData }: ProviderProps) {
 	const [title, setTitle] = useState(initialData.title);
+	const [buttonStyle, setButtonStyle] = useState(initialData.buttonStyle);
 	const [description, setDescription] = useState(initialData.description);
 
 	const value = useMemo(
@@ -24,9 +28,11 @@ export default function AnnouncementProvider({ children, initialData }: Provider
 			title,
 			setTitle,
 			description,
+			buttonStyle,
 			setDescription,
+			setButtonStyle,
 		}),
-		[title, description]
+		[title, description, buttonStyle]
 	);
 
 	return <AnnouncementContext.Provider value={value}>{children}</AnnouncementContext.Provider>;

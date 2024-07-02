@@ -1,16 +1,14 @@
-import { Tabs, TabsList, TabsTrigger } from '@/ui/tabs';
+import AnnouncementNavigation from './ui/announcement-navigation';
+import { PropsWithChildren } from 'react';
 
-export default function AnnouncementLayoutPage({ children }: { children: React.ReactNode }) {
+interface Props extends PropsWithChildren {
+	params: { productId: string; announcementId: string };
+}
+
+export default function AnnouncementLayoutPage({ children, params }: Props) {
 	return (
 		<div className='w-full h-full flex flex-col'>
-			<Tabs defaultValue='details' className='py-3 bg-white flex justify-center'>
-				<TabsList>
-					<TabsTrigger value='details'>Details</TabsTrigger>
-					<TabsTrigger value='theme'>Theme</TabsTrigger>
-					<TabsTrigger value='rules'>Rules</TabsTrigger>
-					<TabsTrigger value='analytics'>Analytics</TabsTrigger>
-				</TabsList>
-			</Tabs>
+			<AnnouncementNavigation productId={params.productId} announcementId={params.announcementId} />
 			{children}
 		</div>
 	);

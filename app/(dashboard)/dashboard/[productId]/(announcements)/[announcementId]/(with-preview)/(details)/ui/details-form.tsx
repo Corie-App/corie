@@ -10,14 +10,12 @@ import { updateAnnouncementAction } from '../actions';
 import { toast } from 'sonner';
 
 interface Props {
-	title: string;
-	description: string;
 	productId: string;
 	announcementId: string;
 }
 
-export default function DetailsForm({ title, description, productId, announcementId }: Props) {
-	const { title: currTitle, setTitle, setDescription, description: currentDesc } = useAnnouncementConfig();
+export default function DetailsForm({ productId, announcementId }: Props) {
+	const { title, setTitle, setDescription, description } = useAnnouncementConfig();
 
 	const { executeFormAction, isPending } = useServerAction(updateAnnouncementAction, {
 		onSuccess() {
@@ -46,7 +44,7 @@ export default function DetailsForm({ title, description, productId, announcemen
 							onChange={(e) => setTitle(e.target.value)}
 						/>
 						<span className='absolute right-0 top-0 bottom-0 flex items-center px-3 text-sm text-muted-foreground'>
-							{currTitle.length}/75
+							{title.length}/75
 						</span>
 					</div>
 				</div>
@@ -64,9 +62,9 @@ export default function DetailsForm({ title, description, productId, announcemen
 						defaultValue={description}
 						onChange={(e) => setDescription(e.target.value)}
 					/>
-					<span className='text-xs text-gray-500'>Characters: {currentDesc.length}/175</span>
+					<span className='text-xs text-gray-500'>Characters: {description.length}/175</span>
 				</div>
-				<Button>{isPending ? 'Saving...' : 'Save Changes'}</Button>
+				<Button disabled={isPending}>{isPending ? 'Saving...' : 'Save Changes'}</Button>
 			</div>
 		</form>
 	);

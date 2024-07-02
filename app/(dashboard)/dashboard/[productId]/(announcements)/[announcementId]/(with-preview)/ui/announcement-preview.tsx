@@ -1,9 +1,17 @@
 'use client';
 
+import { ButtonStyle } from '@/lib/types';
 import { useAnnouncementConfig } from './provider';
+import { cn } from '@/lib/utils';
+
+const radiusStyles: Record<ButtonStyle, string> = {
+	flat: 'rounded-none',
+	curved: 'rounded',
+	pill: 'rounded-full',
+};
 
 export default function AnnouncementPreview() {
-	const { title, description } = useAnnouncementConfig();
+	const { title, description, buttonStyle } = useAnnouncementConfig();
 
 	return (
 		<div className='bg-gray-50 grow flex justify-center items-center p-6'>
@@ -19,12 +27,18 @@ export default function AnnouncementPreview() {
 				<div className='flex justify-between gap-3'>
 					<button
 						type='button'
-						className='w-full px-4 py-2 bg-transparent border rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80'>
+						className={cn(
+							'w-full px-4 py-2 bg-transparent border rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+							radiusStyles[buttonStyle]
+						)}>
 						Don&apos;t show again
 					</button>
 					<button
 						type='button'
-						className='w-full px-4 py-2 bg-black border-none rounded-md text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80'>
+						className={cn(
+							'w-full px-4 py-2 bg-black border-none rounded-md text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+							radiusStyles[buttonStyle]
+						)}>
 						Upgrade to Pro
 					</button>
 				</div>

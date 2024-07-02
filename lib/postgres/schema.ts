@@ -1,5 +1,7 @@
-import { timestamp, pgTable, text, boolean, varchar } from 'drizzle-orm/pg-core';
+import { timestamp, pgTable, text, boolean, varchar, pgEnum } from 'drizzle-orm/pg-core';
 import type { InferSelectModel } from 'drizzle-orm';
+
+export const buttonStyleEnum = pgEnum('button_style', ['flat', 'curved', 'pill']);
 
 export const products = pgTable('products', {
 	id: varchar('id', { length: 50 }).primaryKey(),
@@ -19,6 +21,7 @@ export const announcements = pgTable('announcements', {
 		.references(() => products.id)
 		.notNull(),
 	isActive: boolean('is_active').default(false).notNull(),
+	buttonStyle: buttonStyleEnum('button_style').default('flat').notNull(),
 	creatorId: varchar('creator_id', { length: 50 }).notNull(),
 	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
