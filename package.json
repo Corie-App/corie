@@ -3,7 +3,6 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"postinstall": "npx playwright install --with-deps",
 		"dev": "pnpm build:platform && next dev --turbo",
 		"dev:platform": "concurrently \"pnpm dev\" \"pnpm watch:platform\"",
 		"build:platform": "rollup -c rollup.config.js",
@@ -33,7 +32,6 @@
 		"lucide-react": "^0.397.0",
 		"nanoid": "^5.0.7",
 		"next": "14.2.4",
-		"playwright": "^1.45.0",
 		"react": "^18",
 		"react-colorful": "^5.6.1",
 		"react-dom": "^18",

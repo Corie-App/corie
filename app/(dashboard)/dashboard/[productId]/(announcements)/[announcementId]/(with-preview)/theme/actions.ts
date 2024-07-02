@@ -6,7 +6,6 @@ import { announcements, products } from '@/lib/postgres/schema';
 import { AIGenerateThemeSchema, GenerateThemeSchema, UpdateAnnouncementThemeSchema } from '@/schemas/announcement';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { chromium } from 'playwright';
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 
@@ -37,12 +36,9 @@ export const generateThemeAction = isProductAdminProcedure
 		if (!data[0].domain) throw new Error('No domain found');
 
 		try {
-			const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
-			const page = await browser.newPage();
-			await page.goto(`https://${data[0].domain}`, { waitUntil: 'networkidle' });
-			const screenshotBuffer = await page.screenshot({ fullPage: true });
-			const screenshotBase64 = screenshotBuffer.toString('base64');
-			await browser.close();
+			const res = await fetch(`https://api.microlink.io/?url=https://${data[0].domain}&screenshot`).then(
+				(res) => res.json() as Promise<{ data: { screenshot: { url: string } } }>
+			);
 
 			const { object } = await generateObject({
 				model: openai('gpt-4o'),
@@ -57,7 +53,7 @@ export const generateThemeAction = isProductAdminProcedure
 							},
 							{
 								type: 'image',
-								image: `data:image/png;base64,${screenshotBase64}`,
+								image: res.data.screenshot.url,
 							},
 						],
 					},
