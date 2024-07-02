@@ -7,8 +7,9 @@ import { useAnnouncementConfig } from '../../ui/provider';
 import type { ButtonStyle } from '@/lib/types';
 import { toast } from 'sonner';
 import { useServerAction } from 'zsa-react';
-import { updateAnnouncemenThemetAction } from '../actions';
+import { generateThemeAction, updateAnnouncemenThemetAction } from '../actions';
 import { ColorPicker } from '@/ui/color-picker';
+import { Palette } from 'lucide-react';
 
 interface Props {
 	productId: string;
@@ -17,6 +18,17 @@ interface Props {
 
 export default function ThemeForm({ productId, announcementId }: Props) {
 	const { buttonStyle, setButtonStyle, primaryColor, setPrimaryColor } = useAnnouncementConfig();
+	const generateTheme = useServerAction(generateThemeAction, {
+		onSuccess({ data }) {
+			setPrimaryColor(data.primaryColor);
+			setButtonStyle(data.buttonStyle);
+			const el = document.querySelector<HTMLButtonElement>(`#${data.buttonStyle}`);
+			if (el) el.click();
+		},
+		onError({ err }) {
+			toast.error(err.message);
+		},
+	});
 
 	const { executeFormAction, isPending } = useServerAction(updateAnnouncemenThemetAction, {
 		onSuccess() {
@@ -71,7 +83,13 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 						</div>
 					</RadioGroup>
 				</div>
-				<Button>{isPending ? 'Saving...' : 'Save Changes'}</Button>
+				<div className='flex items-center gap-4'>
+					<Button variant='secondary' type='button' onClick={() => generateTheme.execute({ productId })}>
+						<Palette size={16} className='mr-1.5' />
+						{generateTheme.isPending ? 'Generating...' : 'Generate theme from your domain'}
+					</Button>
+					<Button>{isPending ? 'Saving...' : 'Save Changes'}</Button>
+				</div>
 			</div>
 		</form>
 	);

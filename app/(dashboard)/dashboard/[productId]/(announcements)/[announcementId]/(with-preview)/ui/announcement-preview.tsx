@@ -23,7 +23,7 @@ export default function AnnouncementPreview() {
 					&times;
 				</button>
 				<h3 className='text-2xl font-bold mb-2 line-clamp-2'>{title}</h3>
-				<p className='mb-4 text-sm line-clamp-3'>{description}</p>
+				<p className='mb-4 text-sm line-clamp-3 text-secondary-foreground'>{description}</p>
 				<div className='flex justify-between gap-3'>
 					<button
 						type='button'
