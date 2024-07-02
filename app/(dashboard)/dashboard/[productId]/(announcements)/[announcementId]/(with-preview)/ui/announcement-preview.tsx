@@ -11,7 +11,7 @@ const radiusStyles: Record<ButtonStyle, string> = {
 };
 
 export default function AnnouncementPreview() {
-	const { title, description, buttonStyle } = useAnnouncementConfig();
+	const { title, description, buttonStyle, primaryColor } = useAnnouncementConfig();
 
 	return (
 		<div className='bg-gray-50 grow flex justify-center items-center p-6'>
@@ -35,6 +35,7 @@ export default function AnnouncementPreview() {
 					</button>
 					<button
 						type='button'
+						style={{ backgroundColor: primaryColor }}
 						className={cn(
 							'w-full px-4 py-2 bg-black border-none rounded-md text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
 							radiusStyles[buttonStyle]

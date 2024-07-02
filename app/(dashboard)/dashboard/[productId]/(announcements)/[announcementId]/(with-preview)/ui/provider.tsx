@@ -6,22 +6,25 @@ import { createContext, PropsWithChildren, useContext, useMemo, useState } from 
 interface ContextType {
 	title: string;
 	description: string;
+	primaryColor: string;
 	buttonStyle: ButtonStyle;
 	setTitle: (val: string) => void;
-	setButtonStyle: (val: ButtonStyle) => void;
 	setDescription: (val: string) => void;
+	setPrimaryColor: (val: string) => void;
+	setButtonStyle: (val: ButtonStyle) => void;
 }
 
 export const AnnouncementContext = createContext<ContextType | undefined>(undefined);
 
 interface ProviderProps extends PropsWithChildren {
-	initialData: Omit<ContextType, 'setTitle' | 'setDescription' | 'setButtonStyle'>;
+	initialData: Omit<ContextType, 'setTitle' | 'setDescription' | 'setButtonStyle' | 'setPrimaryColor'>;
 }
 
 export default function AnnouncementProvider({ children, initialData }: ProviderProps) {
 	const [title, setTitle] = useState(initialData.title);
 	const [buttonStyle, setButtonStyle] = useState(initialData.buttonStyle);
 	const [description, setDescription] = useState(initialData.description);
+	const [primaryColor, setPrimaryColor] = useState(initialData.primaryColor);
 
 	const value = useMemo(
 		() => ({
@@ -29,10 +32,12 @@ export default function AnnouncementProvider({ children, initialData }: Provider
 			setTitle,
 			description,
 			buttonStyle,
+			primaryColor,
 			setDescription,
 			setButtonStyle,
+			setPrimaryColor,
 		}),
-		[title, description, buttonStyle]
+		[title, description, buttonStyle, primaryColor]
 	);
 
 	return <AnnouncementContext.Provider value={value}>{children}</AnnouncementContext.Provider>;

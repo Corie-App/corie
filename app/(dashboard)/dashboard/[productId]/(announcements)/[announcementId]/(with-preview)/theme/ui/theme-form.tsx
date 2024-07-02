@@ -8,6 +8,7 @@ import type { ButtonStyle } from '@/lib/types';
 import { toast } from 'sonner';
 import { useServerAction } from 'zsa-react';
 import { updateAnnouncemenThemetAction } from '../actions';
+import { ColorPicker } from '@/ui/color-picker';
 
 interface Props {
 	productId: string;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export default function ThemeForm({ productId, announcementId }: Props) {
-	const { buttonStyle, setButtonStyle } = useAnnouncementConfig();
+	const { buttonStyle, setButtonStyle, primaryColor, setPrimaryColor } = useAnnouncementConfig();
 
 	const { executeFormAction, isPending } = useServerAction(updateAnnouncemenThemetAction, {
 		onSuccess() {
@@ -28,6 +29,12 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 			<input type='hidden' name='productId' value={productId} />
 			<input type='hidden' name='announcementId' value={announcementId} />
 			<div className='space-y-4 py-4 max-w-lg mx-auto'>
+				<div className='flex items-center justify-between gap-4'>
+					<Label htmlFor='primaryColor' className='text-right'>
+						Primary Color
+					</Label>
+					<ColorPicker formName='primaryColor' value={primaryColor} onChange={setPrimaryColor} />
+				</div>
 				<div className='space-y-2'>
 					<p className='text-sm font-medium leading-none'>Button Style</p>
 					<RadioGroup

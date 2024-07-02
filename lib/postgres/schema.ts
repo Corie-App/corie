@@ -22,6 +22,7 @@ export const announcements = pgTable('announcements', {
 		.notNull(),
 	isActive: boolean('is_active').default(false).notNull(),
 	buttonStyle: buttonStyleEnum('button_style').default('flat').notNull(),
+	primaryColor: varchar('primary_color', { length: 7 }).default('#000').notNull(),
 	creatorId: varchar('creator_id', { length: 50 }).notNull(),
 	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),

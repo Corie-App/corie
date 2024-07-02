@@ -16,6 +16,7 @@ export default async function AnnouncementLayoutPage({ children, params }: Props
 			title: announcements.title,
 			buttonStyle: announcements.buttonStyle,
 			description: announcements.description,
+			primaryColor: announcements.primaryColor,
 		})
 		.from(announcements)
 		.where(eq(announcements.id, params.announcementId));
@@ -27,6 +28,7 @@ export default async function AnnouncementLayoutPage({ children, params }: Props
 				title: announcement[0].title,
 				buttonStyle: announcement[0].buttonStyle,
 				description: announcement[0].description,
+				primaryColor: announcement[0].primaryColor,
 			}}>
 			<div className='flex flex-col flex-1'>
 				{children}
