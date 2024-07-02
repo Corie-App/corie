@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
+		"postinstall": "npx playwright install --with-deps",
 		"dev": "pnpm build:platform && next dev --turbo",
 		"dev:platform": "concurrently \"pnpm dev\" \"pnpm watch:platform\"",
 		"build:platform": "rollup -c rollup.config.js",

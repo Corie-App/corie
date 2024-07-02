@@ -37,7 +37,7 @@ export const generateThemeAction = isProductAdminProcedure
 		if (!data[0].domain) throw new Error('No domain found');
 
 		try {
-			const browser = await chromium.launch();
+			const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 			const page = await browser.newPage();
 			await page.goto(`https://${data[0].domain}`, { waitUntil: 'networkidle' });
 			const screenshotBuffer = await page.screenshot({ fullPage: true });
