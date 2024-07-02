@@ -19,6 +19,7 @@ export const UpdateAnnouncementSchema = CreateAnnouncementSchema.extend({
 export const UpdateAnnouncementThemeSchema = z.object({
 	buttonStyle: z.enum(['flat', 'curved', 'pill']),
 	announcementId: z.string(),
+	primaryColor: z.string(),
 });
 
 export const GenerateThemeSchema = z.object({

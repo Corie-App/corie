@@ -7,7 +7,7 @@ import { useAnnouncementConfig } from '../../ui/provider';
 import type { ButtonStyle } from '@/lib/types';
 import { toast } from 'sonner';
 import { useServerAction } from 'zsa-react';
-import { generateThemeAction, updateAnnouncemenThemetAction } from '../actions';
+import { generateThemeAction, updateAnnouncemenThemeAction } from '../actions';
 import { ColorPicker } from '@/ui/color-picker';
 import { Palette } from 'lucide-react';
 
@@ -20,6 +20,7 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 	const { buttonStyle, setButtonStyle, primaryColor, setPrimaryColor } = useAnnouncementConfig();
 	const generateTheme = useServerAction(generateThemeAction, {
 		onSuccess({ data }) {
+			toast.success('Theme updated successfully');
 			setPrimaryColor(data.primaryColor);
 			setButtonStyle(data.buttonStyle);
 			const el = document.querySelector<HTMLButtonElement>(`#${data.buttonStyle}`);
@@ -30,7 +31,7 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 		},
 	});
 
-	const { executeFormAction, isPending } = useServerAction(updateAnnouncemenThemetAction, {
+	const { executeFormAction, isPending } = useServerAction(updateAnnouncemenThemeAction, {
 		onSuccess() {
 			toast.success('Changes saved successfully');
 		},

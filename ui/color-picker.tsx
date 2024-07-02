@@ -34,6 +34,7 @@ const ColorPicker = forwardRef<HTMLInputElement, Omit<ButtonProps, 'value' | 'on
 							onClick={() => setOpen(true)}
 							style={{ backgroundColor: parsedValue }}
 						/>
+						<input type='hidden' name={formName} value={parsedValue} />
 						<span className='flex select-none items-center text-gray-500 sm:text-sm'>{parsedValue}</span>
 					</div>
 				</PopoverTrigger>
@@ -42,7 +43,6 @@ const ColorPicker = forwardRef<HTMLInputElement, Omit<ButtonProps, 'value' | 'on
 					<Input
 						ref={ref}
 						maxLength={7}
-						name={formName}
 						value={parsedValue}
 						onChange={(e) => onChange(e?.currentTarget?.value)}
 					/>

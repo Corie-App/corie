@@ -9,13 +9,13 @@ import { revalidatePath } from 'next/cache';
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 
-export const updateAnnouncemenThemetAction = isProductAdminProcedure
+export const updateAnnouncemenThemeAction = isProductAdminProcedure
 	.createServerAction()
 	.input(UpdateAnnouncementThemeSchema, { type: 'formData' })
 	.handler(async ({ input }) => {
 		await db
 			.update(announcements)
-			.set({ buttonStyle: input.buttonStyle })
+			.set({ buttonStyle: input.buttonStyle, primaryColor: input.primaryColor })
 			.where(eq(announcements.id, input.announcementId))
 			.returning({ id: announcements.id });
 
