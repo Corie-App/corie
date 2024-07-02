@@ -15,8 +15,8 @@ import { Label } from '@/ui/label';
 import { Plus } from 'lucide-react';
 import { useServerAction } from 'zsa-react';
 import { Textarea } from '@/ui/textarea';
-import { createAnnouncementAction } from '../actions';
 import { toast } from 'sonner';
+import { createAnnouncementAction } from '../actions';
 
 export default function NewAnnouncementModal({ productId }: { productId: string }) {
 	const { executeFormAction, isPending, data } = useServerAction(createAnnouncementAction, {

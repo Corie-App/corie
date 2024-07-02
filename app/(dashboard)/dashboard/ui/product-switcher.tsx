@@ -57,11 +57,9 @@ export default function ProductSwitcher({ products }: Props) {
 									onSelect={() => {
 										setSelectedProduct(p);
 										setOpen(false);
-										console.log({ segments });
 										if (!segments.length || segments.includes('(announcements)'))
 											router.push(`/dashboard/${p.id}`);
 										else {
-											console.log('pushing');
 											router.push(`/dashboard/${p.id}/${segments.slice(1).join('/')}`);
 										}
 									}}
