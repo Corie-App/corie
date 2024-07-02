@@ -11,3 +11,7 @@ export const ToggleAnnouncementActiveSchema = z.object({
 	productId: z.string(),
 	announcementId: z.string(),
 });
+
+export const UpdateAnnouncementSchema = CreateAnnouncementSchema.extend({
+	announcementId: z.string(),
+});

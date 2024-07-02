@@ -1,5 +1,6 @@
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
+import { fetchAnnouncements } from './announcements.js';
 
 async function initializeCorie(): Promise<void> {
 	try {
@@ -12,15 +13,7 @@ async function initializeCorie(): Promise<void> {
 		if (scriptId) {
 			const domainMatched = await matchDomain(scriptId);
 			if (domainMatched) {
-				await ScriptLoader.loadScript(
-					'/platform/announcements.js'
-					// 'https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/platform/announcements.js'
-				);
-				if (typeof (window as any).fetchAnnouncements === 'function') {
-					await (window as any).fetchAnnouncements();
-				} else {
-					Logger.log('fetchAnnouncements function not found');
-				}
+				await fetchAnnouncements();
 			} else {
 				Logger.log('Domain not matched.');
 			}
