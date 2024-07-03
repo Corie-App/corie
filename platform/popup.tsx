@@ -72,7 +72,7 @@ const Popup: React.FC<PopupProps> = ({
 
 	return (
 		<div
-			className={`bg-white ring-1 ring-inset ring-gray-100 max-w-sm p-4 rounded-xl shadow-lg ${getLayoutClasses()}`}>
+			className={`bg-white min-w-[350px] ring-1 ring-inset ring-gray-100 max-w-sm p-4 rounded-xl shadow-lg ${getLayoutClasses()}`}>
 			<button
 				onClick={onClose}
 				className='ring-1 ring-inset ring-gray-100 absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full text-2xl cursor-pointer'>
