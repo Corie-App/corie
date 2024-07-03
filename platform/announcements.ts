@@ -1,13 +1,13 @@
 import { Logger } from './logger.js';
 import Popup from './popup.jsx';
 import { ScriptLoader } from './shared.js';
-import { Announcement } from './types.js';
+import { Announcement, ButtonStyle } from './types.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 export async function fetchAnnouncements(): Promise<void> {
-	displayAnnouncements([]);
-	return;
+	// displayAnnouncements([]);
+	// return;
 	const scriptId = ScriptLoader.getScriptId();
 	const apiUrl = `/api/announcements?scriptId=${scriptId}`;
 	// const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements?scriptId=${scriptId}`;
@@ -22,14 +22,14 @@ export async function fetchAnnouncements(): Promise<void> {
 			throw new Error('Error fetching announcements');
 		}
 		const data = (await response.json()) as Announcement[];
-		// displayAnnouncements(data);
+		displayAnnouncements(data);
 	} catch (error) {
 		Logger.log('Error fetching announcements: ' + error);
 	}
 }
 
 function displayAnnouncements(
-	data: { title: string; description: string; theme: any; layout: any; image?: string }[]
+	data: { title: string; description: string; primaryColor: string; buttonStyle: ButtonStyle }[]
 ): void {
 	const container = document.createElement('div');
 	container.id = 'corie-announcements';
@@ -49,14 +49,19 @@ function displayAnnouncements(
 			description:
 				// 'wwwwwwwwwwwwwwwwww wwwwwwwwwww wwwwwwwwwwwwwwwwww wwwwwwwwwww wwwwwwwwwwwwwwwwww wwwwwwwwwww',
 				'You can now choose the infrastructure you want to use for your script. We have added a new pricing model that is more flexible and affordable.',
+			primaryColor: '#007AFF',
+			buttonStyle: 'flat' as ButtonStyle,
 		},
 	];
 
+	console.log({ data });
 	root.render(
 		React.createElement(Popup, {
-			title: _data[0].title,
-			description: _data[0].description,
+			title: data[0].title,
+			description: data[0].description,
 			onClose: handleClose,
+			primaryColor: data[0].primaryColor,
+			buttonStyle: data[0].buttonStyle,
 			// image: _data[0].image,
 			// theme: _data[0].theme,
 			// layout: _data[0].layout,

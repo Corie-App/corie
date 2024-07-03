@@ -1,19 +1,32 @@
 import React from 'react';
+import { ButtonStyle } from './types';
+import { cn } from './utils';
 
 interface PopupProps {
 	title: string;
 	description: string;
 	onClose: () => void;
-	theme?: {
-		backgroundColor: string;
-		textColor: string;
-		buttonColor: string;
-	};
+	primaryColor: string;
+	buttonStyle: ButtonStyle;
 	layout?: 'default' | 'image-left' | 'image-top';
 	image?: string;
 }
 
-const Popup: React.FC<PopupProps> = ({ title, description, onClose, theme, layout = 'default', image }) => {
+const radiusStyles: Record<ButtonStyle, string> = {
+	flat: 'rounded-none',
+	curved: 'rounded',
+	pill: 'rounded-full',
+};
+
+const Popup: React.FC<PopupProps> = ({
+	title,
+	description,
+	onClose,
+	buttonStyle,
+	primaryColor,
+	layout = 'default',
+	image,
+}) => {
 	const renderContent = () => (
 		<>
 			<h3 className='text-2xl font-bold mb-2 line-clamp-2'>{title}</h3>
@@ -21,14 +34,19 @@ const Popup: React.FC<PopupProps> = ({ title, description, onClose, theme, layou
 			<div className='flex justify-between gap-3'>
 				<button
 					onClick={() => console.log("Don't show again")}
-					className='w-full px-4 py-2 bg-transparent border rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80'
-					style={{ borderColor: theme?.buttonColor, color: theme?.buttonColor }}>
+					className={cn(
+						'w-full px-4 py-2 bg-transparent border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+						radiusStyles[buttonStyle]
+					)}>
 					Don&apos;t show again
 				</button>
 				<button
 					onClick={() => console.log('Upgrade to Pro')}
-					className='w-full px-4 py-2 bg-black border-none rounded-md text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80'
-					style={{ backgroundColor: theme?.buttonColor }}>
+					className={cn(
+						'w-full px-4 py-2 bg-black border-none text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+						radiusStyles[buttonStyle]
+					)}
+					style={{ backgroundColor: primaryColor }}>
 					Upgrade to Pro
 				</button>
 			</div>
@@ -54,8 +72,7 @@ const Popup: React.FC<PopupProps> = ({ title, description, onClose, theme, layou
 
 	return (
 		<div
-			className={`bg-white ring-1 ring-inset ring-gray-100 max-w-sm p-4 rounded-xl shadow-lg ${getLayoutClasses()}`}
-			style={{ backgroundColor: theme?.backgroundColor, color: theme?.textColor }}>
+			className={`bg-white ring-1 ring-inset ring-gray-100 max-w-sm p-4 rounded-xl shadow-lg ${getLayoutClasses()}`}>
 			<button
 				onClick={onClose}
 				className='ring-1 ring-inset ring-gray-100 absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full text-2xl cursor-pointer'>
