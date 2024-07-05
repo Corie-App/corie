@@ -1,6 +1,7 @@
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
 import { fetchAnnouncements } from './announcements.js';
+import './ui/styles/styles.css';
 
 async function initializeCorie(): Promise<void> {
 	try {

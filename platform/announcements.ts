@@ -1,9 +1,9 @@
 import { Logger } from './logger.js';
-import Popup from './popup.jsx';
 import { ScriptLoader } from './shared.js';
 import { Announcement, ButtonStyle } from './types.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import AnnouncementWrapper from './ui/components/announcement-wrapper.jsx';
 
 export async function fetchAnnouncements(): Promise<void> {
 	// displayAnnouncements([]);
@@ -56,12 +56,12 @@ function displayAnnouncements(
 
 	console.log({ data });
 	root.render(
-		React.createElement(Popup, {
-			title: data[0].title,
-			description: data[0].description,
+		React.createElement(AnnouncementWrapper, {
+			title: _data[0].title,
+			description: _data[0].description,
 			onClose: handleClose,
-			primaryColor: data[0].primaryColor,
-			buttonStyle: data[0].buttonStyle,
+			primaryColor: _data[0].primaryColor,
+			buttonStyle: _data[0].buttonStyle,
 			// image: _data[0].image,
 			// theme: _data[0].theme,
 			// layout: _data[0].layout,

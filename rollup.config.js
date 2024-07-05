@@ -3,6 +3,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const typescript = require('@rollup/plugin-typescript');
 const { terser } = require('rollup-plugin-terser');
 const replace = require('@rollup/plugin-replace');
+const postcss = require('rollup-plugin-postcss');
 
 module.exports = {
 	input: 'platform/initial.ts',
@@ -22,6 +23,16 @@ module.exports = {
 			tsconfig: './platform/tsconfig.platform.json',
 		}),
 		terser(),
+		postcss({
+			config: {
+				path: './platform/ui/config/postcss.config.js',
+			},
+			extensions: ['.css'],
+			minimize: true,
+			inject: {
+				insertAt: 'top',
+			},
+		}),
 	],
 	watch: { include: 'platform/**' },
 };
