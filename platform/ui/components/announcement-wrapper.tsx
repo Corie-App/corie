@@ -71,18 +71,16 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 	};
 
 	return (
-		<div className='corie-root'>
-			<div
-				className={`bg-white min-w-[350px] ring-1 ring-inset ring-gray-100 max-w-sm p-4 rounded-xl shadow-lg ${getLayoutClasses()}`}>
-				<button
-					onClick={onClose}
-					className='ring-1 ring-inset ring-gray-100 absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full text-2xl cursor-pointer'>
-					&times;
-				</button>
-				{layout === 'image-top' && renderImage()}
-				{layout === 'image-left' && renderImage()}
-				<div className={layout === 'image-left' ? 'flex-1' : ''}>{renderContent()}</div>
-			</div>
+		<div
+			className={`fixed right-4 bottom-4 z-50 bg-white min-w-[350px] ring-1 ring-inset ring-gray-100 max-w-sm p-4 rounded-xl shadow-lg ${getLayoutClasses()}`}>
+			<button
+				onClick={onClose}
+				className='ring-1 ring-inset ring-gray-100 absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full text-2xl cursor-pointer'>
+				&times;
+			</button>
+			{layout === 'image-top' && renderImage()}
+			{layout === 'image-left' && renderImage()}
+			<div className={layout === 'image-left' ? 'flex-1' : ''}>{renderContent()}</div>
 		</div>
 	);
 };

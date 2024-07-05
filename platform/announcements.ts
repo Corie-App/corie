@@ -32,8 +32,7 @@ function displayAnnouncements(
 	data: { title: string; description: string; primaryColor: string; buttonStyle: ButtonStyle }[]
 ): void {
 	const container = document.createElement('div');
-	container.id = 'corie-announcements';
-	container.className = 'fixed right-4 bottom-4 z-50';
+	container.className = 'corie-root ';
 	document.body.appendChild(container);
 
 	const root = createRoot(container);

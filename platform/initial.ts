@@ -5,7 +5,6 @@ import './ui/styles/styles.css';
 
 async function initializeCorie(): Promise<void> {
 	try {
-		addCustomStyles();
 		loadTailwindCSS();
 		addAnimationStyles();
 
@@ -45,20 +44,6 @@ async function matchDomain(scriptId: string): Promise<boolean> {
 		Logger.log('Error matching domain: ' + error);
 		return false;
 	}
-}
-
-function addCustomStyles(): void {
-	const style = document.createElement('style');
-	style.innerHTML = `
-      .corie-announcement {
-        max-width: 24rem;
-		position: absolute;
-		right: 16px;
-		bottom: 16px;
-		z-index: 1000;
-      }
-    `;
-	document.head.appendChild(style);
 }
 
 function loadTailwindCSS() {
