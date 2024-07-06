@@ -38,9 +38,6 @@ dependencies:
   ai:
     specifier: ^3.2.16
     version: 3.2.16(react@18.3.1)(svelte@4.2.18)(vue@3.4.31)(zod@3.23.8)
-  autoprefixer:
-    specifier: ^10.4.19
-    version: 10.4.19(postcss@8.4.38)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -118,6 +115,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.3.0
+  autoprefixer:
+    specifier: ^10.4.19
+    version: 10.4.19(postcss@8.4.38)
   concurrently:
     specifier: ^8.2.2
     version: 8.2.2
@@ -2586,7 +2586,7 @@ packages:
       picocolors: 1.0.1
       postcss: 8.4.38
       postcss-value-parser: 4.2.0
-    dev: false
+    dev: true
 
   /available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
@@ -2650,6 +2650,7 @@ packages:
       electron-to-chromium: 1.4.817
       node-releases: 2.0.14
       update-browserslist-db: 1.1.0(browserslist@4.23.1)
+    dev: true
 
   /buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
@@ -3288,6 +3289,7 @@ packages:
 
   /electron-to-chromium@1.4.817:
     resolution: {integrity: sha512-3znu+lZMIbTe8ZOs360OMJvVroVF2NpNI8T5jfLnDetVvj0uNmIucZzQVYMSJfsu9f47Ssox1Gt46PR+R+1JUg==}
+    dev: true
 
   /emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3516,6 +3518,7 @@ packages:
   /escalade@3.1.2:
     resolution: {integrity: sha512-ErCHMCae19vR8vQGe50xIsVomy19rg6gFu3+r3jkEO46suLMWBksvVyoGgQV+jOfl84ZSOSlmv6Gxa89PmTGmA==}
     engines: {node: '>=6'}
+    dev: true
 
   /escape-string-regexp@1.0.5:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
@@ -3902,7 +3905,7 @@ packages:
 
   /fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
-    dev: false
+    dev: true
 
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -4746,6 +4749,7 @@ packages:
 
   /node-releases@2.0.14:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==}
+    dev: true
 
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -4754,7 +4758,7 @@ packages:
   /normalize-range@0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
-    dev: false
+    dev: true
 
   /normalize-url@6.1.0:
     resolution: {integrity: sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==}
@@ -6391,6 +6395,7 @@ packages:
       browserslist: 4.23.1
       escalade: 3.1.2
       picocolors: 1.0.1
+    dev: true
 
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}

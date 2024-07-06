@@ -1,13 +1,14 @@
-const config = {
-	content: ['../../**/*.{ts,tsx}'],
+const path = require('path');
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+	content: [path.resolve(__dirname, '../../**/*.{ts,tsx}')],
+	prefix: 'corie-',
 	corePlugins: {
 		preflight: false,
 	},
-	important: '.corie-root',
 	theme: {
 		extend: {},
 	},
 	plugins: [],
 };
-
-export default config;
