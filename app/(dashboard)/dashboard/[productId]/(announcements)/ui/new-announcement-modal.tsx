@@ -15,10 +15,13 @@ import { Label } from '@/ui/label';
 import { Plus } from 'lucide-react';
 import { useServerAction } from 'zsa-react';
 import { Textarea } from '@/ui/textarea';
-import { createAnnouncementAction } from '../actions';
 import { toast } from 'sonner';
+import { createAnnouncementAction } from '../actions';
+import { useState } from 'react';
 
 export default function NewAnnouncementModal({ productId }: { productId: string }) {
+	const [desc, setDesc] = useState('');
+	const [title, setTitle] = useState('');
 	const { executeFormAction, isPending, data } = useServerAction(createAnnouncementAction, {
 		onSuccess() {
 			toast.success('Announcement created successfully');
@@ -48,13 +51,35 @@ export default function NewAnnouncementModal({ productId }: { productId: string 
 							<Label htmlFor='title' className='text-right'>
 								Title
 							</Label>
-							<Input required id='title' name='title' placeholder='My first announcement' />
+							<div className='relative'>
+								<Input
+									required
+									id='title'
+									name='title'
+									maxLength={75}
+									className='pr-16'
+									placeholder='My first announcement'
+									onChange={(e) => setTitle(e.target.value)}
+								/>
+								<span className='absolute right-0 top-0 bottom-0 flex items-center px-3 text-sm text-muted-foreground'>
+									{title.length}/75
+								</span>
+							</div>
 						</div>
 						<div className='space-y-1'>
 							<Label htmlFor='description' className='text-right'>
 								Description
 							</Label>
-							<Textarea required id='description' name='description' placeholder='Enter a description' />
+							<Textarea
+								required
+								maxLength={175}
+								id='description'
+								name='description'
+								className='scroll-p-2'
+								placeholder='Enter a description'
+								onChange={(e) => setDesc(e.target.value)}
+							/>
+							<span className='text-xs text-gray-500'>Characters: {desc.length}/175</span>
 						</div>
 					</div>
 					<DialogFooter>

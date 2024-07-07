@@ -1,26 +1,17 @@
+import './ui/styles/styles.css';
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
+import { fetchAnnouncements } from './announcements.js';
 
 async function initializeCorie(): Promise<void> {
 	try {
-		addCustomStyles();
-		loadTailwindCSS();
-		addAnimationStyles();
-
 		Logger.log('Initializing Corie script...');
 		const scriptId = ScriptLoader.getScriptId();
 		if (scriptId) {
 			const domainMatched = await matchDomain(scriptId);
 			if (domainMatched) {
-				await ScriptLoader.loadScript(
-					'/platform/announcements.js'
-					// 'https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/platform/announcements.js'
-				);
-				if (typeof (window as any).fetchAnnouncements === 'function') {
-					await (window as any).fetchAnnouncements();
-				} else {
-					Logger.log('fetchAnnouncements function not found');
-				}
+				injectStyles();
+				await fetchAnnouncements();
 			} else {
 				Logger.log('Domain not matched.');
 			}
@@ -53,59 +44,11 @@ async function matchDomain(scriptId: string): Promise<boolean> {
 	}
 }
 
-function addCustomStyles(): void {
-	const style = document.createElement('style');
-	style.innerHTML = `
-      .corie-announcement {
-        max-width: 24rem;
-		position: absolute;
-		right: 16px;
-		bottom: 16px;
-		z-index: 1000;
-      }
-    `;
-	document.head.appendChild(style);
-}
-
-function loadTailwindCSS() {
+function injectStyles() {
 	const link = document.createElement('link');
-	link.href = 'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css';
 	link.rel = 'stylesheet';
+	link.href = '/platform/ui/styles.css'; // Adjust this path if necessary
 	document.head.appendChild(link);
-}
-
-function addAnimationStyles() {
-	const style = document.createElement('style');
-	style.textContent = `
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-				transform: translateY(0px);
-				
-				}
-			to {
-				opacity: 0;
-				transform: translateY(24px);
-            }
-        }
-        .corie-animate-fade-in-up {
-            animation: fadeInUp 0.25s ease-out forwards;
-        }
-        .corie-animate-fade-out {
-            animation: fadeOut 0.25s ease-out forwards;
-        }
-    `;
-	document.head.appendChild(style);
 }
 
 if (document.readyState === 'loading') {

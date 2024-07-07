@@ -14,7 +14,6 @@ type Props = Pick<Product, 'id' | 'name' | 'domain'>;
 export default function UpdateProduct({ id, name, domain }: Props) {
 	const { executeFormAction, isPending, data } = useServerAction(updateProductAction, {
 		onSuccess(data) {
-			console.log(data);
 			toast.success('Changes saved successfully');
 		},
 		onError(args) {
@@ -24,6 +23,7 @@ export default function UpdateProduct({ id, name, domain }: Props) {
 
 	return (
 		<form action={executeFormAction} className='border border-gray-100 rounded-lg overflow-hidden'>
+			<input type='hidden' name='productId' value={id} />
 			<div className='flex justify-between items-center p-4 bg-neutral-50 border-b border-gray-100'>
 				<span className='flex-grow flex flex-col'>
 					<span className='text-sm font-medium text-gray-900'>Update Product</span>
@@ -31,7 +31,6 @@ export default function UpdateProduct({ id, name, domain }: Props) {
 				</span>
 			</div>
 			<div className='p-4 space-y-4'>
-				<input type='hidden' name='productId' value={id} />
 				<div className='space-y-1'>
 					<Label htmlFor='name' className='text-right'>
 						Product Name

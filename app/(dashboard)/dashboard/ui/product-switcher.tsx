@@ -15,7 +15,7 @@ import { DialogTrigger } from '@/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
 import { Check, ChevronsUpDown, PlusCircle } from 'lucide-react';
 import { useRouter, useSelectedLayoutSegments } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewProductModal from './new-product-modal';
 
 interface Props {
@@ -31,6 +31,15 @@ export default function ProductSwitcher({ products }: Props) {
 	const segments = useSelectedLayoutSegments();
 	const [showNewProductDialog, setShowNewProductDialog] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState(products[0] || null);
+
+	useEffect(() => {
+		if (segments.length) {
+			const foundProduct = products.find((p) => p.id === segments[0]);
+			if (foundProduct) {
+				setSelectedProduct(foundProduct);
+			}
+		}
+	}, [products, segments]);
 
 	return (
 		<NewProductModal show={showNewProductDialog} showTrigger={false} onClose={() => setShowNewProductDialog(false)}>
@@ -57,11 +66,9 @@ export default function ProductSwitcher({ products }: Props) {
 									onSelect={() => {
 										setSelectedProduct(p);
 										setOpen(false);
-										console.log({ segments });
 										if (!segments.length || segments.includes('(announcements)'))
 											router.push(`/dashboard/${p.id}`);
 										else {
-											console.log('pushing');
 											router.push(`/dashboard/${p.id}/${segments.slice(1).join('/')}`);
 										}
 									}}

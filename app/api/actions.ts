@@ -28,7 +28,6 @@ export const getAnnouncements = createServerAction()
 			.where(and(eq(products.scriptId, input.scriptId), eq(announcements.isActive, true)))
 			.execute();
 
-		console.log({ data });
 		return {
 			announcements: data.map((a) => ({
 				title: a.announcements.title,

@@ -9,11 +9,11 @@ export default async function AnnouncementsList({ productId }: { productId: stri
 	const data = await db.select().from(announcements).where(eq(announcements.productId, productId));
 
 	return !data.length ? (
-		<div className='bg-white p-4 border-r border-gray-100 min-w-[250px] text-muted-foreground text-center'>
+		<div className='bg-white p-4 border-r border-gray-100 min-w-[300px] text-muted-foreground text-center'>
 			Create an announcement to get started
 		</div>
 	) : (
-		<ul className='divide-y divide-gray-100 bg-white py-4 border-r border-gray-100 min-w-[250px]'>
+		<ul className='divide-y divide-gray-100 bg-white py-4 border-r border-gray-100 min-w-[300px]'>
 			{data.map((announcement) => (
 				<li key={announcement.id} className='py-2 px-4 flex gap-3 items-center justify-between'>
 					<Link
