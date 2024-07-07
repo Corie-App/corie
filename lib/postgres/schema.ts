@@ -2,6 +2,7 @@ import { timestamp, pgTable, text, boolean, varchar, pgEnum } from 'drizzle-orm/
 import type { InferSelectModel } from 'drizzle-orm';
 
 export const buttonStyleEnum = pgEnum('button_style', ['flat', 'curved', 'pill']);
+export const layoutEnum = pgEnum('layout', ['default', 'image-left', 'image-top']);
 
 export const products = pgTable('products', {
 	id: varchar('id', { length: 50 }).primaryKey(),
@@ -21,6 +22,7 @@ export const announcements = pgTable('announcements', {
 		.references(() => products.id)
 		.notNull(),
 	isActive: boolean('is_active').default(false).notNull(),
+	layout: layoutEnum('layout').default('default').notNull(),
 	buttonStyle: buttonStyleEnum('button_style').default('flat').notNull(),
 	primaryColor: varchar('primary_color', { length: 7 }).default('#000').notNull(),
 	creatorId: varchar('creator_id', { length: 50 }).notNull(),

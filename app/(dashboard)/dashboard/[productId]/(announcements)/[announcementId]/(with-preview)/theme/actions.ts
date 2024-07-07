@@ -15,7 +15,11 @@ export const updateAnnouncemenThemeAction = isProductAdminProcedure
 	.handler(async ({ input }) => {
 		await db
 			.update(announcements)
-			.set({ buttonStyle: input.buttonStyle, primaryColor: input.primaryColor })
+			.set({
+				layout: input.layout,
+				buttonStyle: input.buttonStyle,
+				primaryColor: input.primaryColor,
+			})
 			.where(eq(announcements.id, input.announcementId))
 			.returning({ id: announcements.id });
 
