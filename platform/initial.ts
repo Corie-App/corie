@@ -1,3 +1,4 @@
+import './ui/styles/styles.css';
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
 import { fetchAnnouncements } from './announcements.js';
