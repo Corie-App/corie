@@ -6,26 +6,26 @@ import { createRoot } from 'react-dom/client';
 import AnnouncementWrapper from './ui/components/announcement-wrapper.jsx';
 
 export async function fetchAnnouncements(): Promise<void> {
-	// displayAnnouncements([]);
-	// return;
-	const scriptId = ScriptLoader.getScriptId();
-	const apiUrl = `/api/announcements?scriptId=${scriptId}`;
-	// const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements?scriptId=${scriptId}`;
-	try {
-		const response = await fetch(apiUrl, {
-			headers: {
-				'X-Referer-Host': window.location.hostname,
-				'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
-			},
-		});
-		if (!response.ok) {
-			throw new Error('Error fetching announcements');
-		}
-		const data = (await response.json()) as Announcement[];
-		displayAnnouncements(data);
-	} catch (error) {
-		Logger.log('Error fetching announcements: ' + error);
-	}
+	displayAnnouncements([]);
+	return;
+	// const scriptId = ScriptLoader.getScriptId();
+	// const apiUrl = `/api/announcements?scriptId=${scriptId}`;
+	// // const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements?scriptId=${scriptId}`;
+	// try {
+	// 	const response = await fetch(apiUrl, {
+	// 		headers: {
+	// 			'X-Referer-Host': window.location.hostname,
+	// 			'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
+	// 		},
+	// 	});
+	// 	if (!response.ok) {
+	// 		throw new Error('Error fetching announcements');
+	// 	}
+	// 	const data = (await response.json()) as Announcement[];
+	// 	displayAnnouncements(data);
+	// } catch (error) {
+	// 	Logger.log('Error fetching announcements: ' + error);
+	// }
 }
 
 function displayAnnouncements(
@@ -44,7 +44,8 @@ function displayAnnouncements(
 
 	const _data = [
 		{
-			title: 'Improved infrastructure pricing',
+			title: 'Improved pricing to our infrastructure',
+			layout: 'image-top' as 'default' | 'image-left' | 'image-top',
 			description:
 				// 'wwwwwwwwwwwwwwwwww wwwwwwwwwww wwwwwwwwwwwwwwwwww wwwwwwwwwww wwwwwwwwwwwwwwwwww wwwwwwwwwww',
 				'You can now choose the infrastructure you want to use for your script. We have added a new pricing model that is more flexible and affordable.',
@@ -53,12 +54,13 @@ function displayAnnouncements(
 		},
 	];
 
-	console.log({ data });
+	console.log({ _data });
 	root.render(
 		React.createElement(AnnouncementWrapper, {
 			title: _data[0].title,
 			description: _data[0].description,
 			onClose: handleClose,
+			layout: _data[0].layout,
 			primaryColor: _data[0].primaryColor,
 			buttonStyle: _data[0].buttonStyle,
 			// image: _data[0].image,

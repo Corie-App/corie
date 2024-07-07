@@ -1,5 +1,6 @@
 export type Announcement = {
 	title: string;
+	layout: Layout;
 	description: string;
 	primaryColor: string;
 	buttonStyle: ButtonStyle;
@@ -15,3 +16,4 @@ export type AnnouncementConfig = {
 };
 
 export type ButtonStyle = 'flat' | 'curved' | 'pill';
+export type Layout = 'default' | 'image-left' | 'image-top';

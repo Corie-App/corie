@@ -11,7 +11,7 @@ const radiusStyles: Record<ButtonStyle, string> = {
 };
 
 export default function AnnouncementPreview() {
-	const { title, description, buttonStyle, primaryColor } = useAnnouncementConfig();
+	const { layout, title, description, buttonStyle, primaryColor } = useAnnouncementConfig();
 
 	return (
 		<div className='bg-gray-50 grow flex justify-center items-center p-6'>
@@ -22,26 +22,39 @@ export default function AnnouncementPreview() {
 					className='ring-1 ring-inset ring-gray-100 absolute -top-2 -right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full text-2xl cursor-pointer'>
 					&times;
 				</button>
-				<h3 className='text-2xl font-bold mb-2 line-clamp-2'>{title}</h3>
-				<p className='mb-4 text-sm line-clamp-3 text-secondary-foreground'>{description}</p>
-				<div className='flex justify-between gap-3'>
-					<button
-						type='button'
-						className={cn(
-							'w-full px-4 py-2 bg-transparent border rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
-							radiusStyles[buttonStyle]
-						)}>
-						Don&apos;t show again
-					</button>
-					<button
-						type='button'
-						style={{ backgroundColor: primaryColor }}
-						className={cn(
-							'w-full px-4 py-2 bg-black border-none rounded-md text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
-							radiusStyles[buttonStyle]
-						)}>
-						Upgrade to Pro
-					</button>
+				<div className='space-y-3'>
+					<div className={cn('w-full flex gap-3', layout === 'image-left' ? 'items-center' : 'flex-col')}>
+						{layout === 'default' ? null : (
+							<div
+								className={cn(
+									'bg-gray-300 rounded-lg',
+									layout === 'image-left' ? 'aspect-square min-w-[116px] h-full' : 'h-[175px] w-full'
+								)}
+							/>
+						)}
+						<div className='grow'>
+							<h3 className='font-bold line-clamp-2 text-xl'>{title}</h3>
+							<p className='text-sm text-wrap line-clamp-3'>{description}</p>
+						</div>
+					</div>
+					<div className='flex justify-between gap-3'>
+						<button
+							className={cn(
+								'w-full px-4 py-2 bg-transparent border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+								radiusStyles[buttonStyle]
+							)}>
+							Don&apos;t show again
+						</button>
+						<button
+							onClick={() => console.log('Upgrade to Pro')}
+							className={cn(
+								'w-full px-4 py-2 bg-black border-none text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+								radiusStyles[buttonStyle]
+							)}
+							style={{ backgroundColor: primaryColor }}>
+							Upgrade to Pro
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

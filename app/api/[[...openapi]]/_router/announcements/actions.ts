@@ -17,6 +17,7 @@ export const getAnnouncements = scriptProcedure
 
 		return data.map((a) => ({
 			title: a.announcements.title,
+			layout: a.announcements.layout,
 			description: a.announcements.description,
 			buttonStyle: a.announcements.buttonStyle,
 			primaryColor: a.announcements.primaryColor,
