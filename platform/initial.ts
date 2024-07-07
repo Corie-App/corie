@@ -9,6 +9,7 @@ async function initializeCorie(): Promise<void> {
 		const scriptId = ScriptLoader.getScriptId();
 		if (scriptId) {
 			const domainMatched = await matchDomain(scriptId);
+			console.log({ env: process.env.VERCEL_ENV });
 			if (domainMatched) {
 				injectStyles();
 				await fetchAnnouncements();
