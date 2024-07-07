@@ -8,7 +8,22 @@ module.exports = {
 		preflight: false,
 	},
 	theme: {
-		extend: {},
+		extend: {
+			keyframes: {
+				fadeInUp: {
+					'0%': { opacity: '0', transform: 'translateY(24px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+				fadeOut: {
+					'0%': { opacity: '1', transform: 'translateY(0px)' },
+					'100%': { opacity: '0', transform: 'translateY(24px)' },
+				},
+			},
+			animation: {
+				'fade-in-up': 'fadeInUp 0.25s ease-out forwards',
+				'fade-out': 'fadeOut 0.25s ease-out forwards',
+			},
+		},
 	},
 	plugins: [],
 };

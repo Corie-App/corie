@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ButtonStyle } from '../../types';
 import { cn } from '../../utils';
 
@@ -27,13 +27,27 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 	layout = 'default',
 	image,
 }) => {
+	const [isVisible, setIsVisible] = useState(false);
+	const [isClosing, setIsClosing] = useState(false);
+
+	useEffect(() => {
+		setIsVisible(true);
+	}, []);
+
+	const handleClose = () => {
+		setIsClosing(true);
+		setTimeout(() => {
+			onClose();
+		}, 250);
+	};
+
 	const renderContent = () => (
 		<>
 			<h3 className='corie-text-2xl corie-font-bold corie-mb-2 corie-line-clamp-2'>{title}</h3>
 			<p className='corie-text-sm corie-mb-4 corie-text-wrap corie-line-clamp-3'>{description}</p>
 			<div className='corie-flex corie-justify-between corie-gap-3'>
 				<button
-					onClick={() => console.log("Don't show again")}
+					onClick={handleClose}
 					className={cn(
 						'corie-w-full corie-px-4 corie-py-2 corie-bg-transparent corie-border corie-text-sm corie-font-medium corie-transition-colors corie-focus:outline-none corie-focus:ring-2 corie-focus:ring-offset-2 corie-hover:bg-opacity-80',
 						radiusStyles[buttonStyle]
@@ -72,9 +86,14 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 
 	return (
 		<div
-			className={`corie-fixed corie-right-4 corie-bottom-4 corie-z-50 corie-bg-white corie-min-w-[350px] corie-ring-1 corie-ring-inset corie-ring-gray-100 corie-max-w-sm corie-p-4 corie-rounded-xl corie-shadow-lg ${getLayoutClasses()}`}>
+			className={cn(
+				'corie-fixed corie-right-4 corie-bottom-4 corie-z-50 corie-bg-white corie-min-w-[350px] corie-ring-1 corie-ring-inset corie-ring-gray-100 corie-max-w-sm corie-p-4 corie-rounded-xl corie-shadow-lg',
+				getLayoutClasses(),
+				isVisible ? 'corie-animate-fade-in-up' : '',
+				isClosing ? 'corie-animate-fade-out' : ''
+			)}>
 			<button
-				onClick={onClose}
+				onClick={handleClose}
 				className='corie-ring-1 corie-ring-inset corie-ring-gray-100 corie-absolute corie--top-2 corie--right-2 corie-w-6 corie-h-6 corie-flex corie-items-center corie-justify-center corie-bg-white corie-rounded-full corie-text-2xl corie-cursor-pointer'>
 				&times;
 			</button>
