@@ -15,6 +15,7 @@ export default async function AnnouncementLayoutPage({ children, params }: Props
 		.select({
 			title: announcements.title,
 			layout: announcements.layout,
+			imageUrl: announcements.imageUrl,
 			buttonStyle: announcements.buttonStyle,
 			description: announcements.description,
 			primaryColor: announcements.primaryColor,
@@ -28,6 +29,7 @@ export default async function AnnouncementLayoutPage({ children, params }: Props
 			initialData={{
 				title: announcement[0].title,
 				layout: announcement[0].layout,
+				imageUrl: announcement[0].imageUrl,
 				buttonStyle: announcement[0].buttonStyle,
 				description: announcement[0].description,
 				primaryColor: announcement[0].primaryColor,

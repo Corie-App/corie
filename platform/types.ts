@@ -3,6 +3,7 @@ export type Announcement = {
 	layout: Layout;
 	description: string;
 	primaryColor: string;
+	imageUrl: string | null;
 	buttonStyle: ButtonStyle;
 };
 

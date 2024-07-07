@@ -3,6 +3,7 @@
 import { ButtonStyle } from '@/lib/types';
 import { useAnnouncementConfig } from './provider';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 const radiusStyles: Record<ButtonStyle, string> = {
 	flat: 'rounded-none',
@@ -11,7 +12,8 @@ const radiusStyles: Record<ButtonStyle, string> = {
 };
 
 export default function AnnouncementPreview() {
-	const { layout, title, description, buttonStyle, primaryColor } = useAnnouncementConfig();
+	const { layout, imageUrl, title, description, buttonStyle, primaryColor } = useAnnouncementConfig();
+	const proxyUrl = `/images?url=${encodeURIComponent(imageUrl ?? '')}`;
 
 	return (
 		<div className='bg-gray-50 grow flex justify-center items-center p-6'>
@@ -27,10 +29,20 @@ export default function AnnouncementPreview() {
 						{layout === 'default' ? null : (
 							<div
 								className={cn(
-									'bg-gray-300 rounded-lg',
+									'relative bg-gray-300 rounded-sm overflow-hidden',
 									layout === 'image-left' ? 'aspect-square min-w-[116px] h-full' : 'h-[175px] w-full'
+								)}>
+								{imageUrl && (
+									<Image
+										fill
+										priority
+										src={proxyUrl}
+										className='object-cover'
+										alt='announcement preview image'
+										sizes='(max-width: 768px) 100vw, 768px'
+									/>
 								)}
-							/>
+							</div>
 						)}
 						<div className='grow'>
 							<h3 className='font-bold line-clamp-2 text-xl'>{title}</h3>

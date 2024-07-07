@@ -9,7 +9,7 @@ interface AnnouncementWrapperProps {
 	primaryColor: string;
 	buttonStyle: ButtonStyle;
 	layout: 'default' | 'image-left' | 'image-top';
-	image?: string;
+	imageUrl: string | null;
 }
 
 const radiusStyles: Record<ButtonStyle, string> = {
@@ -25,7 +25,7 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 	buttonStyle,
 	primaryColor,
 	layout = 'default',
-	image,
+	imageUrl,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
@@ -41,17 +41,29 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 		}, 250);
 	};
 
-	const renderImage = () =>
-		layout === 'default' ? null : (
+	const renderImage = () => {
+		const proxyUrl = `/images?url=${encodeURIComponent(imageUrl ?? '')}`;
+
+		return layout === 'default' ? null : (
 			<div
 				className={cn(
-					'corie-bg-gray-300 corie-rounded-lg',
+					'corie-relative corie-bg-gray-300 corie-rounded-md corie-overflow-hidden',
 					layout === 'image-left'
 						? 'corie-aspect-square corie-min-w-[116px] corie-h-full'
 						: 'corie-h-[175px] corie-w-full'
+				)}>
+				{imageUrl && (
+					// eslint-disable-next-line @next/next/no-img-element
+					<img
+						src={proxyUrl}
+						fetchPriority='high'
+						alt='announcement preview image'
+						className='corie-object-cover corie-h-full corie-w-full'
+					/>
 				)}
-			/>
+			</div>
 		);
+	};
 	// image && (
 	// 	// eslint-disable-next-line @next/next/no-img-element
 	// 	<img src={image} alt='Announcement' className='corie-max-w-full corie-h-auto' />

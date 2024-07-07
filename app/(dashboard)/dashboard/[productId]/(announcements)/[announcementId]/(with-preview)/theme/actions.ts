@@ -17,6 +17,7 @@ export const updateAnnouncemenThemeAction = isProductAdminProcedure
 			.update(announcements)
 			.set({
 				layout: input.layout,
+				imageUrl: input.imageUrl,
 				buttonStyle: input.buttonStyle,
 				primaryColor: input.primaryColor,
 			})

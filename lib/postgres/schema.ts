@@ -22,6 +22,7 @@ export const announcements = pgTable('announcements', {
 		.references(() => products.id)
 		.notNull(),
 	isActive: boolean('is_active').default(false).notNull(),
+	imageUrl: varchar('image_url', { length: 255 }),
 	layout: layoutEnum('layout').default('default').notNull(),
 	buttonStyle: buttonStyleEnum('button_style').default('flat').notNull(),
 	primaryColor: varchar('primary_color', { length: 7 }).default('#000').notNull(),

@@ -18,6 +18,7 @@ export const UpdateAnnouncementSchema = CreateAnnouncementSchema.extend({
 
 export const UpdateAnnouncementThemeSchema = z.object({
 	buttonStyle: z.enum(['flat', 'curved', 'pill']),
+	imageUrl: z.string().optional(),
 	layout: z.enum(['default', 'image-left', 'image-top']),
 	announcementId: z.string(),
 	primaryColor: z.string(),

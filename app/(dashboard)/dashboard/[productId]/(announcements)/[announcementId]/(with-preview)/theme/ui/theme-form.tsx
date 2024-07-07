@@ -10,6 +10,7 @@ import { useServerAction } from 'zsa-react';
 import { generateThemeAction, updateAnnouncemenThemeAction } from '../actions';
 import { ColorPicker } from '@/ui/color-picker';
 import { Image as ImageIcon, Palette } from 'lucide-react';
+import { Input } from '@/ui/input';
 
 interface Props {
 	productId: string;
@@ -17,7 +18,8 @@ interface Props {
 }
 
 export default function ThemeForm({ productId, announcementId }: Props) {
-	const { layout, setLayout, buttonStyle, setButtonStyle, primaryColor, setPrimaryColor } = useAnnouncementConfig();
+	const { layout, imageUrl, setLayout, buttonStyle, setImageUrl, setButtonStyle, primaryColor, setPrimaryColor } =
+		useAnnouncementConfig();
 
 	const generateTheme = useServerAction(generateThemeAction, {
 		onSuccess({ data }) {
@@ -148,6 +150,24 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 						</div>
 					</RadioGroup>
 				</div>
+				{layout !== 'default' && (
+					<div className='space-y-1'>
+						<Label htmlFor='imageUrl' className='text-right'>
+							Image URL
+						</Label>
+						<div className='relative'>
+							<Input
+								type='url'
+								required
+								id='imageUrl'
+								name='imageUrl'
+								placeholder={imageUrl ?? 'https://static.com/image.png'}
+								defaultValue={imageUrl ?? undefined}
+								onChange={(e) => setImageUrl(e.target.value)}
+							/>
+						</div>
+					</div>
+				)}
 				<div className='flex items-center gap-4'>
 					<Button variant='secondary' type='button' onClick={() => generateTheme.execute({ productId })}>
 						<Palette size={16} className='mr-1.5' />
