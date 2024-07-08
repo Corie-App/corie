@@ -32,7 +32,7 @@ export const getAnnouncements = scriptProcedure
 				if (reqCountry && geoLocationRule.countries.includes(reqCountry)) {
 					allowedAnnouncements.push(el);
 				}
-			}
+			} else allowedAnnouncements.push(el);
 		}
 
 		return allowedAnnouncements.map((a) => ({
