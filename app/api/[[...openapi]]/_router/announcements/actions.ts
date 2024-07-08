@@ -28,7 +28,7 @@ export const getAnnouncements = scriptProcedure
 			const geoLocationRule = await kv.hget<GeolocationKvResponse>(`rules:${el.announcements.id}`, 'geolocation');
 			if (geoLocationRule) {
 				const reqCountry = headers().get('X-Vercel-IP-Country');
-				console.log(`Checking ${reqCountry} against ${geoLocationRule.countries}`);
+				console.info(`Checking ${reqCountry} against ${geoLocationRule.countries}`);
 				if (reqCountry && geoLocationRule.countries.includes(reqCountry)) {
 					allowedAnnouncements.push(el);
 				}

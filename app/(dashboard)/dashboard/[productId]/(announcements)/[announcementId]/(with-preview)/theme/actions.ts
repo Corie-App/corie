@@ -64,7 +64,7 @@ export const generateThemeAction = isProductAdminProcedure
 					},
 				],
 			});
-			console.log({ domain: data[0].domain, recommendedTheme: object });
+			console.info({ domain: data[0].domain, recommendedTheme: object });
 			return object;
 		} catch (error) {
 			console.error('Error taking screenshot:', error);
