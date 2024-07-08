@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge } from './badge';
 
 type Option = {
@@ -19,23 +19,32 @@ interface Props<T extends Option> {
 	triggerLabel: string;
 	matchingKey?: keyof T;
 	emptyMessage?: string;
+	initialValue?: string[];
 	searchPlaceholder?: string;
 	shouldCloseOnSelect?: boolean;
 	showPrefixOnSelectedValues?: boolean;
+	onSelect?: (selected: string[]) => void;
 }
 
-export default function MultieSelect<T>({
+export default function MultiSelect<T>({
 	options,
+	onSelect,
 	prefixKey,
 	matchingKey,
 	triggerLabel,
 	emptyMessage,
+	initialValue,
 	searchPlaceholder,
 	shouldCloseOnSelect = true,
 	showPrefixOnSelectedValues = true,
 }: Props<T & Option>) {
 	const [open, setOpen] = useState(false);
-	const [selected, setSelected] = useState<string[]>([]);
+	const [selected, setSelected] = useState<string[]>(initialValue ?? []);
+
+	useEffect(() => {
+		onSelect?.(selected);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selected]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
