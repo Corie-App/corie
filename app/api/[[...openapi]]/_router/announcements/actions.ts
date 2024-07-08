@@ -2,12 +2,15 @@ import { db } from '@/lib/postgres';
 import { announcements, products } from '@/lib/postgres/schema';
 import { scriptProcedure } from '@/lib/procedures';
 import { eq, and } from 'drizzle-orm';
+import { headers } from 'next/headers';
 import { z } from 'zod';
 
 export const getAnnouncements = scriptProcedure
 	.createServerAction()
 	.input(z.object({ scriptId: z.string() }))
-	.handler(async ({ input }) => {
+	.handler(async ({ input, request }) => {
+		const headerlist = headers();
+		console.log({ ip: headerlist.get('X-Vercel-IP-Country'), headerlist, headers: request?.headers });
 		const data = await db
 			.select()
 			.from(announcements)
