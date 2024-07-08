@@ -15,6 +15,7 @@ type Option = {
 
 interface Props<T extends Option> {
 	options: T[];
+	reset?: boolean;
 	prefixKey?: keyof T;
 	triggerLabel: string;
 	matchingKey?: keyof T;
@@ -27,6 +28,7 @@ interface Props<T extends Option> {
 }
 
 export default function MultiSelect<T>({
+	reset,
 	options,
 	onSelect,
 	prefixKey,
@@ -45,6 +47,11 @@ export default function MultiSelect<T>({
 		onSelect?.(selected);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selected]);
+
+	useEffect(() => {
+		if (reset) setSelected(initialValue ?? []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [reset]);
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>

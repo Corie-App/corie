@@ -16,8 +16,9 @@ interface Props {
 
 export default function GeolocationRules({ initialCountries }: Props) {
 	const params = useParams();
-	const intialFoundCountries = initialCountries?.map((c) => countries.find((country) => country.value === c)!.label);
-	const [selectedCountries, setSelectedCountries] = useState<string[]>(intialFoundCountries ?? []);
+	const initialFoundCountries = initialCountries?.map((c) => countries.find((country) => country.value === c)!.label);
+	const [selectedCountries, setSelectedCountries] = useState<string[]>(initialFoundCountries ?? []);
+	const [reset, setReset] = useState(false);
 
 	const { execute, isPending } = useServerAction(saveGeolocationRulesAction, {
 		onSuccess(data) {
@@ -38,6 +39,11 @@ export default function GeolocationRules({ initialCountries }: Props) {
 		});
 	};
 
+	const handleSelect = (selected: string[]) => {
+		setSelectedCountries(selected);
+		setReset(false);
+	};
+
 	return (
 		<AccordionItem
 			value='geolocation'
@@ -54,26 +60,38 @@ export default function GeolocationRules({ initialCountries }: Props) {
 					Specify which countries this announcement should be displayed in
 				</p>
 				<MultiSelect
+					reset={reset}
 					prefixKey='flag'
 					matchingKey='label'
 					options={countries}
+					onSelect={handleSelect}
 					shouldCloseOnSelect={false}
 					triggerLabel='Select country'
-					onSelect={setSelectedCountries}
-					initialValue={selectedCountries}
 					emptyMessage='No country found.'
+					initialValue={initialFoundCountries}
 					searchPlaceholder='Search countries...'
 				/>
-				<Button
-					type='button'
-					onClick={handleSave}
-					disabled={
-						isPending ||
-						!selectedCountries.length ||
-						(initialCountries && initialCountries.every((c) => selectedCountries.includes(c)))
-					}>
-					{isPending ? 'Saving...' : 'Save Changes'}
-				</Button>
+				<div className='flex items-center gap-2'>
+					<Button
+						type='button'
+						onClick={handleSave}
+						disabled={
+							isPending ||
+							!selectedCountries.length ||
+							(initialCountries && selectedCountries?.every((c) => initialFoundCountries?.includes(c)))
+						}>
+						{isPending ? 'Saving...' : 'Save Changes'}
+					</Button>
+					<Button
+						type='button'
+						variant='secondary'
+						onClick={() => {
+							setReset(true);
+							setSelectedCountries(initialCountries ?? []);
+						}}>
+						Reset
+					</Button>
+				</div>
 			</AccordionContent>
 		</AccordionItem>
 	);
