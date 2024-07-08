@@ -1,6 +1,6 @@
 'use client';
 
-import { Check, PlusCircle } from 'lucide-react';
+import { Check, PlusCircle, X, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/ui/command';
@@ -74,11 +74,17 @@ export default function MultiSelect<T>({
 								);
 								if (!foundValue) return null;
 								return (
-									<Badge variant='secondary' key={selectedValue} className='min-w-max gap-1.5'>
+									<Badge variant='secondary' key={selectedValue} className='min-w-max gap-1.5 pr-1'>
 										{showPrefixOnSelectedValues && (
 											<span>{foundValue[prefixKey as keyof T] as string}</span>
 										)}
 										{foundValue.label}
+										<button
+											type='button'
+											className='rounded-full p-0.5 text-muted-foreground bg-secondary-foreground/10'
+											onClick={() => setSelected(selected.filter((s) => s !== selectedValue))}>
+											<X size={10} />
+										</button>
 									</Badge>
 								);
 							})}
