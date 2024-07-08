@@ -78,7 +78,9 @@ export default function GeolocationRules({ initialCountries }: Props) {
 						disabled={
 							isPending ||
 							!selectedCountries.length ||
-							(initialCountries && selectedCountries?.every((c) => initialFoundCountries?.includes(c)))
+							(initialCountries &&
+								selectedCountries.length == initialFoundCountries?.length &&
+								selectedCountries?.every((c) => initialFoundCountries?.includes(c)))
 						}>
 						{isPending ? 'Saving...' : 'Save Changes'}
 					</Button>
