@@ -20,7 +20,7 @@ export const getAnnouncements = scriptProcedure
 
 		let allowedAnnouncements = [];
 		for (const el of data) {
-			if (process.env.NODE_ENV === 'development') {
+			if (process.env.VERCEL_ENV === 'development') {
 				allowedAnnouncements.push(el);
 				continue;
 			}
@@ -28,6 +28,7 @@ export const getAnnouncements = scriptProcedure
 			const geoLocationRule = await kv.hget<GeolocationKvResponse>(`rules:${el.announcements.id}`, 'geolocation');
 			if (geoLocationRule) {
 				const reqCountry = headers().get('X-Vercel-IP-Country');
+				console.log(`Checking ${reqCountry} against ${geoLocationRule.countries}`);
 				if (reqCountry && geoLocationRule.countries.includes(reqCountry)) {
 					allowedAnnouncements.push(el);
 				}
