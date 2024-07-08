@@ -40,37 +40,38 @@ export default function MultieSelect<T>({
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<div className='group flex gap-2 items-center h-10 w-full rounded-md border border-input bg-background py-2 pl-1'>
-				<div className='flex items-center gap-1'>
-					<PopoverTrigger asChild>
-						<Button variant='ghost' className='h-8 px-2 gap-2 text-muted-foreground'>
-							<PlusCircle size={16} className='' />
-							{triggerLabel}
-						</Button>
-					</PopoverTrigger>
-					<div className='w-[1px] h-4 bg-gray-200 rounded-lg' />
-				</div>
-				{selected.length > 0 ? (
-					<div className='grow flex items-center gap-1.5 overflow-x-auto pr-2 scrollbar-hide'>
-						{selected.map((selectedValue) => {
-							const foundValue = options.find(
-								(options) => options[matchingKey as keyof T] === selectedValue
-							);
-							if (!foundValue) return null;
-							return (
-								<Badge variant='secondary' key={selectedValue} className='min-w-max gap-1.5'>
-									{showPrefixOnSelectedValues && (
-										<span>{foundValue[prefixKey as keyof T] as string}</span>
-									)}
-									{foundValue.label}
-								</Badge>
-							);
-						})}
+				<div className='flex items-center w-full'>
+					<div className='flex items-center gap-1'>
+						<PopoverTrigger asChild>
+							<Button variant='ghost' className='h-8 px-2 gap-2 text-muted-foreground'>
+								<PlusCircle size={16} className='' />
+								{triggerLabel}
+							</Button>
+						</PopoverTrigger>
+						<div className='w-[1px] h-4 bg-gray-200 rounded-lg' />
 					</div>
-				) : (
-					<Badge>All</Badge>
-				)}
+					{selected.length > 0 ? (
+						<div className='grow flex items-center gap-1.5 overflow-x-auto px-2 scrollbar-hide'>
+							{selected.map((selectedValue) => {
+								const foundValue = options.find(
+									(options) => options[matchingKey as keyof T] === selectedValue
+								);
+								if (!foundValue) return null;
+								return (
+									<Badge variant='secondary' key={selectedValue} className='min-w-max gap-1.5'>
+										{showPrefixOnSelectedValues && (
+											<span>{foundValue[prefixKey as keyof T] as string}</span>
+										)}
+										{foundValue.label}
+									</Badge>
+								);
+							})}
+						</div>
+					) : (
+						<Badge className='ml-1'>All</Badge>
+					)}
+				</div>
 			</div>
-
 			<PopoverContent className='min-w-[200px] p-0' alignOffset={-4} sideOffset={8} align='start'>
 				<Command>
 					<CommandInput placeholder={searchPlaceholder ?? 'Search...'} />
