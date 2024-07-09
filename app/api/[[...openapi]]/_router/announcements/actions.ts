@@ -1,7 +1,7 @@
 import { db } from '@/lib/postgres';
 import { announcements, products } from '@/lib/postgres/schema';
 import { scriptProcedure } from '@/lib/procedures';
-import { GeolocationKvResponse } from '@/lib/types';
+import { RulesKvResponse } from '@/lib/types';
 import { kv } from '@vercel/kv';
 import { eq, and } from 'drizzle-orm';
 import { headers } from 'next/headers';
@@ -25,7 +25,10 @@ export const getAnnouncements = scriptProcedure
 				continue;
 			}
 
-			const geoLocationRule = await kv.hget<GeolocationKvResponse>(`rules:${el.announcements.id}`, 'geolocation');
+			const geoLocationRule = await kv.hget<RulesKvResponse['geolocation']>(
+				`rules:${el.announcements.id}`,
+				'geolocation'
+			);
 			if (geoLocationRule) {
 				const reqCountry = headers().get('X-Vercel-IP-Country');
 				console.info(`Checking ${reqCountry} against ${geoLocationRule.countries}`);
