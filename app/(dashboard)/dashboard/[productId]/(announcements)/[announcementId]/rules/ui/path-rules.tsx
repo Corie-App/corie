@@ -1,0 +1,93 @@
+'use client';
+
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@/ui/accordion';
+import { Button } from '@/ui/button';
+import { useState } from 'react';
+import { useServerAction } from 'zsa-react';
+import { savePathRulesAction } from '../actions';
+import { toast } from 'sonner';
+import { useParams } from 'next/navigation';
+import { Label } from '@/ui/label';
+import { Input } from '@/ui/input';
+import { RulesKvResponse } from '@/lib/types';
+
+interface Props {
+	rules: RulesKvResponse['paths'] | null;
+}
+
+export default function PathRules({ rules }: Props) {
+	const params = useParams();
+	const [allowlist, setAllowlist] = useState(rules?.allowlist.join(', '));
+	const [blocklist, setBlocklist] = useState(rules?.blocklist.join(', '));
+
+	console.log({ rules });
+	const { executeFormAction, isPending } = useServerAction(savePathRulesAction, {
+		onSuccess() {
+			toast.success('Changes saved successfully');
+		},
+		onError(args) {
+			console.error(args);
+		},
+	});
+
+	return (
+		<AccordionItem value='paths' className='border-b-0 bg-white ring-1 ring-inset ring-gray-200 rounded-lg'>
+			<AccordionTrigger className='hover:no-underline px-3'>
+				<div className='flex items-center gap-1.5'>
+					<span className='text-sm font-medium'>🔗</span>
+					<div className='w-[1px] h-4 bg-gray-200 rounded-lg' />
+					Paths
+				</div>
+			</AccordionTrigger>
+			<AccordionContent className='space-y-2 px-3'>
+				<form action={executeFormAction}>
+					<input type='hidden' name='productId' value={params.productId as string} />
+					<input type='hidden' name='announcementId' value={params.announcementId as string} />
+					<div className='space-y-4'>
+						<div className='space-y-1'>
+							<Label htmlFor='allowlist' className='text-right'>
+								Allowlist
+							</Label>
+							<Input
+								id='allowlist'
+								name='allowlist'
+								value={allowlist}
+								placeholder='/blog/*, /contact'
+								onChange={(e) => setAllowlist(e.target.value)}
+							/>
+							<span className='text-xs text-gray-500'>
+								This announcement will be shown on these paths
+							</span>
+						</div>
+						<div className='space-y-1'>
+							<Label htmlFor='blocklist' className='text-right'>
+								Blocklist
+							</Label>
+							<Input
+								id='blocklist'
+								name='blocklist'
+								value={blocklist}
+								onChange={(e) => setBlocklist(e.target.value)}
+								placeholder='/blog/drafts/*, /products/archived/*'
+							/>
+							<span className='text-xs text-gray-500'>
+								This announcement won&apos;t be shown on these paths
+							</span>
+						</div>
+					</div>
+					<div className='flex items-center justify-between gap-2 mt-4'>
+						<div className='flex items-center gap-2'>
+							<Button disabled={isPending}>{isPending ? 'Saving...' : 'Save Changes'}</Button>
+							<Button type='button' variant='secondary'>
+								Reset
+							</Button>
+						</div>
+						<Button type='button' variant='outline'>
+							Version History
+						</Button>
+					</div>
+				</form>
+			</AccordionContent>
+		</AccordionItem>
+	);
+}

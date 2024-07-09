@@ -9,9 +9,10 @@ import { useServerAction } from 'zsa-react';
 import { saveGeolocationRulesAction } from '../actions';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
+import { RulesKvResponse } from '@/lib/types';
 
 interface Props {
-	initialCountries: string[] | undefined;
+	initialCountries: RulesKvResponse['geolocation']['countries'] | undefined;
 }
 
 export default function GeolocationRules({ initialCountries }: Props) {

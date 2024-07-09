@@ -21,13 +21,13 @@ export default function RootLayout({
 				<body className={`${GeistSans.className} h-[100dvh]`}>
 					<ToastWrapper />
 					{children}
-					<Script
+					{/* <Script
 						async
 						type='module'
 						strategy='lazyOnload'
 						crossOrigin='anonymous'
 						src={`/platform/initial.js?s=${process.env.EXAMPLE_SCRIPT_ID}`}
-					/>
+					/> */}
 				</body>
 			</html>
 		</ClerkProvider>

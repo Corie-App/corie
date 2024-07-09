@@ -5,3 +5,10 @@ export const SaveGelocationRulesSchema = z.object({
 	announcementId: z.string(),
 	countries: z.array(z.string()),
 });
+
+export const SavePathRulesSchema = z.object({
+	productId: z.string(),
+	announcementId: z.string(),
+	allowlist: z.string(),
+	blocklist: z.string(),
+});
