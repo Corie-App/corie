@@ -12,3 +12,5 @@ export const SavePathRulesSchema = z.object({
 	allowlist: z.string(),
 	blocklist: z.string(),
 });
+
+export const RestorePathRulesSchema = SavePathRulesSchema;

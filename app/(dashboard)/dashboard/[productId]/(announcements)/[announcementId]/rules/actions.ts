@@ -1,7 +1,7 @@
 'use server';
 
 import { isProductAdminProcedure } from '@/lib/procedures';
-import { SaveGelocationRulesSchema, SavePathRulesSchema } from '@/schemas/announcement/rules';
+import { RestorePathRulesSchema, SaveGelocationRulesSchema, SavePathRulesSchema } from '@/schemas/announcement/rules';
 import { revalidatePath } from 'next/cache';
 import { kv } from '@vercel/kv';
 import { splitPaths } from '@/lib/split-paths';
@@ -29,6 +29,20 @@ export const savePathRulesAction = isProductAdminProcedure
 
 		await kv.lpush(`rules:${input.announcementId}:paths:history`, rulesWithTs);
 		await kv.ltrim(`rules:${input.announcementId}:paths:history`, 0, 9);
+
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
+		return { success: true };
+	});
+
+export const restorePathRulesAction = isProductAdminProcedure
+	.createServerAction()
+	.input(RestorePathRulesSchema)
+	.handler(async ({ input }) => {
+		const allowlist = splitPaths(input.allowlist);
+		const blocklist = splitPaths(input.blocklist);
+
+		const rulesString = JSON.stringify({ allowlist, blocklist });
+		await kv.hset(`rules:${input.announcementId}`, { paths: rulesString });
 
 		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
 		return { success: true };
