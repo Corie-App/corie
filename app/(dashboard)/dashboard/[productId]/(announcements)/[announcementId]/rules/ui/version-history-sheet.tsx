@@ -16,12 +16,12 @@ export default function VersionHistorySheet({ rules }: Props) {
 					Version History
 				</Button>
 			</SheetTrigger>
-			<SheetContent>
+			<SheetContent className='pb-0'>
 				<SheetHeader>
 					<SheetTitle>Version History</SheetTitle>
 					<SheetDescription>View and select the version you want to restore.</SheetDescription>
 				</SheetHeader>
-				<div className='py-4 space-y-4 overflow-y-auto'>
+				<div className='grow pb-4 space-y-4 overflow-y-auto scrollbar-hide'>
 					{rules.map((rule) => {
 						const hasAllowlist = rule.allowlist.length > 0;
 						const hasBlocklist = rule.blocklist.length > 0;
