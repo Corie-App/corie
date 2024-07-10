@@ -3,6 +3,7 @@ import GeolocationRules from './ui/geolocation-rules';
 import { kv } from '@vercel/kv';
 import { RulesKvResponse } from '@/lib/types';
 import PathRules from './ui/path-rules';
+import PathVersionHistory from './ui/path-version-history';
 
 export default async function AnnouncementRulesPage({ params }: { params: { announcementId: string } }) {
 	const geoLocationRule = await kv.hget<RulesKvResponse['geolocation']>(
@@ -15,7 +16,9 @@ export default async function AnnouncementRulesPage({ params }: { params: { anno
 		<div className='h-full mx-auto max-w-2xl w-full py-6'>
 			<Accordion type='multiple' className='space-y-4'>
 				<GeolocationRules initialCountries={geoLocationRule?.countries} />
-				<PathRules rules={pathsRule} />
+				<PathRules rules={pathsRule}>
+					<PathVersionHistory announcementId={params.announcementId} />
+				</PathRules>
 				<AccordionItem
 					value='schedule'
 					className='border-b-0 bg-white ring-1 ring-inset ring-gray-200 rounded-lg px-3'>

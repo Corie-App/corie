@@ -2,7 +2,7 @@
 
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/ui/accordion';
 import { Button } from '@/ui/button';
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import { useServerAction } from 'zsa-react';
 import { savePathRulesAction } from '../actions';
 import { toast } from 'sonner';
@@ -11,16 +11,15 @@ import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
 import { RulesKvResponse } from '@/lib/types';
 
-interface Props {
+interface Props extends PropsWithChildren {
 	rules: RulesKvResponse['paths'] | null;
 }
 
-export default function PathRules({ rules }: Props) {
+export default function PathRules({ rules, children }: Props) {
 	const params = useParams();
 	const [allowlist, setAllowlist] = useState(rules?.allowlist.join(', '));
 	const [blocklist, setBlocklist] = useState(rules?.blocklist.join(', '));
 
-	console.log({ rules });
 	const { executeFormAction, isPending } = useServerAction(savePathRulesAction, {
 		onSuccess() {
 			toast.success('Changes saved successfully');
@@ -82,9 +81,7 @@ export default function PathRules({ rules }: Props) {
 								Reset
 							</Button>
 						</div>
-						<Button type='button' variant='outline'>
-							Version History
-						</Button>
+						{children}
 					</div>
 				</form>
 			</AccordionContent>
