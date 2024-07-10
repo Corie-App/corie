@@ -16,7 +16,7 @@ export default function VersionHistorySheet({ rules }: Props) {
 
 	const onSuccess = () => {
 		closeRef.current?.click();
-		toast.success('Changes saved successfully');
+		toast.success('Paths have been restored successfully');
 	};
 
 	return (

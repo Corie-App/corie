@@ -2,7 +2,7 @@
 
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/ui/accordion';
 import { Button } from '@/ui/button';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { useServerAction } from 'zsa-react';
 import { savePathRulesAction } from '../actions';
 import { toast } from 'sonner';
@@ -29,6 +29,19 @@ export default function PathRules({ rules, children }: Props) {
 		},
 	});
 
+	const handleReset = () => {
+		setAllowlist(rules?.allowlist.join(', '));
+		setBlocklist(rules?.blocklist.join(', '));
+	};
+
+	// update the inputs when page is revalidated
+	useEffect(() => {
+		if (rules) {
+			setAllowlist(rules.allowlist.join(', '));
+			setBlocklist(rules.blocklist.join(', '));
+		}
+	}, [rules]);
+
 	return (
 		<AccordionItem value='paths' className='border-b-0 bg-white ring-1 ring-inset ring-gray-200 rounded-lg'>
 			<AccordionTrigger className='hover:no-underline px-3'>
@@ -52,6 +65,7 @@ export default function PathRules({ rules, children }: Props) {
 								name='allowlist'
 								value={allowlist}
 								placeholder='/blog/*, /contact'
+								showClearButton={allowlist !== ''}
 								onChange={(e) => setAllowlist(e.target.value)}
 							/>
 							<span className='text-xs text-gray-500'>
@@ -66,6 +80,7 @@ export default function PathRules({ rules, children }: Props) {
 								id='blocklist'
 								name='blocklist'
 								value={blocklist}
+								showClearButton={blocklist !== ''}
 								onChange={(e) => setBlocklist(e.target.value)}
 								placeholder='/blog/drafts/*, /products/archived/*'
 							/>
@@ -77,7 +92,7 @@ export default function PathRules({ rules, children }: Props) {
 					<div className='flex items-center justify-between gap-2 mt-4'>
 						<div className='flex items-center gap-2'>
 							<Button disabled={isPending}>{isPending ? 'Saving...' : 'Save Changes'}</Button>
-							<Button type='button' variant='secondary'>
+							<Button type='button' onClick={handleReset} variant='secondary'>
 								Reset
 							</Button>
 						</div>
