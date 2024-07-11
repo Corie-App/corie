@@ -15,6 +15,7 @@ export async function fetchAnnouncements(): Promise<void> {
 		const response = await fetch(apiUrl, {
 			headers: {
 				'X-Referer-Host': window.location.hostname,
+				'X-Referer-Pathname': window.location.pathname,
 				'X-Script-Secret': 'g5uUhoGtwaqG0m8y9wLjmhCPEnx5tOs1JS5CDgU+ifM=',
 			},
 		});
