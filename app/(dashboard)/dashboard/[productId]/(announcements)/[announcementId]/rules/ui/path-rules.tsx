@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 import { Label } from '@/ui/label';
 import { Input } from '@/ui/input';
-import { RulesKvResponse } from '@/lib/types';
+import { RuleConflict, RulesKvResponse } from '@/lib/types';
 import { Info } from 'lucide-react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/ui/tooltip';
 
@@ -21,13 +21,21 @@ export default function PathRules({ rules, children }: Props) {
 	const params = useParams();
 	const [allowlist, setAllowlist] = useState(rules?.allowlist.join(', '));
 	const [blocklist, setBlocklist] = useState(rules?.blocklist.join(', '));
+	const [conflict, setConflict] = useState<RuleConflict | null>(null);
 
 	const { executeFormAction, isPending } = useServerAction(savePathRulesAction, {
 		onSuccess() {
+			setConflict(null);
 			toast.success('Changes saved successfully');
 		},
-		onError(args) {
-			console.error(args);
+		onError({ err }) {
+			if (err.code === 'CONFLICT') {
+				const data = JSON.parse(err.data) as { ruleConflict: RuleConflict };
+				setConflict(data.ruleConflict);
+				toast.error('Unable to save changes', {
+					description: 'There are conflicts between the blocklist and allowlist.',
+				});
+			} else console.error(err);
 		},
 	});
 
@@ -114,9 +122,22 @@ export default function PathRules({ rules, children }: Props) {
 								showClearButton={allowlist !== ''}
 								onChange={(e) => setAllowlist(e.target.value)}
 							/>
-							<span className='text-xs text-gray-500'>
-								This announcement will be shown on these paths
-							</span>
+							{!conflict ? (
+								<span className='text-xs text-gray-500'>
+									This announcement will be shown on these paths
+								</span>
+							) : (
+								<div className='mt-1 text-xs text-gray-500'>
+									<span className='inline-flex items-center rounded bg-gray-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-gray-500/10'>
+										{conflict.allowRule}
+									</span>{' '}
+									may be overridden by{' '}
+									<span className='inline-flex items-center rounded bg-gray-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-gray-500/10'>
+										{conflict.blockRule}
+									</span>{' '}
+									in the blocklist.
+								</div>
+							)}
 						</div>
 					</div>
 					<div className='flex items-center justify-between gap-2 mt-4'>

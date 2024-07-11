@@ -11,3 +11,9 @@ export type RulesKvResponse = {
 		blocklist: string[];
 	};
 };
+
+export type RuleConflict = {
+	type: 'allowlist' | 'blocklist';
+	allowRule: string;
+	blockRule: string;
+};
