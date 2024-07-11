@@ -78,7 +78,7 @@ export default function GeolocationRules({ initialCountries }: Props) {
 						onClick={handleSave}
 						disabled={
 							isPending ||
-							!selectedCountries.length ||
+							(!selectedCountries.length && selectedCountries.length == initialFoundCountries?.length) ||
 							(initialCountries &&
 								selectedCountries.length == initialFoundCountries?.length &&
 								selectedCountries?.every((c) => initialFoundCountries?.includes(c)))

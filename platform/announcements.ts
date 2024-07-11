@@ -54,7 +54,6 @@ function displayAnnouncements(data: Announcement[]): void {
 		},
 	];
 
-	console.log({ _data });
 	root.render(
 		React.createElement(AnnouncementWrapper, {
 			title: data[0].title,
