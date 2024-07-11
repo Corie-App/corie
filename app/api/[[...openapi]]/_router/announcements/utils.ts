@@ -3,7 +3,7 @@ import { kv } from '@vercel/kv';
 
 export async function checkGeolocationRules(announcementId: string, reqCountry: string | null): Promise<boolean> {
 	const geoLocationRule = await kv.hget<RulesKvResponse['geolocation']>(`rules:${announcementId}`, 'geolocation');
-	if (!geoLocationRule) return true; // No rule means pass
+	if (!geoLocationRule || geoLocationRule.countries.length === 0) return true; // No rule means pass
 	return reqCountry !== null && geoLocationRule.countries.includes(reqCountry);
 }
 
@@ -12,6 +12,7 @@ export async function checkPathRules(announcementId: string, currentPath: string
 
 	const pathsRule = await kv.hget<RulesKvResponse['paths']>(`rules:${announcementId}`, 'paths');
 	if (!pathsRule) return true; // No rule means pass
+	if (pathsRule.allowlist.length === 0 && pathsRule.blocklist.length === 0) return true;
 
 	// Sort patterns from most specific to most general
 	const sortPatterns = (patterns: string[]) =>

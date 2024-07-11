@@ -25,8 +25,8 @@ export const getAnnouncements = scriptProcedure
 			data.map(async (el) => {
 				// if (process.env.VERCEL_ENV === 'development') return el;
 
-				// const passesGeoRule = await checkGeolocationRules(el.announcements.id, reqCountry);
-				// if (!passesGeoRule) return null;
+				const passesGeoRule = await checkGeolocationRules(el.announcements.id, reqCountry);
+				if (!passesGeoRule) return null;
 
 				console.info({ aid: el.announcements.id, path: pathname });
 				const passesPathRule = await checkPathRules(el.announcements.id, pathname);
