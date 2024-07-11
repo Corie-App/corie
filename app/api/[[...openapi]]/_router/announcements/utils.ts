@@ -19,8 +19,10 @@ export async function checkPathRules(announcementId: string, currentPath: string
 
 	const sortedAllowlist = sortPatterns(pathsRule.allowlist);
 	const sortedBlocklist = sortPatterns(pathsRule.blocklist);
+	console.info({ sortedAllowlist, sortedBlocklist });
 
 	for (const pattern of [...sortedAllowlist, ...sortedBlocklist]) {
+		console.info({ pattern, currentPath, matches: pathMatchesPattern(currentPath, pattern) });
 		if (pathMatchesPattern(currentPath, pattern)) {
 			return sortedAllowlist.includes(pattern);
 		}

@@ -20,14 +20,17 @@ export const getAnnouncements = scriptProcedure
 		const pathname = headers().get('X-Referer-Pathname');
 		const reqCountry = headers().get('X-Vercel-IP-Country');
 
+		console.info({ pathname, reqCountry });
 		const allowedAnnouncements = await Promise.all(
 			data.map(async (el) => {
-				if (process.env.VERCEL_ENV === 'development') return el;
+				// if (process.env.VERCEL_ENV === 'development') return el;
 
-				const passesGeoRule = await checkGeolocationRules(el.announcements.id, reqCountry);
-				if (!passesGeoRule) return null;
+				// const passesGeoRule = await checkGeolocationRules(el.announcements.id, reqCountry);
+				// if (!passesGeoRule) return null;
 
+				console.info({ aid: el.announcements.id, path: pathname });
 				const passesPathRule = await checkPathRules(el.announcements.id, pathname);
+				console.info({ passesPathRule });
 				return passesPathRule ? el : null;
 			})
 		);
