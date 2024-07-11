@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { kv } from '@vercel/kv';
 import { splitPaths } from '@/lib/split-paths';
 import { ZSAError } from 'zsa';
-import { RuleConflict } from '@/lib/types';
+import { checkForRuleConflicts } from '@/lib/check-rule-conflicts';
 
 export const saveGeolocationRulesAction = isProductAdminProcedure
 	.createServerAction()
@@ -17,44 +17,6 @@ export const saveGeolocationRulesAction = isProductAdminProcedure
 		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
 		return { success: true };
 	});
-
-function checkForRuleConflicts(allowlist: string[], blocklist: string[]): RuleConflict | null {
-	// Helper function to clean and split paths
-	const cleanAndSplit = (path: string) => path.trim().split('/').filter(Boolean);
-
-	for (const allowRule of allowlist) {
-		const cleanAllowRule = allowRule.trim();
-		const allowParts = cleanAndSplit(cleanAllowRule);
-
-		for (const blockRule of blocklist) {
-			const cleanBlockRule = blockRule.trim();
-			const blockParts = cleanAndSplit(cleanBlockRule);
-
-			// Skip root path conflicts
-			if (cleanAllowRule === '/' || cleanBlockRule === '/') continue;
-
-			// Check if paths overlap
-			const minLength = Math.min(allowParts.length, blockParts.length);
-			let overlap = true;
-			for (let i = 0; i < minLength; i++) {
-				if (allowParts[i] !== blockParts[i] && allowParts[i] !== '*' && blockParts[i] !== '*') {
-					overlap = false;
-					break;
-				}
-			}
-
-			if (overlap) {
-				return {
-					type: allowParts.length >= blockParts.length ? 'allowlist' : 'blocklist',
-					allowRule: cleanAllowRule,
-					blockRule: cleanBlockRule,
-				};
-			}
-		}
-	}
-
-	return null; // No conflicts found
-}
 
 export const savePathRulesAction = isProductAdminProcedure
 	.createServerAction()
