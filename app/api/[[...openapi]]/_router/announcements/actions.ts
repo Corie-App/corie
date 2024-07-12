@@ -1,11 +1,10 @@
 import { db } from '@/lib/postgres';
 import { announcements, products } from '@/lib/postgres/schema';
 import { scriptProcedure } from '@/lib/procedures';
-import { GeolocationKvResponse } from '@/lib/types';
-import { kv } from '@vercel/kv';
 import { eq, and } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
+import { checkGeolocationRules, checkPathRules } from './utils';
 
 export const getAnnouncements = scriptProcedure
 	.createServerAction()
@@ -18,29 +17,29 @@ export const getAnnouncements = scriptProcedure
 			.where(and(eq(products.scriptId, input.scriptId), eq(announcements.isActive, true)))
 			.execute();
 
-		let allowedAnnouncements = [];
-		for (const el of data) {
-			if (process.env.VERCEL_ENV === 'development') {
-				allowedAnnouncements.push(el);
-				continue;
-			}
+		const pathname = headers().get('X-Referer-Pathname');
+		const reqCountry = headers().get('X-Vercel-IP-Country');
 
-			const geoLocationRule = await kv.hget<GeolocationKvResponse>(`rules:${el.announcements.id}`, 'geolocation');
-			if (geoLocationRule) {
-				const reqCountry = headers().get('X-Vercel-IP-Country');
-				console.info(`Checking ${reqCountry} against ${geoLocationRule.countries}`);
-				if (reqCountry && geoLocationRule.countries.includes(reqCountry)) {
-					allowedAnnouncements.push(el);
-				}
-			} else allowedAnnouncements.push(el);
-		}
+		const allowedAnnouncements = await Promise.all(
+			data.map(async (el) => {
+				// if (process.env.VERCEL_ENV === 'development') return el;
 
-		return allowedAnnouncements.map((a) => ({
-			title: a.announcements.title,
-			layout: a.announcements.layout,
-			imageUrl: a.announcements.imageUrl,
-			description: a.announcements.description,
-			buttonStyle: a.announcements.buttonStyle,
-			primaryColor: a.announcements.primaryColor,
-		}));
+				// const passesGeoRule = await checkGeolocationRules(el.announcements.id, reqCountry);
+				// if (!passesGeoRule) return null;
+
+				const passesPathRule = await checkPathRules(el.announcements.id, pathname);
+				return passesPathRule ? el : null;
+			})
+		);
+
+		return allowedAnnouncements
+			.filter((a) => a !== null)
+			.map((a) => ({
+				title: a.announcements.title,
+				layout: a.announcements.layout,
+				imageUrl: a.announcements.imageUrl,
+				description: a.announcements.description,
+				buttonStyle: a.announcements.buttonStyle,
+				primaryColor: a.announcements.primaryColor,
+			}));
 	});

@@ -9,9 +9,10 @@ import { useServerAction } from 'zsa-react';
 import { saveGeolocationRulesAction } from '../actions';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
+import { RulesKvResponse } from '@/lib/types';
 
 interface Props {
-	initialCountries: string[] | undefined;
+	initialCountries: RulesKvResponse['geolocation']['countries'] | undefined;
 }
 
 export default function GeolocationRules({ initialCountries }: Props) {
@@ -77,7 +78,7 @@ export default function GeolocationRules({ initialCountries }: Props) {
 						onClick={handleSave}
 						disabled={
 							isPending ||
-							!selectedCountries.length ||
+							(!selectedCountries.length && selectedCountries.length == initialFoundCountries?.length) ||
 							(initialCountries &&
 								selectedCountries.length == initialFoundCountries?.length &&
 								selectedCountries?.every((c) => initialFoundCountries?.includes(c)))
