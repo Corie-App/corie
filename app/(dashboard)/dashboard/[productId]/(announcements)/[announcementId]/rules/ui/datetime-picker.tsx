@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Calendar } from '@/ui/calendar';
+import { toast } from 'sonner';
 
 const hours = [...Array.from({ length: 24 }, (_, i) => i.toString())];
 const minutes = [...Array.from({ length: 60 }, (_, i) => (i < 10 ? `0${i}` : i.toString()))];
@@ -30,7 +31,10 @@ export default function DatetimePicker({ initialDate, onDateChange }: Props) {
 	}, [hour, minute]);
 
 	useEffect(() => {
-		if (date) onDateChange(date);
+		if (date) {
+			if (date < new Date()) toast.error('Date must be in the future');
+			else onDateChange(date);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [date]);
 
@@ -65,16 +69,21 @@ export default function DatetimePicker({ initialDate, onDateChange }: Props) {
 		);
 	};
 
+	const isPastDate = (date: Date) => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		return date < today;
+	};
+
 	return (
 		<>
 			<Calendar
 				required
-				month={date}
 				initialFocus
 				mode='single'
 				selected={date}
 				onSelect={handleDateSelect}
-				disabled={(date) => date < new Date() || date < new Date('1900-01-01')}
+				disabled={(date) => isPastDate(date) || date < new Date('1900-01-01')}
 			/>
 			<div className='p-3 pt-0 flex items-center gap-2'>
 				<Popover open={showHour} onOpenChange={setShowHour}>

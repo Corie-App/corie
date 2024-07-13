@@ -12,6 +12,7 @@ export default async function AnnouncementRulesPage({ params }: { params: { anno
 		'geolocation'
 	);
 	const pathsRule = await kv.hget<RulesKvResponse['paths']>(`rules:${params.announcementId}`, 'paths');
+	const scheduleRule = await kv.hget<RulesKvResponse['schedule']>(`rules:${params.announcementId}`, 'schedule');
 
 	return (
 		<div className='h-full mx-auto max-w-2xl w-full py-6'>
@@ -20,7 +21,7 @@ export default async function AnnouncementRulesPage({ params }: { params: { anno
 				<PathRules rules={pathsRule}>
 					<PathVersionHistory announcementId={params.announcementId} />
 				</PathRules>
-				<SchedulingRules />
+				<SchedulingRules rules={scheduleRule} />
 				<AccordionItem
 					value='device'
 					className='border-b-0 bg-white ring-1 ring-inset ring-gray-200 rounded-lg px-3'>
