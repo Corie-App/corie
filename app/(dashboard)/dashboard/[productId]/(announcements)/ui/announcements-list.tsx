@@ -13,7 +13,7 @@ export default async function AnnouncementsList({ productId }: { productId: stri
 			Create an announcement to get started
 		</div>
 	) : (
-		<ul className='divide-y divide-gray-100 bg-white py-4 border-r border-gray-100 min-w-[300px]'>
+		<ul className='divide-y divide-gray-100 bg-white py-4 border-r border-gray-100 min-w-[300px] overflow-y-auto'>
 			{data.map((announcement) => (
 				<li key={announcement.id} className='py-2 px-4 flex gap-3 items-center justify-between'>
 					<Link

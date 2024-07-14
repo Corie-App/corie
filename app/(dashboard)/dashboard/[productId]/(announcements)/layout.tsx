@@ -8,7 +8,7 @@ export default function AnnouncementsLayout({
 	params: { productId: string };
 }) {
 	return (
-		<div className='grow flex bg-gray-50'>
+		<div className='grow flex bg-gray-50 overflow-y-auto'>
 			<AnnouncementsList productId={params.productId} />
 			{children}
 		</div>
