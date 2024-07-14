@@ -22,7 +22,7 @@ export default function AnnouncementNavigation({ productId, announcementId }: Pr
 
 	return (
 		<Tabs
-			className='py-3 bg-white flex justify-center'
+			className='py-3 bg-white flex justify-center sticky top-0 z-10'
 			onValueChange={handleChange}
 			defaultValue={filteredSegments.length === 0 ? 'details' : filteredSegments[0]}>
 			<TabsList>

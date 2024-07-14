@@ -16,7 +16,7 @@ export default async function AnnouncementRulesPage({ params }: { params: { anno
 
 	return (
 		<div className='h-full mx-auto max-w-2xl w-full py-6'>
-			<Accordion type='multiple' className='space-y-4'>
+			<Accordion type='multiple' className='space-y-4 pb-6'>
 				<GeolocationRules initialCountries={geoLocationRule?.countries} />
 				<PathRules rules={pathsRule}>
 					<PathVersionHistory announcementId={params.announcementId} />
