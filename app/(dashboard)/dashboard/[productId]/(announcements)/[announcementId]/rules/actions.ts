@@ -1,7 +1,13 @@
 'use server';
 
 import { isProductAdminProcedure } from '@/lib/procedures';
-import { RestorePathRulesSchema, SaveGelocationRulesSchema, SavePathRulesSchema } from '@/schemas/announcement/rules';
+import {
+	ClearSchedulingRulesSchema,
+	RestorePathRulesSchema,
+	SaveGelocationRulesSchema,
+	SavePathRulesSchema,
+	SaveSchedulingRulesSchema,
+} from '@/schemas/announcement/rules';
 import { revalidatePath } from 'next/cache';
 import { kv } from '@vercel/kv';
 import { splitPaths } from '@/lib/split-paths';
@@ -49,6 +55,33 @@ export const restorePathRulesAction = isProductAdminProcedure
 		const rulesString = JSON.stringify({ allowlist, blocklist });
 		await kv.hset(`rules:${input.announcementId}`, { paths: rulesString });
 
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
+		return { success: true };
+	});
+
+export const saveSchedulingRulesAction = isProductAdminProcedure
+	.createServerAction()
+	.input(SaveSchedulingRulesSchema, { type: 'formData' })
+	.handler(async ({ input }) => {
+		if (input.endDateType === 'date' && input.endDate && input.endDate < input.startDate)
+			throw new ZSAError('ERROR', 'End date must be after start date');
+
+		const rulesString = JSON.stringify({
+			startDate: input.startDate.toISOString(),
+			endDate: input.endDate ? input.endDate.toISOString() : undefined,
+			duration: input.duration,
+		});
+
+		await kv.hset(`rules:${input.announcementId}`, { schedule: rulesString });
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
+		return { success: true };
+	});
+
+export const clearSchedulingRulesAction = isProductAdminProcedure
+	.createServerAction()
+	.input(ClearSchedulingRulesSchema)
+	.handler(async ({ input }) => {
+		await kv.hdel(`rules:${input.announcementId}`, 'schedule');
 		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
 		return { success: true };
 	});
