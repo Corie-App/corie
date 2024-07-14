@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import DatetimePicker from './datetime-picker';
 import { useServerAction } from 'zsa-react';
-import { saveSchedulingRulesAction } from '../actions';
+import { clearSchedulingRulesAction, saveSchedulingRulesAction } from '../actions';
 import { AnnouncementDuration, RulesKvResponse } from '@/lib/types';
 
 const durations: Record<AnnouncementDuration, string> = {
@@ -53,6 +53,16 @@ export default function SchedulingRules({ rules }: Props) {
 		},
 	});
 
+	const clearSchedule = useServerAction(clearSchedulingRulesAction, {
+		onSuccess() {
+			setStartDate(undefined);
+			setEndDate(undefined);
+			setDuration(undefined);
+			setEndDateType('date');
+			toast.success('Changes saved successfully');
+		},
+	});
+
 	const handleTabChange = (value: string) => {
 		setEndDateType(value as 'date' | 'duration');
 		if (value === 'duration') setEndDate(undefined);
@@ -64,6 +74,13 @@ export default function SchedulingRules({ rules }: Props) {
 		setEndDate(rules?.endDate ? new Date(rules.endDate) : undefined);
 		setDuration(rules?.duration);
 		setEndDateType(rules?.duration ? 'duration' : 'date');
+	};
+
+	const handleClear = () => {
+		clearSchedule.execute({
+			productId: params.productId as string,
+			announcementId: params.announcementId as string,
+		});
 	};
 
 	return (
@@ -200,6 +217,9 @@ export default function SchedulingRules({ rules }: Props) {
 								Reset
 							</Button>
 						</div>
+						<Button type='button' onClick={handleClear} variant='outline'>
+							{clearSchedule.isPending ? 'Clearing...' : 'Clear Schedule'}
+						</Button>
 					</div>
 				</form>
 			</AccordionContent>

@@ -4,7 +4,7 @@ import { scriptProcedure } from '@/lib/procedures';
 import { eq, and } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
-import { checkGeolocationRules, checkPathRules } from './utils';
+import { checkGeolocationRules, checkPathRules, checkScheduleRules } from './utils';
 
 export const getAnnouncements = scriptProcedure
 	.createServerAction()
@@ -24,11 +24,13 @@ export const getAnnouncements = scriptProcedure
 			data.map(async (el) => {
 				// if (process.env.VERCEL_ENV === 'development') return el;
 
-				// const passesGeoRule = await checkGeolocationRules(el.announcements.id, reqCountry);
-				// if (!passesGeoRule) return null;
+				const [passesGeoRule, passesPathRule, passesScheduleRule] = await Promise.all([
+					checkGeolocationRules(el.announcements.id, reqCountry),
+					checkPathRules(el.announcements.id, pathname),
+					checkScheduleRules(el.announcements.id),
+				]);
 
-				const passesPathRule = await checkPathRules(el.announcements.id, pathname);
-				return passesPathRule ? el : null;
+				return passesGeoRule && passesPathRule && passesScheduleRule ? el : null;
 			})
 		);
 

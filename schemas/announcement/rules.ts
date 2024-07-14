@@ -25,3 +25,5 @@ export const SaveSchedulingRulesSchema = ProductAnnouncementSchema.extend({
 	duration: z.string().optional(),
 	endDateType: z.enum(['date', 'duration']),
 });
+
+export const ClearSchedulingRulesSchema = ProductAnnouncementSchema;

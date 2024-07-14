@@ -1,5 +1,22 @@
-import { RulesKvResponse } from '@/lib/types';
+import { AnnouncementDuration, RulesKvResponse } from '@/lib/types';
 import { kv } from '@vercel/kv';
+
+export async function checkScheduleRules(announcementId: string): Promise<boolean> {
+	const scheduleRule = await kv.hget<RulesKvResponse['schedule']>(`rules:${announcementId}`, 'schedule');
+	if (!scheduleRule) return true; // No rule means pass
+
+	const now = Date.now();
+	const startTime = new Date(scheduleRule.startDate).getTime();
+	if (now < startTime) return false;
+
+	const endTime = scheduleRule.endDate
+		? new Date(scheduleRule.endDate).getTime()
+		: scheduleRule.duration
+		? calculateEndTime(startTime, scheduleRule.duration)
+		: Infinity;
+
+	return now <= endTime;
+}
 
 export async function checkGeolocationRules(announcementId: string, reqCountry: string | null): Promise<boolean> {
 	const geoLocationRule = await kv.hget<RulesKvResponse['geolocation']>(`rules:${announcementId}`, 'geolocation');
@@ -22,7 +39,6 @@ export async function checkPathRules(announcementId: string, currentPath: string
 	const sortedBlocklist = sortPatterns(pathsRule.blocklist);
 
 	for (const pattern of [...sortedBlocklist, ...sortedAllowlist]) {
-		console.info({ pattern, currentPath, matches: pathMatchesPattern(currentPath, pattern) });
 		if (pathMatchesPattern(currentPath, pattern)) {
 			return sortedAllowlist.includes(pattern);
 		}
@@ -34,4 +50,14 @@ export async function checkPathRules(announcementId: string, currentPath: string
 function pathMatchesPattern(path: string, pattern: string): boolean {
 	const regexPattern = pattern.replace(/\*/g, '.*').replace(/\//g, '\\/');
 	return new RegExp(`^${regexPattern}$`).test(path);
+}
+
+function calculateEndTime(startTime: number, duration: AnnouncementDuration): number {
+	const multipliers: Record<AnnouncementDuration, number> = {
+		'1h': 60 * 60 * 1000,
+		'1d': 24 * 60 * 60 * 1000,
+		'1w': 7 * 24 * 60 * 60 * 1000,
+		'1m': 30 * 24 * 60 * 60 * 1000, // Approximate
+	};
+	return startTime + multipliers[duration];
 }

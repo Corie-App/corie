@@ -2,6 +2,7 @@
 
 import { isProductAdminProcedure } from '@/lib/procedures';
 import {
+	ClearSchedulingRulesSchema,
 	RestorePathRulesSchema,
 	SaveGelocationRulesSchema,
 	SavePathRulesSchema,
@@ -70,8 +71,17 @@ export const saveSchedulingRulesAction = isProductAdminProcedure
 			endDate: input.endDate ? input.endDate.toISOString() : undefined,
 			duration: input.duration,
 		});
-		
+
 		await kv.hset(`rules:${input.announcementId}`, { schedule: rulesString });
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
+		return { success: true };
+	});
+
+export const clearSchedulingRulesAction = isProductAdminProcedure
+	.createServerAction()
+	.input(ClearSchedulingRulesSchema)
+	.handler(async ({ input }) => {
+		await kv.hdel(`rules:${input.announcementId}`, 'schedule');
 		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
 		return { success: true };
 	});
