@@ -5,11 +5,11 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AnnouncementWrapper from './ui/components/announcement-wrapper.jsx';
 
-export async function fetchAnnouncements(): Promise<void> {
+export async function fetchAnnouncements(userId: string): Promise<void> {
 	// displayAnnouncements([]);
 	// return;
 	const scriptId = ScriptLoader.getScriptId();
-	const apiUrl = `/api/announcements?scriptId=${scriptId}`;
+	const apiUrl = `/api/announcements?scriptId=${scriptId}&userId=${userId}`;
 	// const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/announcements?scriptId=${scriptId}`;
 	try {
 		const response = await fetch(apiUrl, {

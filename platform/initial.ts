@@ -2,6 +2,7 @@ import './ui/styles/styles.css';
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
 import { fetchAnnouncements } from './announcements.js';
+import { checkAndUpdateIdentifier, getUserIdentifier } from './identity';
 
 async function initializeCorie(): Promise<void> {
 	try {
@@ -10,8 +11,12 @@ async function initializeCorie(): Promise<void> {
 		if (scriptId) {
 			const domainMatched = await matchDomain(scriptId);
 			if (domainMatched) {
+				checkAndUpdateIdentifier();
+				const userId = getUserIdentifier();
+				Logger.log('User Identifier: ' + userId);
+
 				injectStyles();
-				await fetchAnnouncements();
+				await fetchAnnouncements(userId);
 			} else {
 				Logger.log('Domain not matched.');
 			}
