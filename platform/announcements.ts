@@ -1,11 +1,12 @@
 import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
-import { Announcement, ButtonStyle } from './types.js';
+import { Announcement } from './types.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import AnnouncementWrapper from './ui/components/announcement-wrapper.jsx';
+import { CorieAnalytics } from './analytics/index.js';
 
-export async function fetchAnnouncements(userId: string): Promise<void> {
+export async function fetchAnnouncements(userId: string, analytics: CorieAnalytics): Promise<void> {
 	// displayAnnouncements([]);
 	// return;
 	const scriptId = ScriptLoader.getScriptId();
@@ -23,13 +24,13 @@ export async function fetchAnnouncements(userId: string): Promise<void> {
 			throw new Error('Error fetching announcements');
 		}
 		const data = (await response.json()) as Announcement[];
-		displayAnnouncements(data);
+		displayAnnouncements(data, analytics);
 	} catch (error) {
 		Logger.log('Error fetching announcements: ' + error);
 	}
 }
 
-function displayAnnouncements(data: Announcement[]): void {
+function displayAnnouncements(data: Announcement[], analytics: CorieAnalytics): void {
 	const container = document.createElement('div');
 	container.className = 'corie-root ';
 	document.body.appendChild(container);
@@ -41,31 +42,11 @@ function displayAnnouncements(data: Announcement[]): void {
 		container.remove();
 	};
 
-	const _data = [
-		{
-			title: 'Improved pricing to our infrastructure',
-			layout: 'image-left' as 'default' | 'image-left' | 'image-top',
-			description:
-				// 'wwwwwwwwwwwwwwwwww wwwwwwwwwww wwwwwwwwwwwwwwwwww wwwwwwwwwww wwwwwwwwwwwwwwwwww wwwwwwwwwww',
-				'You can now choose the infrastructure you want to use for your script. We have added a new pricing model that is more flexible and affordable.',
-			primaryColor: '#007AFF',
-			imageUrl: 'https://pbs.twimg.com/profile_images/1625874623303647233/D8B8H8Xq_400x400.jpg',
-			buttonStyle: 'flat' as ButtonStyle,
-		},
-	];
-
 	root.render(
 		React.createElement(AnnouncementWrapper, {
-			title: data[0].title,
-			description: data[0].description,
+			analytics,
+			announcements: data,
 			onClose: handleClose,
-			layout: data[0].layout,
-			imageUrl: data[0].imageUrl,
-			primaryColor: data[0].primaryColor,
-			buttonStyle: data[0].buttonStyle,
-			// image: _data[0].image,
-			// theme: _data[0].theme,
-			// layout: _data[0].layout,
 		})
 	);
 }

@@ -3,20 +3,22 @@ import { Logger } from './logger.js';
 import { ScriptLoader } from './shared.js';
 import { fetchAnnouncements } from './announcements.js';
 import { checkAndUpdateIdentifier, getUserIdentifier } from './identity';
+import { CorieAnalytics } from './analytics';
 
 async function initializeCorie(): Promise<void> {
 	try {
 		Logger.log('Initializing Corie script...');
 		const scriptId = ScriptLoader.getScriptId();
 		if (scriptId) {
-			const domainMatched = await matchDomain(scriptId);
-			if (domainMatched) {
+			const domainRes = await matchDomain(scriptId);
+			if (domainRes.found) {
 				checkAndUpdateIdentifier();
 				const userId = getUserIdentifier();
+				const analytics = new CorieAnalytics(userId, domainRes.country);
 				Logger.log('User Identifier: ' + userId);
 
 				injectStyles();
-				await fetchAnnouncements(userId);
+				await fetchAnnouncements(userId, analytics);
 			} else {
 				Logger.log('Domain not matched.');
 			}
@@ -28,7 +30,7 @@ async function initializeCorie(): Promise<void> {
 	}
 }
 
-async function matchDomain(scriptId: string): Promise<boolean> {
+async function matchDomain(scriptId: string): Promise<{ found: boolean; country: string | null }> {
 	const apiUrl = `/api/products/domain?scriptId=${scriptId}`;
 	// const apiUrl = `https://corie-git-gt-codes-cor-10-create-a-script-that-a8dc35-gt-codes.vercel.app/api/products/domain?scriptId=${scriptId}`;
 	try {
@@ -42,10 +44,10 @@ async function matchDomain(scriptId: string): Promise<boolean> {
 			throw new Error('Unauthorized domain or other error');
 		}
 		const data = await response.json();
-		return data.found;
+		return { found: data.found, country: data.country };
 	} catch (error) {
 		Logger.log('Error matching domain: ' + error);
-		return false;
+		return { found: false, country: null };
 	}
 }
 

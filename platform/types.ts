@@ -1,4 +1,5 @@
 export type Announcement = {
+	id: string;
 	title: string;
 	layout: Layout;
 	description: string;
