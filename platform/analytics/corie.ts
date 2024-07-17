@@ -1,4 +1,11 @@
-import { MAX_ENGAGEMENT_SCORE, BATCH_SIZE, MAX_READING_TIME_MS, OPTIMAL_ENGAGEMENT_TIME_MS } from './constants';
+import {
+	MAX_ENGAGEMENT_SCORE,
+	BATCH_SIZE,
+	MAX_READING_TIME_MS,
+	OPTIMAL_ENGAGEMENT_TIME_MS,
+	TINYBIRD_INNGEST_API_URL,
+	TINYBIRD_DATASOURCE,
+} from './constants';
 import { ClientInfo, AnalyticsEvent, ViewEvent, AnalyticsEventType, InteractionEvent } from './types';
 import { getDeviceType } from './utils';
 
@@ -78,8 +85,13 @@ export class CorieAnalytics {
 	}
 
 	private async sendToTinybird(event: AnalyticsEvent): Promise<void> {
-		// Implementation to send data to Tinybird
-		// This could be a direct API call or through a batching mechanism
-		console.info({ event });
+		fetch(`${TINYBIRD_INNGEST_API_URL}?name=${TINYBIRD_DATASOURCE}`, {
+			method: 'POST',
+			body: JSON.stringify(event),
+			headers: {
+				Authorization:
+					'Bearer p.eyJ1IjogImRlMTdlM2M5LTgzMTctNGExNy1iYWYzLWQ2ZGUwYjRmYmIxNyIsICJpZCI6ICIyYmRlZjUzOS02ZjZjLTQwZGQtYTNjOS1kODY2MzVmYWViN2IiLCAiaG9zdCI6ICJ1cy1lYXN0LWF3cyJ9.fLTqatGMA8zrTkHRzM5XrXPYerwJNoJavSA7spaKQvA',
+			},
+		});
 	}
 }
