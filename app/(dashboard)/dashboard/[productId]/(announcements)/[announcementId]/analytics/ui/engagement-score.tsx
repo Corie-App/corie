@@ -2,7 +2,7 @@
 
 import { Label, PolarGrid, PolarRadiusAxis, RadialBar, RadialBarChart } from 'recharts';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/ui/card';
 import { ChartConfig, ChartContainer } from '@/ui/chart';
 
 const chartConfig = {
@@ -13,11 +13,15 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface Props {
-	totalInteractions: number;
-	avgEngagementScore: number;
+	data: {
+		totalInteractions: number;
+		avgEngagementScore: number;
+	};
 }
 
-export function EngagementScore({ totalInteractions, avgEngagementScore }: Props) {
+export function EngagementScore({ data }: Props) {
+	const { totalInteractions, avgEngagementScore } = data;
+
 	return (
 		<Card className='flex flex-col'>
 			<CardHeader className='items-center pb-0'>
@@ -70,6 +74,10 @@ export function EngagementScore({ totalInteractions, avgEngagementScore }: Props
 					</RadialBarChart>
 				</ChartContainer>
 			</CardContent>
+			<CardFooter className='flex-col gap-2 text-sm'>
+				<div className='flex items-center gap-2 font-medium leading-none'>Trending up by 5.2% this month</div>
+				<div className='leading-none text-muted-foreground'>Showing total visitors for the last 6 months</div>
+			</CardFooter>
 		</Card>
 	);
 }
