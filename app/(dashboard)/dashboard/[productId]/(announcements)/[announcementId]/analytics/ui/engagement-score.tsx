@@ -4,6 +4,7 @@ import { Label, PolarGrid, PolarRadiusAxis, RadialBar, RadialBarChart } from 're
 
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/ui/card';
 import { ChartConfig, ChartContainer } from '@/ui/chart';
+import { cn } from '@/lib/utils';
 
 const chartConfig = {
 	avgEngagementScore: {
@@ -75,8 +76,27 @@ export function EngagementScore({ data }: Props) {
 				</ChartContainer>
 			</CardContent>
 			<CardFooter className='flex-col gap-2 text-sm'>
-				<div className='flex items-center gap-2 font-medium leading-none'>Trending up by 5.2% this month</div>
-				<div className='leading-none text-muted-foreground'>Showing total visitors for the last 6 months</div>
+				<div className='flex items-center gap-2 font-medium leading-none'>
+					<span
+						className={cn(
+							'inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
+							data.avgEngagementScore > 70
+								? 'bg-green-50 text-green-700 ring-green-600/20'
+								: data.avgEngagementScore > 40
+								? 'bg-orange-50 text-orange-700 ring-orange-600/20'
+								: 'bg-red-50 text-red-700 ring-red-600/20'
+						)}>
+						{data.avgEngagementScore > 70 ? 'High' : data.avgEngagementScore > 40 ? 'Moderate' : 'Low'}{' '}
+						engagement
+					</span>
+				</div>
+				<div className='leading-none text-muted-foreground'>
+					{data.avgEngagementScore > 70
+						? 'Users are highly interested in this announcement'
+						: data.avgEngagementScore > 40
+						? 'Users are showing interest in this announcement'
+						: 'This announcement may need optimization for better engagement'}
+				</div>
 			</CardFooter>
 		</Card>
 	);

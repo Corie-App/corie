@@ -1,7 +1,6 @@
 'use client';
 
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/ui/chart';
 
@@ -10,7 +9,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface Props {
-	data: { time: string; views: number }[];
+	data: { time: string | null; views: number | null }[];
 }
 
 export default function ViewsChart({ data }: Props) {
