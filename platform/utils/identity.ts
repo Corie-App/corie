@@ -1,4 +1,4 @@
-import { generateUUID } from './utils';
+import { generateUUID } from '../utils';
 
 const COOKIE_NAME = 'corie_uid';
 const STORAGE_KEY = 'corie_uid';

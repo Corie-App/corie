@@ -19,3 +19,9 @@ export type AnnouncementConfig = {
 
 export type ButtonStyle = 'flat' | 'curved' | 'pill';
 export type Layout = 'default' | 'image-left' | 'image-top';
+
+export interface Env {
+	url: string;
+	token: string;
+	environment: 'production' | 'development';
+}

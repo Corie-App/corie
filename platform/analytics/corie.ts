@@ -1,11 +1,4 @@
-import {
-	MAX_ENGAGEMENT_SCORE,
-	BATCH_SIZE,
-	MAX_READING_TIME_MS,
-	OPTIMAL_ENGAGEMENT_TIME_MS,
-	TINYBIRD_INNGEST_API_URL,
-	TINYBIRD_DATASOURCE,
-} from './constants';
+import { MAX_ENGAGEMENT_SCORE, BATCH_SIZE, MAX_READING_TIME_MS, OPTIMAL_ENGAGEMENT_TIME_MS } from './constants';
 import { ClientInfo, AnalyticsEvent, ViewEvent, AnalyticsEventType, InteractionEvent } from './types';
 import { getDeviceType } from './utils';
 
@@ -84,13 +77,18 @@ export class CorieAnalytics {
 		return score;
 	}
 
+	private encode(data: AnalyticsEvent): string {
+		return btoa(encodeURIComponent(JSON.stringify(data)));
+	}
+
 	private async sendToTinybird(event: AnalyticsEvent): Promise<void> {
-		fetch(`${TINYBIRD_INNGEST_API_URL}?name=${TINYBIRD_DATASOURCE}`, {
+		const encodedEvent = this.encode(event);
+
+		fetch(`/tinybird/send`, {
 			method: 'POST',
-			body: JSON.stringify(event),
+			body: JSON.stringify(encodedEvent),
 			headers: {
-				Authorization:
-					'Bearer p.eyJ1IjogImRlMTdlM2M5LTgzMTctNGExNy1iYWYzLWQ2ZGUwYjRmYmIxNyIsICJpZCI6ICIyYmRlZjUzOS02ZjZjLTQwZGQtYTNjOS1kODY2MzVmYWViN2IiLCAiaG9zdCI6ICJ1cy1lYXN0LWF3cyJ9.fLTqatGMA8zrTkHRzM5XrXPYerwJNoJavSA7spaKQvA',
+				'Content-Type': 'application/json',
 			},
 		});
 	}

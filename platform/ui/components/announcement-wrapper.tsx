@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Announcement, ButtonStyle } from '../../types';
+import { Announcement, ButtonStyle } from '../../utils/types';
 import { cn } from '../../utils';
 import { AnalyticsEventType, CorieAnalytics } from '../../analytics';
 

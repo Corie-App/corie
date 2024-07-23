@@ -1,4 +1,3 @@
-import { TINYBIRD_ANALYTICS_API_URL } from '@/platform/analytics/constants';
 import ViewsChart from './ui/views-chart';
 import { EngagementScore } from './ui/engagement-score';
 import { CountriesPreview } from './ui/countries-preview';
@@ -17,9 +16,10 @@ type PossibleResponse = {
 
 export default async function AnalyticsPage({ params }: { params: { announcementId: string } }) {
 	const response = await fetch(
-		`${TINYBIRD_ANALYTICS_API_URL}/anl_visuals.json?announcementId=${params.announcementId}`,
+		`https://api.us-east.aws.tinybird.co/v0/pipes/anl_visuals.json?announcementId=${params.announcementId}`,
 		{
 			headers: { Authorization: `Bearer ${process.env.TINYBIRD_API_KEY}` },
+			cache: 'no-store',
 		}
 	);
 	const { data } = (await response.json()) as PossibleResponse;

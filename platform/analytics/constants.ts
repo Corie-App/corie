@@ -2,6 +2,3 @@ export const BATCH_SIZE = 10;
 export const MAX_ENGAGEMENT_SCORE = 100;
 export const MAX_READING_TIME_MS = 30000; // 30 seconds max reading time
 export const OPTIMAL_ENGAGEMENT_TIME_MS = 10000; // 10 seconds is considered optimal
-export const TINYBIRD_DATASOURCE = 'corie_analytics_events';
-export const TINYBIRD_INNGEST_API_URL = 'https://api.us-east.aws.tinybird.co/v0/events';
-export const TINYBIRD_ANALYTICS_API_URL = 'https://api.us-east.aws.tinybird.co/v0/pipes';
