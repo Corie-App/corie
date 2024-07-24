@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonStyle } from '../../types';
+import { Announcement, ButtonStyle } from '../../utils/types';
 import { cn } from '../../utils';
+import { AnalyticsEventType, CorieAnalytics } from '../../analytics';
 
 interface AnnouncementWrapperProps {
-	title: string;
-	description: string;
 	onClose: () => void;
-	primaryColor: string;
-	buttonStyle: ButtonStyle;
-	layout: 'default' | 'image-left' | 'image-top';
-	imageUrl: string | null;
+	analytics: CorieAnalytics;
+	announcements: Announcement[];
 }
 
 const radiusStyles: Record<ButtonStyle, string> = {
@@ -18,27 +15,42 @@ const radiusStyles: Record<ButtonStyle, string> = {
 	pill: 'corie-rounded-full',
 };
 
-const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
-	title,
-	description,
-	onClose,
-	buttonStyle,
-	primaryColor,
-	layout = 'default',
-	imageUrl,
-}) => {
+const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({ analytics, announcements, onClose }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
+	const [viewTimestamp, setViewTimestamp] = useState(Date.now());
+	const { title, description, layout, imageUrl, primaryColor, buttonStyle } = announcements[0];
 
 	useEffect(() => {
 		setIsVisible(true);
+		setViewTimestamp(Date.now());
+		analytics.trackAnnouncementView(announcements[0].id, window.location.pathname);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleClose = () => {
+	const handleInteraction = (announcementId: string, action: 'dismiss' | 'cta_click') => {
+		const engagementTime = Date.now() - viewTimestamp;
+
+		analytics.trackInteraction(
+			announcementId,
+			action === 'dismiss' ? AnalyticsEventType.DISMISS : AnalyticsEventType.CTA_CLICK,
+			engagementTime,
+			window.location.pathname
+		);
+	};
+
+	const handleClose = (config: { track: boolean } = { track: true }) => {
+		if (config?.track) handleInteraction(announcements[0].id, 'dismiss');
+
 		setIsClosing(true);
 		setTimeout(() => {
 			onClose();
 		}, 250);
+	};
+
+	const handleCTAClick = () => {
+		handleInteraction(announcements[0].id, 'cta_click');
+		handleClose({ track: false });
 	};
 
 	const renderImage = () => {
@@ -85,7 +97,7 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 			<div className='corie-flex corie-justify-between corie-gap-3'>
 				<button
 					type='button'
-					onClick={handleClose}
+					onClick={() => handleClose()}
 					className={cn(
 						'corie-w-full corie-px-4 corie-py-2 corie-bg-transparent corie-border corie-text-sm corie-font-medium corie-transition-colors corie-focus:outline-none corie-focus:ring-2 corie-focus:ring-offset-2 corie-hover:bg-opacity-80',
 						radiusStyles[buttonStyle]
@@ -94,7 +106,7 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 				</button>
 				<button
 					type='button'
-					onClick={() => console.log('Upgrade to Pro')}
+					onClick={handleCTAClick}
 					className={cn(
 						'corie-w-full corie-px-4 corie-py-2 corie-bg-black corie-border-none corie-text-sm corie-font-medium corie-text-white corie-transition-colors corie-focus:outline-none corie-focus:ring-2 corie-focus:ring-offset-2 corie-hover:bg-opacity-80',
 						radiusStyles[buttonStyle]
@@ -114,7 +126,7 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({
 				isClosing ? 'corie-animate-fade-out' : ''
 			)}>
 			<button
-				onClick={handleClose}
+				onClick={() => handleClose()}
 				className='corie-ring-1 corie-ring-inset corie-ring-gray-100 corie-absolute corie--top-2 corie--right-2 corie-w-6 corie-h-6 corie-flex corie-items-center corie-justify-center corie-bg-white corie-rounded-full corie-text-2xl corie-cursor-pointer'>
 				&times;
 			</button>

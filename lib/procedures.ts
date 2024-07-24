@@ -4,6 +4,7 @@ import { db } from './postgres';
 import { products } from './postgres/schema';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
+import { verifyToken } from './verify-token';
 
 export const authenticatedProcedure = createServerActionProcedure().handler(async () => {
 	try {
@@ -42,12 +43,13 @@ export const isProductAdminProcedure = createServerActionProcedure(authenticated
 export const scriptProcedure = createServerActionProcedure().handler(async ({ request }) => {
 	// This procedure is used to ensure api calls are coming only from the internal script
 	try {
-		const scriptSecret = request?.headers.get('X-Script-Secret');
+		const tokenHeader = request?.headers.get('X-Script-Token');
+		if (!tokenHeader) throw new Error('Missing token');
 
-		if (!scriptSecret || scriptSecret !== process.env.INTERNAL_SCRIPT_SECRET)
-			throw new Error('Unauthorized request');
+		if (!verifyToken(tokenHeader)) {
+			throw new Error('Invalid or expired token');
+		}
 	} catch {
 		throw new Error('Unauthorized request');
 	}
 });
-

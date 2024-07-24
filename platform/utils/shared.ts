@@ -1,4 +1,4 @@
-import { Logger } from './logger.js';
+import { Logger } from './logger';
 
 export class ScriptLoader {
 	private static scripts = new Map<string, Promise<HTMLScriptElement>>();

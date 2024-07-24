@@ -1,4 +1,5 @@
 export type Announcement = {
+	id: string;
 	title: string;
 	layout: Layout;
 	description: string;
@@ -18,3 +19,9 @@ export type AnnouncementConfig = {
 
 export type ButtonStyle = 'flat' | 'curved' | 'pill';
 export type Layout = 'default' | 'image-left' | 'image-top';
+
+export interface Env {
+	url: string;
+	token: string;
+	environment: 'production' | 'development';
+}

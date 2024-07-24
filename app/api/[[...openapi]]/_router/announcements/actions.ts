@@ -37,6 +37,7 @@ export const getAnnouncements = scriptProcedure
 		return allowedAnnouncements
 			.filter((a) => a !== null)
 			.map((a) => ({
+				id: a.announcements.id,
 				title: a.announcements.title,
 				layout: a.announcements.layout,
 				imageUrl: a.announcements.imageUrl,

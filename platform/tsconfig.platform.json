@@ -9,7 +9,11 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"moduleResolution": "node",
-		"jsx": "react"
+		"jsx": "react",
+		"baseUrl": ".",
+		"paths": {
+			"*": ["*", "platform/*"]
+		}
 	},
 	"include": ["./**/*.ts", "./**/*.tsx"],
 	"exclude": ["node_modules"],

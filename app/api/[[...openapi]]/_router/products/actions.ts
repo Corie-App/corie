@@ -11,6 +11,7 @@ export const matchDomain = scriptProcedure
 	.handler(async ({ input }) => {
 		const headersList = headers();
 		const hostname = headersList.get('X-Referer-Host');
+		const reqCountry = headers().get('X-Vercel-IP-Country');
 		console.info(`Loading script from ${hostname}`);
 
 		const data = await db.query.products.findFirst({
@@ -19,5 +20,5 @@ export const matchDomain = scriptProcedure
 
 		if (!data) return { found: null, error: 'Script not found' };
 		if (data.domain !== hostname) return { found: null, error: 'Domain does not match' };
-		return { found: true, error: null };
+		return { found: true, error: null, country: reqCountry };
 	});
