@@ -21,17 +21,11 @@ export abstract class BaseInitializer {
 		try {
 			if (!this.scriptId) throw new Error('Script ID not available');
 
-			const scripts = document.getElementsByTagName('script');
-			const currentScript = Array.from(scripts).find((script) => script.src && script.src.includes('initial.js'));
+			// const baseUrl = 'http://localhost:3000';
+			// const baseUrl = 'https://corie.vercel.app';
+			const baseUrl = 'https://corie-git-gt-codes-cor-20-track-dismisses-for-users-gt-codes.vercel.app';
 
-			let baseUrl = '';
-			if (currentScript && currentScript.src) {
-				const scriptUrl = new URL(currentScript.src);
-				baseUrl = `${scriptUrl.protocol}//${scriptUrl.hostname}`;
-			}
-			console.log({ currentScript, baseUrl });
-
-			const response = await fetch(`${baseUrl === 'http://localhost' ? `http://localhost:3000` : baseUrl}/env`);
+			const response = await fetch(`${baseUrl}/env`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch environment variables');
 			}
