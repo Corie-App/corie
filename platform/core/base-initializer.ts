@@ -20,9 +20,18 @@ export abstract class BaseInitializer {
 	protected async fetchEnv(): Promise<void> {
 		try {
 			if (!this.scriptId) throw new Error('Script ID not available');
-			if (!this.env) throw new Error('Environment not available');
 
-			const response = await fetch(`${this.env.url}/env`);
+			const scripts = document.getElementsByTagName('script');
+			const currentScript = Array.from(scripts).find((script) => script.src && script.src.includes('initial.js'));
+
+			let baseUrl = '';
+			if (currentScript && currentScript.src) {
+				const scriptUrl = new URL(currentScript.src);
+				baseUrl = `${scriptUrl.protocol}//${scriptUrl.hostname}`;
+			}
+			console.log({ currentScript, baseUrl });
+
+			const response = await fetch(`${baseUrl === 'http://localhost' ? `http://localhost:3000` : baseUrl}/env`);
 			if (!response.ok) {
 				throw new Error('Failed to fetch environment variables');
 			}
