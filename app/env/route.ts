@@ -2,7 +2,7 @@ import { randomBytes, createHmac } from 'node:crypto';
 
 const urls = {
 	development: 'http://localhost:3000',
-	preview: process.env.VERCEL_URL,
+	preview: `https://${process.env.VERCEL_URL}`,
 	production: 'https://corie.vercel.app',
 };
 
