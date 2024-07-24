@@ -23,6 +23,7 @@ export abstract class BaseInitializer {
 
 			// const baseUrl = 'http://localhost:3000';
 			// const baseUrl = 'https://corie.vercel.app';
+			// update this 👇🏿 to the preview branch you're on (based on the branch name)
 			const baseUrl = 'https://corie-git-gt-codes-cor-20-track-dismisses-for-users-gt-codes.vercel.app';
 
 			const response = await fetch(`${baseUrl}/env`);
