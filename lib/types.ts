@@ -16,6 +16,9 @@ export type RulesKvResponse = {
 		endDate?: string;
 		duration?: AnnouncementDuration;
 	};
+	devices: {
+		targetDevices: string[];
+	};
 };
 
 export type RuleConflict = {

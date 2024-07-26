@@ -4,6 +4,7 @@ import { isProductAdminProcedure } from '@/lib/procedures';
 import {
 	ClearSchedulingRulesSchema,
 	RestorePathRulesSchema,
+	SaveDevicesRulesSchema,
 	SaveGelocationRulesSchema,
 	SavePathRulesSchema,
 	SaveSchedulingRulesSchema,
@@ -82,6 +83,17 @@ export const clearSchedulingRulesAction = isProductAdminProcedure
 	.input(ClearSchedulingRulesSchema)
 	.handler(async ({ input }) => {
 		await kv.hdel(`rules:${input.announcementId}`, 'schedule');
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
+		return { success: true };
+	});
+
+export const saveDeviceRulesAction = isProductAdminProcedure
+	.createServerAction()
+	.input(SaveDevicesRulesSchema)
+	.handler(async ({ input }) => {
+		const deviceRule = JSON.stringify({ targetDevices: input.devices });
+		await kv.hset(`rules:${input.announcementId}`, { devices: deviceRule });
+
 		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/rules`);
 		return { success: true };
 	});
