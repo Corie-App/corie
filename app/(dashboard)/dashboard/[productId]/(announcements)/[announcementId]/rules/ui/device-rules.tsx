@@ -123,7 +123,7 @@ export default function DeviceRules({ initialDevices }: Props) {
 			</AccordionTrigger>
 			<AccordionContent className='space-y-4'>
 				<p className='text-muted-foreground'>Specify which devices this announcement should be displayed on</p>
-				<div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+				<div className='grid grid-cols-3 gap-6'>
 					{Object.keys(devices).map((deviceType) => (
 						<div key={deviceType} className='space-y-4'>
 							<p className='text-foreground font-semibold inline-flex items-center gap-1'>

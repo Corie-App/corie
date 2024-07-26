@@ -4,7 +4,7 @@ import { scriptProcedure } from '@/lib/procedures';
 import { eq, and } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
-import { checkGeolocationRules, checkPathRules, checkScheduleRules } from './utils';
+import { checkDeviceRules, checkGeolocationRules, checkPathRules, checkScheduleRules } from './utils';
 
 export const getAnnouncements = scriptProcedure
 	.createServerAction()
@@ -19,18 +19,20 @@ export const getAnnouncements = scriptProcedure
 
 		const pathname = headers().get('X-Referer-Pathname');
 		const reqCountry = headers().get('X-Vercel-IP-Country');
+		const userAgent = headers().get('User-Agent') || '';
 
 		const allowedAnnouncements = await Promise.all(
 			data.map(async (el) => {
 				// if (process.env.VERCEL_ENV === 'development') return el;
 
-				const [passesGeoRule, passesPathRule, passesScheduleRule] = await Promise.all([
+				const [passesGeoRule, passesPathRule, passesScheduleRule, passesDeviceRule] = await Promise.all([
 					checkGeolocationRules(el.announcements.id, reqCountry),
 					checkPathRules(el.announcements.id, pathname),
 					checkScheduleRules(el.announcements.id),
+					checkDeviceRules(el.announcements.id, userAgent),
 				]);
 
-				return passesGeoRule && passesPathRule && passesScheduleRule ? el : null;
+				return passesGeoRule && passesPathRule && passesScheduleRule && passesDeviceRule ? el : null;
 			})
 		);
 
