@@ -2,7 +2,7 @@
 
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/ui/accordion';
 import { useServerAction } from 'zsa-react';
-import { saveDeviceRulesAction } from '../actions';
+import { clearDeviceRulesAction, saveDeviceRulesAction } from '../actions';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 import { RulesKvResponse } from '@/lib/types';
@@ -69,6 +69,13 @@ export default function DeviceRules({ initialDevices }: Props) {
 		},
 	});
 
+	const clearDevices = useServerAction(clearDeviceRulesAction, {
+		onSuccess() {
+			setSelectedDevices([]);
+			toast.success('Changes saved successfully');
+		},
+	});
+
 	const handleSave = () => {
 		execute({
 			devices: selectedDevices,
@@ -96,6 +103,13 @@ export default function DeviceRules({ initialDevices }: Props) {
 			default:
 				setSelectedDevices((prev) => [...prev, value]);
 		}
+	};
+
+	const handleClear = () => {
+		clearDevices.execute({
+			productId: params.productId as string,
+			announcementId: params.announcementId as string,
+		});
 	};
 
 	return (
@@ -135,25 +149,30 @@ export default function DeviceRules({ initialDevices }: Props) {
 						</div>
 					))}
 				</div>
-				<div className='flex items-center gap-2'>
-					<Button
-						type='button'
-						onClick={handleSave}
-						disabled={
-							isPending ||
-							(!selectedDevices.length && selectedDevices.length == initialDevices?.length) ||
-							(selectedDevices.length == initialDevices?.length &&
-								selectedDevices?.every((c) => initialDevices?.includes(c)))
-						}>
-						{isPending ? 'Saving...' : 'Save Changes'}
-					</Button>
-					<Button
-						type='button'
-						variant='secondary'
-						onClick={() => {
-							setSelectedDevices(initialDevices ?? []);
-						}}>
-						Reset
+				<div className='flex items-center justify-between gap-2'>
+					<div className='flex items-center gap-2'>
+						<Button
+							type='button'
+							onClick={handleSave}
+							disabled={
+								isPending ||
+								(!selectedDevices.length && selectedDevices.length == initialDevices?.length) ||
+								(selectedDevices.length == initialDevices?.length &&
+									selectedDevices?.every((c) => initialDevices?.includes(c)))
+							}>
+							{isPending ? 'Saving...' : 'Save Changes'}
+						</Button>
+						<Button
+							type='button'
+							variant='secondary'
+							onClick={() => {
+								setSelectedDevices(initialDevices ?? []);
+							}}>
+							Reset
+						</Button>
+					</div>
+					<Button type='button' onClick={handleClear} variant='outline'>
+						{clearDevices.isPending ? 'Clearing...' : 'Clear Devices'}
 					</Button>
 				</div>
 			</AccordionContent>
