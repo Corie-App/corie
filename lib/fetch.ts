@@ -11,7 +11,7 @@ export const tinybirdFetcher = async (url: string, args: Record<string, string |
 		...args,
 	});
 
-	const response = await fetch(`/tinybird?${queryParams}`);
+	const response = await fetch(`/signal?${queryParams}`);
 
 	if (!response.ok) {
 		throw new Error('API request failed');

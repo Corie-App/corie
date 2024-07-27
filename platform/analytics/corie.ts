@@ -74,7 +74,7 @@ export class CorieAnalytics {
 
 	private sendToTinybird(event: AnalyticsEvent): void {
 		const encodedEvent = this.encode(event);
-		const url = `${this.baseUrl}/tinybird/evt`;
+		const url = `${this.baseUrl}/signal/evt`;
 
 		if (navigator.sendBeacon) {
 			const blob = new Blob([encodedEvent], { type: 'application/json' });
