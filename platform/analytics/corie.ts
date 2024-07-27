@@ -74,19 +74,18 @@ export class CorieAnalytics {
 
 	private sendToTinybird(event: AnalyticsEvent): void {
 		const encodedEvent = this.encode(event);
-		const url = `${this.baseUrl}/signal/evt`;
+		const callbackName = `corie_analytics_${Date.now()}`;
 
-		if (navigator.sendBeacon) {
-			const blob = new Blob([encodedEvent], { type: 'application/json' });
-			navigator.sendBeacon(url, blob);
-		} else {
-			fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(encodedEvent),
-				headers: { 'Content-Type': 'application/json' },
-				// Use keepalive to ensure the request is sent even if the page is unloading
-				keepalive: true,
-			}).catch((error) => console.error('Failed to send analytics event:', error));
-		}
+		(window as any)[callbackName] = () => {
+			delete (window as any)[callbackName];
+		};
+
+		const script = document.createElement('script');
+		script.src = `${this.baseUrl}/api/tinybird/send?callback=${callbackName}&data=${encodedEvent}`;
+		script.onerror = () => {
+			delete (window as any)[callbackName];
+			console.error('Failed to send analytics event');
+		};
+		document.head.appendChild(script);
 	}
 }
