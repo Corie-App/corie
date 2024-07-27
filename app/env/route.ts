@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { randomBytes, createHmac } from 'node:crypto';
 
 const urls = {
@@ -24,11 +25,25 @@ function generateToken(): Token {
 	return { value, expires };
 }
 
-export function GET() {
+export function GET(req: NextRequest) {
+	const searchParams = req.nextUrl.searchParams;
+	const callback = searchParams.get('callback');
+	const scriptId = searchParams.get('scriptId');
+
 	const token = generateToken();
 	const scriptToken = `${token.value}.${token.expires}.${createHmac('sha256', process.env.TOKEN_SECRET as string)
 		.update(`${token.value}.${token.expires}`)
 		.digest('hex')}`;
 
-	return new Response(JSON.stringify({ ...env, token: scriptToken }));
+	const envData = { ...env, token: scriptToken };
+
+	if (callback) {
+		return new Response(`${callback}(${JSON.stringify(envData)})`, {
+			headers: { 'Content-Type': 'application/javascript' },
+		});
+	} else {
+		return new Response(JSON.stringify(envData), {
+			headers: { 'Content-Type': 'application/json' },
+		});
+	}
 }

@@ -4,10 +4,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
-	const encodedPayload = await request.json();
+	const encodedPayload = await request.text();
 
 	if (!encodedPayload) {
-		return NextResponse.json({ error: 'Encrypted payload is required' }, { status: 400 });
+		return NextResponse.json({ error: 'Encoded payload is required' }, { status: 400 });
 	}
 
 	try {

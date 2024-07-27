@@ -1,70 +1,97 @@
-import { Logger } from '../utils/logger';
 import { CorieAnalytics } from '../analytics';
 import { Env } from '../utils/types';
 
 export abstract class BaseInitializer {
 	protected analytics: CorieAnalytics | null = null;
 	protected env: Env | null = null;
-	protected scriptId: string | null = null;
+	protected scriptId: string;
 
-	constructor() {
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', () => this.initialize());
-		} else {
-			this.initialize();
-		}
+	constructor(scriptId: string) {
+		this.scriptId = scriptId;
+		this.initialize();
 	}
 
 	protected abstract initialize(): Promise<void>;
 
 	protected async fetchEnv(): Promise<void> {
 		try {
-			if (!this.scriptId) throw new Error('Script ID not available');
-
-			// const baseUrl = 'http://localhost:3000';
 			// const baseUrl = 'https://corie.io';
-			// update this 👇🏿 to the preview branch you're on (based on the branch name)
-			const baseUrl = 'https://corie-git-gt-codes-cor-22-add-device-rules-gt-codes.vercel.app/';
+			const baseUrl = 'https://corie-git-gt-codes-cor-23-get-demo-usage-working-gt-codes.vercel.app';
+			// const baseUrl = 'http://localhost:3000';
 
-			const response = await fetch(`${baseUrl}/env`);
-			if (!response.ok) {
-				throw new Error('Failed to fetch environment variables');
-			}
-			const data = await response.json();
-			this.env = data;
+			const callbackName = `corie_env_${Date.now()}`;
+
+			return new Promise((resolve, reject) => {
+				(window as any)[callbackName] = (data: Env) => {
+					this.env = data;
+					delete (window as any)[callbackName];
+					resolve();
+				};
+
+				const script = document.createElement('script');
+				script.src = `${baseUrl}/env?callback=${callbackName}&scriptId=${this.scriptId}`;
+				script.onerror = () => reject(new Error('Failed to load environment data'));
+				script.onload = () => {
+					if (!this.env) {
+						reject(new Error('Environment data not received'));
+					}
+				};
+				document.head.appendChild(script);
+
+				// Set a timeout in case the server doesn't respond
+				setTimeout(() => {
+					if ((window as any)[callbackName]) {
+						delete (window as any)[callbackName];
+						reject(new Error('Timeout while fetching environment data'));
+					}
+				}, 5000); // 5 second timeout
+			});
 		} catch (error) {
 			console.error('Error fetching environment variables:', error);
+			throw error; // Re-throw the error to be handled by the caller
 		}
 	}
 
-	protected async matchDomain(scriptId: string): Promise<{ found: boolean; country: string | null }> {
+	protected async matchDomain(): Promise<{ found: boolean; country: string | null }> {
 		if (!this.env) {
 			throw new Error('Environment not available');
 		}
 
-		const apiUrl = `${this.env.url}/api/products/domain?scriptId=${scriptId}`;
-		try {
-			const response = await fetch(apiUrl, {
-				headers: {
-					'X-Referer-Host': window.location.hostname,
-					'X-Script-Token': this.env.token,
-				},
-			});
-			if (!response.ok) {
-				throw new Error('Unauthorized domain or other error');
-			}
-			const data = await response.json();
-			return { found: data.found, country: data.country };
-		} catch (error) {
-			Logger.log('Error matching domain: ' + error);
-			return { found: false, country: null };
-		}
+		const callbackName = `corie_domain_${Date.now()}`;
+
+		return new Promise((resolve, reject) => {
+			(window as any)[callbackName] = (data: { found: boolean; country: string | null; error?: string }) => {
+				delete (window as any)[callbackName];
+				if (data.error) {
+					reject(new Error(data.error));
+				} else {
+					resolve(data);
+				}
+			};
+
+			const script = document.createElement('script');
+			script.src = `${this.env?.url}/api/products/domain?callback=${callbackName}&scriptId=${
+				this.scriptId
+			}&host=${encodeURIComponent(window.location.hostname)}`;
+			script.onerror = () => reject(new Error('Failed to load domain matching data'));
+			script.onload = () => {
+				setTimeout(() => {
+					if ((window as any)[callbackName]) {
+						delete (window as any)[callbackName];
+						reject(new Error('Timeout while matching domain'));
+					}
+				}, 5000); // 5 second timeout
+			};
+			document.head.appendChild(script);
+		});
 	}
 
 	protected injectStyles(): void {
-		const link = document.createElement('link');
-		link.rel = 'stylesheet';
-		link.href = '/platform/ui/styles.css';
-		document.head.appendChild(link);
+		if (this.env) {
+			const link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.href = `${this.env.url}/platform/ui/styles.css`;
+			document.head.appendChild(link);
+		}
 	}
 }

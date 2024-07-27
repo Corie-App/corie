@@ -5,9 +5,15 @@ import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
 
+const DomainSchema = z.object({
+	scriptId: z.string(),
+	host: z.string().optional(),
+	callback: z.string().optional(),
+});
+
 export const matchDomain = scriptProcedure
 	.createServerAction()
-	.input(z.object({ scriptId: z.string() }))
+	.input(DomainSchema)
 	.handler(async ({ input }) => {
 		const headersList = headers();
 		const hostname = headersList.get('X-Referer-Host');
@@ -18,7 +24,20 @@ export const matchDomain = scriptProcedure
 			where: eq(products.scriptId, input.scriptId),
 		});
 
-		if (!data) return { found: null, error: 'Script not found' };
-		if (data.domain !== hostname) return { found: null, error: 'Domain does not match' };
-		return { found: true, error: null, country: reqCountry };
+		const result = { found: false, error: null as string | null, country: null as string | null };
+
+		if (!data) result.error = 'Script not found';
+		else if (data.domain !== hostname && data.domain !== input.host) result.error = 'Domain does not match';
+		else {
+			result.found = true;
+			result.country = reqCountry;
+		}
+
+		if (input.callback) {
+			return new Response(`${input.callback}(${JSON.stringify(result)})`, {
+				headers: {
+					'Content-Type': 'application/javascript',
+				},
+			});
+		} else return result;
 	});
