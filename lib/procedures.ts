@@ -49,7 +49,7 @@ export const scriptProcedure = createServerActionProcedure().handler(async ({ re
 		if (!verifyToken(tokenHeader)) {
 			throw new Error('Invalid or expired token');
 		}
-	} catch {
-		throw new Error('Unauthorized request');
+	} catch (error) {
+		console.error('Error verifying token:', error);
 	}
 });

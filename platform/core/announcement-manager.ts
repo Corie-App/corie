@@ -31,7 +31,6 @@ export class AnnouncementManager {
 				throw new Error('Error fetching announcements');
 			}
 			const data = (await response.json()) as Announcement[];
-			console.log({ data });
 			return data;
 		} catch (error) {
 			Logger.log('Error fetching announcements: ' + error);

@@ -47,6 +47,14 @@ export async function checkPathRules(announcementId: string, currentPath: string
 	return false;
 }
 
+export async function checkDeviceRules(announcementId: string, userAgent: string): Promise<boolean> {
+	const deviceRule = await kv.hget<RulesKvResponse['devices']>(`rules:${announcementId}`, 'devices');
+	if (!deviceRule || deviceRule.targetDevices.length === 0) return true; // No rule means pass
+
+	const userDevice = categorizeDevice(userAgent);
+	return deviceRule.targetDevices.includes(userDevice);
+}
+
 function pathMatchesPattern(path: string, pattern: string): boolean {
 	const regexPattern = pattern.replace(/\*/g, '.*').replace(/\//g, '\\/');
 	return new RegExp(`^${regexPattern}$`).test(path);
@@ -60,4 +68,22 @@ function calculateEndTime(startTime: number, duration: AnnouncementDuration): nu
 		'1m': 30 * 24 * 60 * 60 * 1000, // Approximate
 	};
 	return startTime + multipliers[duration];
+}
+
+function categorizeDevice(userAgent: string): string {
+	const ua = userAgent.toLowerCase();
+
+	if (ua.includes('ipad')) return 'tablet_ipad';
+	if (ua.includes('android') && ua.includes('mobile')) return 'mobile_android';
+	if (ua.includes('android')) return 'tablet_android';
+	if (ua.includes('iphone') || ua.includes('ipod')) return 'mobile_ios';
+
+	if (ua.includes('windows')) return 'desktop_windows';
+	if (ua.includes('macintosh') || ua.includes('mac os x')) return 'desktop_macos';
+	if (ua.includes('linux')) return 'desktop_linux';
+
+	if (ua.includes('mobile')) return 'other_mobile';
+	if (ua.includes('tablet')) return 'other_tablet';
+
+	return 'unknown';
 }

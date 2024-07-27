@@ -27,3 +27,8 @@ export const SaveSchedulingRulesSchema = ProductAnnouncementSchema.extend({
 });
 
 export const ClearSchedulingRulesSchema = ProductAnnouncementSchema;
+export const ClearDeviceRulesSchema = ProductAnnouncementSchema;
+
+export const SaveDeviceRulesSchema = ProductAnnouncementSchema.extend({
+	devices: z.array(z.string()),
+});

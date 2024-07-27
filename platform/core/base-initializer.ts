@@ -22,9 +22,9 @@ export abstract class BaseInitializer {
 			if (!this.scriptId) throw new Error('Script ID not available');
 
 			// const baseUrl = 'http://localhost:3000';
-			const baseUrl = 'https://corie.io';
+			// const baseUrl = 'https://corie.io';
 			// update this 👇🏿 to the preview branch you're on (based on the branch name)
-			// const baseUrl = 'https://corie-git-gt-codes-cor-20-track-dismisses-for-users-gt-codes.vercel.app';
+			const baseUrl = 'https://corie-git-gt-codes-cor-22-add-device-rules-gt-codes.vercel.app/';
 
 			const response = await fetch(`${baseUrl}/env`);
 			if (!response.ok) {
