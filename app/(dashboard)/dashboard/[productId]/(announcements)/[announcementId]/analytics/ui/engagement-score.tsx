@@ -90,7 +90,7 @@ export function EngagementScore({ data }: Props) {
 						engagement
 					</span>
 				</div>
-				<div className='leading-none text-muted-foreground'>
+				<div className='leading-none text-muted-foreground text-center'>
 					{data.avgEngagementScore > 70
 						? 'Users are highly interested in this announcement'
 						: data.avgEngagementScore > 40
