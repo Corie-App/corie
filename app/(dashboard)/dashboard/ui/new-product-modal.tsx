@@ -3,6 +3,7 @@
 import { Button } from '@/ui/button';
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -16,7 +17,8 @@ import { Plus } from 'lucide-react';
 import { useServerAction } from 'zsa-react';
 import { createProductAction } from '../actions';
 import { UrlInput } from '@/ui/url-input';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 interface Props extends PropsWithChildren {
 	show?: boolean;
@@ -26,8 +28,13 @@ interface Props extends PropsWithChildren {
 
 export default function NewProductModal({ show = false, children, showTrigger = true, onClose }: Props) {
 	const [open, setOpen] = useState(show);
+	const closeRef = useRef<HTMLButtonElement>(null);
 
 	const { executeFormAction, isPending } = useServerAction(createProductAction, {
+		onSuccess() {
+			closeRef.current?.click();
+			toast.success('Product created successfully');
+		},
 		onError(args) {
 			console.error(args);
 		},
@@ -54,6 +61,7 @@ export default function NewProductModal({ show = false, children, showTrigger = 
 				</DialogTrigger>
 			)}
 			<DialogContent className='sm:max-w-[425px]'>
+				<DialogClose ref={closeRef} className='hidden' />
 				<form action={executeFormAction}>
 					<DialogHeader>
 						<DialogTitle>Create a product</DialogTitle>
