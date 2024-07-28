@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import UpdateProduct from './ui/update-product';
 import CopyScript from './ui/copy-script';
+import DeleteProduct from './ui/delete-product';
 
 export default async function SettingsPage({ params }: { params: { productId: string } }) {
 	const product = await db.query.products.findFirst({
@@ -37,6 +38,7 @@ export default async function SettingsPage({ params }: { params: { productId: st
 				</div>
 			</div>
 			<UpdateProduct id={product.id} name={product.name} domain={product.domain} />
+			<DeleteProduct id={product.id} name={product.name} />
 		</div>
 	);
 }
