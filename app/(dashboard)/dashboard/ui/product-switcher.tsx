@@ -58,7 +58,7 @@ export default function ProductSwitcher({ products }: Props) {
 				<PopoverContent className='w-[200px] p-0'>
 					<Command>
 						<CommandList>
-							<CommandInput placeholder='Search team...' />
+							<CommandInput placeholder='Search product...' />
 							<CommandEmpty>No product found.</CommandEmpty>
 							{products.map((p) => (
 								<CommandItem
@@ -94,7 +94,7 @@ export default function ProductSwitcher({ products }: Props) {
 											setShowNewProductDialog(true);
 										}}>
 										<PlusCircle size={20} className='mr-2' />
-										Create Team
+										Create Product
 									</CommandItem>
 								</DialogTrigger>
 							</CommandGroup>
