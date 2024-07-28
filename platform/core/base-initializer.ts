@@ -15,7 +15,7 @@ export abstract class BaseInitializer {
 
 	protected async fetchEnv(): Promise<void> {
 		try {
-			const baseUrl = 'https://corie.io';
+			const baseUrl = 'https://www.corie.io';
 			// const baseUrl = 'https://corie-git-gt-codes-cor-23-get-demo-usage-working-gt-codes.vercel.app';
 			// const baseUrl = 'http://localhost:3000';
 

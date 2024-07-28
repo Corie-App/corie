@@ -4,7 +4,7 @@ import { randomBytes, createHmac } from 'node:crypto';
 const urls = {
 	development: 'http://localhost:3000',
 	preview: `https://${process.env.VERCEL_BRANCH_URL}`,
-	production: 'https://corie.io',
+	production: 'https://www.corie.io',
 };
 
 const env = {
