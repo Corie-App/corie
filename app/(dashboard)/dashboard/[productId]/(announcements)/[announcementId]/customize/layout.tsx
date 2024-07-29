@@ -10,7 +10,7 @@ interface Props extends PropsWithChildren {
 	params: { announcementId: string };
 }
 
-export default async function AnnouncementLayoutPage({ children, params }: Props) {
+export default async function AnnouncementCustomizeLayoutPage({ children, params }: Props) {
 	const announcement = await db
 		.select({
 			title: announcements.title,
@@ -42,9 +42,11 @@ export default async function AnnouncementLayoutPage({ children, params }: Props
 				dismissButtonText: announcement[0].dismissButtonText,
 				showDismissButton: announcement[0].showDismissButton,
 			}}>
-			<div className='flex flex-col flex-1'>
+			<div className='grow flex flex-col lg:flex-row overflow-hidden'>
 				{children}
-				<AnnouncementPreview />
+				<div className='flex flex-1 items-center justify-center'>
+					<AnnouncementPreview />
+				</div>
 			</div>
 		</AnnouncementProvider>
 	);

@@ -12,7 +12,7 @@ export const ToggleAnnouncementActiveSchema = z.object({
 	announcementId: z.string(),
 });
 
-export const UpdateAnnouncementSchema = CreateAnnouncementSchema.extend({
+export const UpdateAnnouncementDetailsSchema = CreateAnnouncementSchema.extend({
 	announcementId: z.string(),
 });
 
@@ -22,6 +22,10 @@ export const UpdateAnnouncementThemeSchema = z.object({
 	layout: z.enum(['default', 'image-left', 'image-top']),
 	announcementId: z.string(),
 	primaryColor: z.string(),
+});
+
+export const UpdateAnnouncementButtonsSchema = z.object({
+	announcementId: z.string(),
 	ctaButtonText: z.string(),
 	dismissButtonText: z.string(),
 	ctaButtonUrl: z.string().url(),

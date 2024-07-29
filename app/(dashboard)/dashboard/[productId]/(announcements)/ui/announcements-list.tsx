@@ -17,7 +17,7 @@ export default async function AnnouncementsList({ productId }: { productId: stri
 			{data.map((announcement) => (
 				<li key={announcement.id} className='py-2 px-4 flex gap-3 items-center justify-between'>
 					<Link
-						href={`/dashboard/${productId}/${announcement.id}`}
+						href={`/dashboard/${productId}/${announcement.id}/customize`}
 						className='group gap-2 justify-between items-center inline-flex text-sm font-medium grow p-2 hover:bg-gray-100 rounded-md text-foreground'>
 						{announcement.title}
 						<Eye
