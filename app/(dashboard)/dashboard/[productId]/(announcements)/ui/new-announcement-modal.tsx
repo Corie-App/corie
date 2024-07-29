@@ -3,6 +3,7 @@
 import { Button } from '@/ui/button';
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -17,13 +18,15 @@ import { useServerAction } from 'zsa-react';
 import { Textarea } from '@/ui/textarea';
 import { toast } from 'sonner';
 import { createAnnouncementAction } from '../actions';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export default function NewAnnouncementModal({ productId }: { productId: string }) {
 	const [desc, setDesc] = useState('');
 	const [title, setTitle] = useState('');
+	const closeRef = useRef<HTMLButtonElement>(null);
 	const { executeFormAction, isPending, data } = useServerAction(createAnnouncementAction, {
 		onSuccess() {
+			closeRef.current?.click();
 			toast.success('Announcement created successfully');
 		},
 		onError(args) {
@@ -40,6 +43,7 @@ export default function NewAnnouncementModal({ productId }: { productId: string 
 				</Button>
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[425px]'>
+				<DialogClose ref={closeRef} className='hidden' />
 				<form action={executeFormAction}>
 					<input type='hidden' name='productId' value={productId} />
 					<DialogHeader>

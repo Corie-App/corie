@@ -1,10 +1,10 @@
 import { db } from '@/lib/postgres';
 import { products } from '@/lib/postgres/schema';
-import { Button } from '@/ui/button';
 import { eq } from 'drizzle-orm';
-import { Code } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import UpdateProduct from './ui/update-product';
+import CopyScript from './ui/copy-script';
+import DeleteProduct from './ui/delete-product';
 
 export default async function SettingsPage({ params }: { params: { productId: string } }) {
 	const product = await db.query.products.findFirst({
@@ -34,13 +34,11 @@ export default async function SettingsPage({ params }: { params: { productId: st
 					</div>
 				</div>
 				<div className='px-4 gap-2 bg-neutral-50 border-t border-gray-100 py-2 flex justify-end w-full'>
-					<Button>
-						<Code size={16} className='mr-2' />
-						Copy Script Code
-					</Button>
+					<CopyScript code={code} />
 				</div>
 			</div>
 			<UpdateProduct id={product.id} name={product.name} domain={product.domain} />
+			<DeleteProduct id={product.id} name={product.name} />
 		</div>
 	);
 }
