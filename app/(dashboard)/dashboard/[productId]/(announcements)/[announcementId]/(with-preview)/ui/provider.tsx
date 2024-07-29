@@ -10,11 +10,19 @@ interface ContextType {
 	layout: Layout;
 	imageUrl: string | null;
 	buttonStyle: ButtonStyle;
+	ctaButtonUrl: string;
+	ctaButtonText: string;
+	dismissButtonText: string;
+	showDismissButton: boolean;
 	setTitle: (val: string) => void;
 	setLayout: (val: Layout) => void;
 	setImageUrl: (val: string) => void;
 	setDescription: (val: string) => void;
 	setPrimaryColor: (val: string) => void;
+	setCtaButtonUrl: (val: string) => void;
+	setCtaButtonText: (val: string) => void;
+	setDismissButtonText: (val: string) => void;
+	setShowDismissButton: (val: boolean) => void;
 	setButtonStyle: (val: ButtonStyle) => void;
 }
 
@@ -23,7 +31,16 @@ export const AnnouncementContext = createContext<ContextType | undefined>(undefi
 interface ProviderProps extends PropsWithChildren {
 	initialData: Omit<
 		ContextType,
-		'setTitle' | 'setDescription' | 'setButtonStyle' | 'setPrimaryColor' | 'setLayout' | 'setImageUrl'
+		| 'setTitle'
+		| 'setDescription'
+		| 'setButtonStyle'
+		| 'setPrimaryColor'
+		| 'setLayout'
+		| 'setImageUrl'
+		| 'setDismissButtonText'
+		| 'setShowDismissButton'
+		| 'setCtaButtonText'
+		| 'setCtaButtonUrl'
 	>;
 }
 
@@ -34,6 +51,10 @@ export default function AnnouncementProvider({ children, initialData }: Provider
 	const [buttonStyle, setButtonStyle] = useState(initialData.buttonStyle);
 	const [description, setDescription] = useState(initialData.description);
 	const [primaryColor, setPrimaryColor] = useState(initialData.primaryColor);
+	const [ctaButtonUrl, setCtaButtonUrl] = useState(initialData.ctaButtonUrl);
+	const [ctaButtonText, setCtaButtonText] = useState(initialData.ctaButtonText);
+	const [dismissButtonText, setDismissButtonText] = useState(initialData.dismissButtonText);
+	const [showDismissButton, setShowDismissButton] = useState(initialData.showDismissButton);
 
 	const value = useMemo(
 		() => ({
@@ -46,11 +67,30 @@ export default function AnnouncementProvider({ children, initialData }: Provider
 			description,
 			buttonStyle,
 			primaryColor,
+			ctaButtonUrl,
+			ctaButtonText,
 			setDescription,
 			setButtonStyle,
+			setCtaButtonUrl,
 			setPrimaryColor,
+			setCtaButtonText,
+			dismissButtonText,
+			setDismissButtonText,
+			showDismissButton,
+			setShowDismissButton,
 		}),
-		[title, description, buttonStyle, primaryColor, layout, imageUrl]
+		[
+			title,
+			layout,
+			imageUrl,
+			description,
+			buttonStyle,
+			primaryColor,
+			ctaButtonUrl,
+			ctaButtonText,
+			dismissButtonText,
+			showDismissButton,
+		]
 	);
 
 	return <AnnouncementContext.Provider value={value}>{children}</AnnouncementContext.Provider>;

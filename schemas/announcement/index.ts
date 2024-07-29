@@ -22,6 +22,13 @@ export const UpdateAnnouncementThemeSchema = z.object({
 	layout: z.enum(['default', 'image-left', 'image-top']),
 	announcementId: z.string(),
 	primaryColor: z.string(),
+	ctaButtonText: z.string(),
+	dismissButtonText: z.string(),
+	ctaButtonUrl: z.string().url(),
+	showDismissButton: z
+		.string()
+		.optional()
+		.transform((value) => (value === undefined ? false : value === 'on')),
 });
 
 export const GenerateThemeSchema = z.object({
@@ -42,4 +49,7 @@ export const AIGenerateThemeSchema = z.object({
 		.describe(
 			"The layout of the theme, refers to whether there's no image, an image on the left or an image on the top"
 		),
+	ctaButtonText: z.string().describe('The text of the call to action button'),
+	dismissButtonText: z.string().describe('The text of the dismiss button'),
+	showDismissButton: z.boolean().describe('Whether to show the dismiss button'),
 });

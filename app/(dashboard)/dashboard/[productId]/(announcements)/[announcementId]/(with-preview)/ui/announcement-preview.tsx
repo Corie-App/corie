@@ -12,7 +12,18 @@ const radiusStyles: Record<ButtonStyle, string> = {
 };
 
 export default function AnnouncementPreview() {
-	const { layout, imageUrl, title, description, buttonStyle, primaryColor } = useAnnouncementConfig();
+	const {
+		layout,
+		imageUrl,
+		title,
+		description,
+		buttonStyle,
+		primaryColor,
+		ctaButtonText,
+		ctaButtonUrl,
+		dismissButtonText,
+		showDismissButton,
+	} = useAnnouncementConfig();
 	const proxyUrl = `/images?url=${encodeURIComponent(imageUrl ?? '')}`;
 
 	return (
@@ -50,21 +61,23 @@ export default function AnnouncementPreview() {
 						</div>
 					</div>
 					<div className='flex justify-between gap-3'>
+						{showDismissButton && (
+							<button
+								className={cn(
+									'w-full px-4 py-2 bg-transparent border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+									radiusStyles[buttonStyle]
+								)}>
+								{dismissButtonText}
+							</button>
+						)}
 						<button
+							type='button'
 							className={cn(
-								'w-full px-4 py-2 bg-transparent border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
-								radiusStyles[buttonStyle]
-							)}>
-							Don&apos;t show again
-						</button>
-						<button
-							onClick={() => console.log('Upgrade to Pro')}
-							className={cn(
-								'w-full px-4 py-2 bg-black border-none text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
+								'w-full px-4 py-2 bg-black border border-transparent text-sm font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 hover:bg-opacity-80',
 								radiusStyles[buttonStyle]
 							)}
 							style={{ backgroundColor: primaryColor }}>
-							Upgrade to Pro
+							{ctaButtonText}
 						</button>
 					</div>
 				</div>

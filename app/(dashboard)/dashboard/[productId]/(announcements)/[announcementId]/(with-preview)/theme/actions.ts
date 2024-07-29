@@ -20,6 +20,10 @@ export const updateAnnouncemenThemeAction = isProductAdminProcedure
 				imageUrl: input.imageUrl,
 				buttonStyle: input.buttonStyle,
 				primaryColor: input.primaryColor,
+				ctaButtonUrl: input.ctaButtonUrl,
+				ctaButtonText: input.ctaButtonText,
+				dismissButtonText: input.dismissButtonText,
+				showDismissButton: input.showDismissButton,
 			})
 			.where(eq(announcements.id, input.announcementId))
 			.returning({ id: announcements.id });
