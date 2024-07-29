@@ -3,13 +3,28 @@
 import { isProductAdminProcedure } from '@/lib/procedures';
 import { db } from '@/lib/postgres';
 import { announcements, products } from '@/lib/postgres/schema';
-import { AIGenerateThemeSchema, GenerateThemeSchema, UpdateAnnouncementThemeSchema } from '@/schemas/announcement';
+import { UpdateAnnouncementButtonsSchema, UpdateAnnouncementDetailsSchema } from '@/schemas/announcement';
 import { eq } from 'drizzle-orm';
+import { AIGenerateThemeSchema, GenerateThemeSchema, UpdateAnnouncementThemeSchema } from '@/schemas/announcement';
 import { revalidatePath } from 'next/cache';
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 
-export const updateAnnouncemenThemeAction = isProductAdminProcedure
+export const updateDetailsAction = isProductAdminProcedure
+	.createServerAction()
+	.input(UpdateAnnouncementDetailsSchema, { type: 'formData' })
+	.handler(async ({ input }) => {
+		await db
+			.update(announcements)
+			.set({ title: input.title, description: input.description })
+			.where(eq(announcements.id, input.announcementId))
+			.returning({ id: announcements.id });
+
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/details`);
+		return { success: true };
+	});
+
+export const updateThemeAction = isProductAdminProcedure
 	.createServerAction()
 	.input(UpdateAnnouncementThemeSchema, { type: 'formData' })
 	.handler(async ({ input }) => {
@@ -20,6 +35,21 @@ export const updateAnnouncemenThemeAction = isProductAdminProcedure
 				imageUrl: input.imageUrl,
 				buttonStyle: input.buttonStyle,
 				primaryColor: input.primaryColor,
+			})
+			.where(eq(announcements.id, input.announcementId))
+			.returning({ id: announcements.id });
+
+		revalidatePath(`/dashboard/${input.productId}/${input.announcementId}/theme`);
+		return { success: true };
+	});
+
+export const updateButtonsAction = isProductAdminProcedure
+	.createServerAction()
+	.input(UpdateAnnouncementButtonsSchema, { type: 'formData' })
+	.handler(async ({ input }) => {
+		await db
+			.update(announcements)
+			.set({
 				ctaButtonUrl: input.ctaButtonUrl,
 				ctaButtonText: input.ctaButtonText,
 				dismissButtonText: input.dismissButtonText,

@@ -21,6 +21,14 @@ const nextConfig = {
 				source: '/home',
 				destination: '/',
 			},
+			{
+				source: '/dashboard/:productId/settings',
+				destination: '/dashboard/:productId/settings',
+			},
+			{
+				source: '/dashboard/:productId/:announcementId',
+				destination: '/dashboard/:productId/:announcementId/customize',
+			},
 		];
 	},
 };
