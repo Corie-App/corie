@@ -4,6 +4,7 @@ import { cn } from '../../utils';
 import { AnalyticsEventType, CorieAnalytics } from '../../analytics';
 
 interface AnnouncementWrapperProps {
+	baseUrl: string;
 	onClose: () => void;
 	analytics: CorieAnalytics;
 	announcements: Announcement[];
@@ -15,7 +16,7 @@ const radiusStyles: Record<ButtonStyle, string> = {
 	pill: 'corie-rounded-full',
 };
 
-const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({ analytics, announcements, onClose }) => {
+const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({ baseUrl, analytics, announcements, onClose }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
 	const [viewTimestamp, setViewTimestamp] = useState(Date.now());
@@ -54,7 +55,7 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({ analytics, an
 	};
 
 	const renderImage = () => {
-		const proxyUrl = `/images?url=${encodeURIComponent(imageUrl ?? '')}`;
+		const proxyUrl = `${baseUrl}/images?url=${encodeURIComponent(imageUrl ?? '')}`;
 
 		return layout === 'default' ? null : (
 			<div

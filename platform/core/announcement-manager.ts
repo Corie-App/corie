@@ -65,6 +65,7 @@ export class AnnouncementManager {
 
 		root.render(
 			React.createElement(AnnouncementWrapper, {
+				baseUrl: this.env.url,
 				analytics: this.analytics,
 				announcements: announcements,
 				onClose: handleClose,
