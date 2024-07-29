@@ -11,6 +11,8 @@ import { generateThemeAction, updateAnnouncemenThemeAction } from '../actions';
 import { ColorPicker } from '@/ui/color-picker';
 import { Image as ImageIcon, Palette } from 'lucide-react';
 import { Input } from '@/ui/input';
+import { Switch } from '@/ui/switch';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/tooltip';
 
 interface Props {
 	productId: string;
@@ -18,8 +20,24 @@ interface Props {
 }
 
 export default function ThemeForm({ productId, announcementId }: Props) {
-	const { layout, imageUrl, setLayout, buttonStyle, setImageUrl, setButtonStyle, primaryColor, setPrimaryColor } =
-		useAnnouncementConfig();
+	const {
+		layout,
+		imageUrl,
+		ctaButtonText,
+		ctaButtonUrl,
+		dismissButtonText,
+		showDismissButton,
+		setLayout,
+		buttonStyle,
+		setImageUrl,
+		setButtonStyle,
+		primaryColor,
+		setPrimaryColor,
+		setShowDismissButton,
+		setCtaButtonText,
+		setCtaButtonUrl,
+		setDismissButtonText,
+	} = useAnnouncementConfig();
 
 	const generateTheme = useServerAction(generateThemeAction, {
 		onSuccess({ data }) {
@@ -168,6 +186,63 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 						</div>
 					</div>
 				)}
+				<div className='space-y-1'>
+					<div className='flex justify-between items-center gap-4'>
+						<Label htmlFor='name' className='text-right'>
+							Dismiss Button Text
+						</Label>
+						<Tooltip delayDuration={100}>
+							<TooltipTrigger asChild>
+								<span>
+									<Switch
+										name='showDismissButton'
+										defaultChecked={showDismissButton}
+										onCheckedChange={(checked) => setShowDismissButton(checked)}
+									/>
+								</span>
+							</TooltipTrigger>
+							<TooltipContent side='top' align='end' sideOffset={8}>
+								<p>{showDismissButton ? 'Hide ' : 'Show '}the dismiss button</p>
+							</TooltipContent>
+						</Tooltip>
+					</div>
+					<Input
+						id='dismissButtonText'
+						name='dismissButtonText'
+						required={showDismissButton}
+						placeholder="Don't show again"
+						defaultValue={dismissButtonText ?? undefined}
+						onChange={(e) => setDismissButtonText(e.target.value)}
+					/>
+				</div>
+				<div className='space-y-1'>
+					<Label htmlFor='name' className='text-right'>
+						Call to Action Button Text
+					</Label>
+					<Input
+						required
+						id='ctaButtonText'
+						name='ctaButtonText'
+						placeholder='Learn More'
+						defaultValue={ctaButtonText ?? undefined}
+						onChange={(e) => setCtaButtonText(e.target.value)}
+					/>
+				</div>
+				<div className='space-y-1'>
+					<Label htmlFor='ctaButtonUrl' className='text-right'>
+						Call to Action Button Url
+					</Label>
+					<Input
+						required
+						type='url'
+						id='ctaButtonUrl'
+						name='ctaButtonUrl'
+						defaultValue={ctaButtonUrl ?? undefined}
+						onChange={(e) => setCtaButtonUrl(e.target.value)}
+						placeholder='https://www.example.com/blog/new-feature'
+					/>
+					<span className='text-xs text-gray-500'>The button will link to this url</span>
+				</div>
 				<div className='flex items-center gap-4'>
 					<Button variant='secondary' type='button' onClick={() => generateTheme.execute({ productId })}>
 						<Palette size={16} className='mr-1.5' />

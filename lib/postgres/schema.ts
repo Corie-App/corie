@@ -27,6 +27,10 @@ export const announcements = pgTable('announcements', {
 	buttonStyle: buttonStyleEnum('button_style').default('flat').notNull(),
 	primaryColor: varchar('primary_color', { length: 7 }).default('#000').notNull(),
 	creatorId: varchar('creator_id', { length: 50 }).notNull(),
+	dismissButtonText: varchar('dismiss_button_text', { length: 255 }).default("Don't show again").notNull(),
+	showDismissButton: boolean('show_dismiss_button').default(true).notNull(),
+	ctaButtonText: varchar('cta_button_text', { length: 255 }).default('Learn More').notNull(),
+	ctaButtonUrl: varchar('cta_button_url', { length: 255 }).default('example.com').notNull(),
 	createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
 });
