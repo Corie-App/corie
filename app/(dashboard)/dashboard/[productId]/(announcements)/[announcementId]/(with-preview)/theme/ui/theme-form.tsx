@@ -45,6 +45,9 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 			setPrimaryColor(data.primaryColor);
 			setButtonStyle(data.buttonStyle);
 			setLayout(data.layout);
+			setCtaButtonText(data.ctaButtonText);
+			setDismissButtonText(data.dismissButtonText);
+			setShowDismissButton(data.showDismissButton);
 			const buttonStylEl = document.querySelector<HTMLButtonElement>(`#${data.buttonStyle}`);
 			const layoutEl = document.querySelector<HTMLButtonElement>(`#${data.layout}`);
 			if (buttonStylEl) buttonStylEl.click();
@@ -196,7 +199,7 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 								<span>
 									<Switch
 										name='showDismissButton'
-										defaultChecked={showDismissButton}
+										checked={showDismissButton}
 										onCheckedChange={(checked) => setShowDismissButton(checked)}
 									/>
 								</span>
@@ -209,9 +212,9 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 					<Input
 						id='dismissButtonText'
 						name='dismissButtonText'
+						value={dismissButtonText}
 						required={showDismissButton}
 						placeholder="Don't show again"
-						defaultValue={dismissButtonText ?? undefined}
 						onChange={(e) => setDismissButtonText(e.target.value)}
 					/>
 				</div>
@@ -223,8 +226,8 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 						required
 						id='ctaButtonText'
 						name='ctaButtonText'
+						value={ctaButtonText}
 						placeholder='Learn More'
-						defaultValue={ctaButtonText ?? undefined}
 						onChange={(e) => setCtaButtonText(e.target.value)}
 					/>
 				</div>
@@ -237,14 +240,18 @@ export default function ThemeForm({ productId, announcementId }: Props) {
 						type='url'
 						id='ctaButtonUrl'
 						name='ctaButtonUrl'
-						defaultValue={ctaButtonUrl ?? undefined}
+						value={ctaButtonUrl}
 						onChange={(e) => setCtaButtonUrl(e.target.value)}
 						placeholder='https://www.example.com/blog/new-feature'
 					/>
 					<span className='text-xs text-gray-500'>The button will link to this url</span>
 				</div>
 				<div className='flex items-center gap-4'>
-					<Button variant='secondary' type='button' onClick={() => generateTheme.execute({ productId })}>
+					<Button
+						type='button'
+						variant='secondary'
+						disabled={generateTheme.isPending}
+						onClick={() => generateTheme.execute({ productId })}>
 						<Palette size={16} className='mr-1.5' />
 						{generateTheme.isPending ? 'Generating...' : 'Generate theme from your domain'}
 					</Button>
