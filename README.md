@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Corie
+
+Corie is an innovative solution for managing in-app communications with your users. With just a single line of code, Corie empowers you to seamlessly deliver announcements, blog updates, and targeted messages to your user base.
+
+## Features
+
+- **Simple Integration**: Add Corie to your app with a single script tag.
+- **User Segmentation**: Target specific user groups for tailored communications.
+- **Customizable Dashboard**: Easily manage and customize your in-app messages.
+- **Real-time Updates**: Keep your users informed with instant notifications.
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Clerk](https://clerk.dev/) for authentication
+- [OpenAI](https://openai.com/) for AI-powered features
+- [Vercel KV](https://vercel.com/storage/kv) for key-value storage
+- [Tinybird](https://www.tinybird.co/) for real-time analytics
 
 ## Getting Started
 
-First, run the development server:
+### Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/corie.git
+cd corie
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install dependencies
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Set up environment variables
+Copy the `.env.sample` file to `.env.local` and fill in the required values:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Run the development server
+```bash
+pnpm dev
+```
+This will start the Next.js app on http://localhost:3000.
 
-## Learn More
+### Build the platform code
+To build the platform code used in the script:
+```bash
+pnpm build:platform
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Run both the app and platform concurrently
+To run both the Next.js app and the platform code with hot-reloading:
+```bash
+pnpm dev:platform
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
+Corie is designed to be deployed on Vercel. Follow these steps to deploy your own instance:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Push your code to a GitHub repository.
+2. Import your project into Vercel.
+3. Configure your environment variables in the Vercel dashboard.
+4. Deploy!
 
-## Deploy on Vercel
+## Usage
+Once deployed, you can integrate Corie into your application by adding the provided script tag to your HTML. This will allow you to manage in-app communications through the Corie dashboard.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Log in to your Corie dashboard.
+2. Create and customize your announcements.
+3. Set up user segments for targeted messaging.
+4. Monitor analytics to track the performance of your communications.
