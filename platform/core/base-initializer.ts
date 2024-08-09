@@ -15,8 +15,8 @@ export abstract class BaseInitializer {
 
 	protected async fetchEnv(): Promise<void> {
 		try {
-			// const baseUrl = 'https://www.corie.io';
-			const baseUrl = 'https://corie-git-gt-codes-cor-25-track-and-retain-dismisses-gt-codes.vercel.app';
+			const baseUrl = 'https://www.corie.io';
+			// const baseUrl = 'https://corie-git-gt-codes-cor-25-track-and-retain-dismisses-gt-codes.vercel.app';
 			// const baseUrl = 'http://localhost:3000';
 
 			const callbackName = `corie_env_${Date.now()}`;
