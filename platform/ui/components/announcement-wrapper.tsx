@@ -77,10 +77,6 @@ const AnnouncementWrapper: React.FC<AnnouncementWrapperProps> = ({ baseUrl, anal
 			</div>
 		);
 	};
-	// image && (
-	// 	// eslint-disable-next-line @next/next/no-img-element
-	// 	<img src={image} alt='Announcement' className='corie-max-w-full corie-h-auto' />
-	// );
 
 	const renderContent = () => (
 		<div className='corie-space-y-3'>

@@ -5,6 +5,7 @@ import { eq, and } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { z } from 'zod';
 import { checkDeviceRules, checkGeolocationRules, checkPathRules, checkScheduleRules } from './utils';
+import { kv } from '@vercel/kv';
 
 const AnnouncementsSchema = z.object({
 	scriptId: z.string(),
@@ -53,8 +54,11 @@ export const getAnnouncements = scriptProcedure
 				primaryColor: a.announcements.primaryColor,
 			}));
 
+		const dismissedAnnouncements = await kv.smembers(`user:${input.userId}:dismissals`);
+		const filteredResult = result.filter((announcement) => !dismissedAnnouncements.includes(announcement.id));
+
 		if (input.callback) {
-			return new Response(`${input.callback}(${JSON.stringify(result)})`, {
+			return new Response(`${input.callback}(${JSON.stringify(filteredResult)})`, {
 				headers: { 'Content-Type': 'application/javascript' },
 			});
 		} else return result;

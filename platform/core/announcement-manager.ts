@@ -52,6 +52,8 @@ export class AnnouncementManager {
 	}
 
 	private displayAnnouncements(announcements: Announcement[]): void {
+		if (announcements.length === 0) return;
+
 		const container = document.createElement('div');
 		container.className = 'corie-root';
 		document.body.appendChild(container);
